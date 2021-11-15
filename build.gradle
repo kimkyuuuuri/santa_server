@@ -1,0 +1,99 @@
+plugins {
+	id 'org.springframework.boot' version '2.3.8.RELEASE'
+	id 'io.spring.dependency-management' version '1.0.11.RELEASE'
+	id 'java'
+	id 'war'
+}
+
+group = 'com.smileflower'
+version = '0.0.1-SNAPSHOT'
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+
+compileJava.options.encoding = 'UTF-8'
+
+
+repositories {
+	mavenCentral()
+
+}
+dependencyManagement {
+	imports {
+		mavenBom "org.springframework.cloud:spring-cloud-dependencies:Hoxton.SR8"
+	}
+}
+
+
+
+dependencies {
+	implementation 'org.jetbrains:annotations:19.0.0'
+
+
+	// Spring Boot Starter
+	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+
+	// Lombok
+	implementation 'org.projectlombok:lombok'
+	compileOnly 'org.projectlombok:lombok:1.18.16'
+	annotationProcessor 'org.projectlombok:lombok:1.18.16'
+
+	// DB
+	runtimeOnly 'mysql:mysql-connector-java' //mysql8
+	//runtimeOnly 'mysql:mysql-connector-java:5.1.47' //mysql5
+	implementation 'org.springframework.boot:spring-boot-starter-jdbc'
+	compile 'org.springframework.boot:spring-boot-starter-data-jpa'
+
+
+
+	// Web
+	implementation 'org.springframework.boot:spring-boot-starter-web'
+
+	// Security, Authentication
+	implementation'org.springframework.boot:spring-boot-starter-security'
+	compile group: 'io.jsonwebtoken', name: 'jjwt', version: '0.7.0'
+	compile 'io.jsonwebtoken:jjwt:0.9.0'
+
+	implementation'org.springframework.boot:spring-boot-starter'
+	compile'org.springframework.boot:spring-boot-starter-web'
+
+	implementation 'org.springframework.boot:spring-boot-starter-web'
+	implementation 'org.springframework.boot:spring-boot-starter-jdbc'
+	runtimeOnly 'mysql:mysql-connector-java'
+	providedRuntime 'org.springframework.boot:spring-boot-starter-tomcat'
+	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+	//jwt
+	implementation 'org.springframework.boot:spring-boot-starter-security'
+	implementation group: 'io.jsonwebtoken', name: 'jjwt', version: '0.9.1'
+	implementation group: 'com.nimbusds', name: 'nimbus-jose-jwt', version: '3.10'
+	// Feign Client
+	implementation "org.springframework.cloud:spring-cloud-starter-openfeign"
+	//Http Client
+	// https://mvnrepository.com/artifact/org.apache.httpcomponents/httpclient
+	//implementation group: 'org.apache.httpcomponents', name: 'httpclient', version: '4.3.4'
+	implementation group: 'org.apache.httpcomponents', name: 'httpclient', version: '4.5'
+	//implementation group: 'org.apache.httpcomponents', name: 'httpasyncclient', version: '4.1.4'
+
+
+	//jws cause java11
+	implementation group: 'javax.xml.bind', name: 'jaxb-api', version: '2.3.1'
+	//spring builder
+	// https://mvnrepository.com/artifact/org.apache.commons/commons-lang3
+	implementation group: 'org.apache.commons', name: 'commons-lang3', version: '3.12.0'
+	// https://mvnrepository.com/artifact/com.amazonaws/aws-java-sdk-s3
+	//implementation group: 'com.amazonaws', name: 'aws-java-sdk-s3', version: '1.12.25'
+	//spring-starter-aws
+	implementation group: 'org.springframework.cloud', name: 'spring-cloud-starter-aws', version: '2.2.6.RELEASE'
+	annotationProcessor group: 'org.springframework.boot', name: 'spring-boot-configuration-processor'
+
+	implementation group: 'com.sun.mail', name: 'javax.mail', version: '1.6.2'
+	implementation group: 'org.springframework.boot', name: 'spring-boot-starter-mail', version: '2.5.1'
+	implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
+	compile("org.springframework.boot:spring-boot-starter-mail")
+
+
+
+}
+
+test {
+	useJUnitPlatform()
+}
