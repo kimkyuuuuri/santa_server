@@ -45,7 +45,7 @@ public class FlagService {
     }
 
     public PostFlagPictureRes createFlag(PostFlagPictureReq postFlagPictureReq, int mountainIdx, int userIdx) throws BaseException {
-        if (postFlagPictureReq.getPictureUrl().length() > 0) {
+       if (postFlagPictureReq.getPictureUrl().length() > 0) {
             int flagIdx = flagDao.createFlag(postFlagPictureReq, mountainIdx, userIdx);
 
             return new PostFlagPictureRes(flagIdx);
