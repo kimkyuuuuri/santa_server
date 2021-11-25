@@ -102,7 +102,8 @@ public class MountainDao {
                         "                                     f.userIdx,\n" +
                         "                                     u.name                                                               as userName,\n" +
                         "                                     u.userImageUrl                                                       as userImage,\n" +
-                        "                                     COUNT(f.userIdx)                                                     as flagCount\n" +
+                        "                                      (select count(*) from flag where  userIdx=f.userIdx)\n" +
+                        "                                                                                                      as flagCount                                       " +
                         "\n" +
                         "                              from flag f\n" +
                         "                                       inner join mountain m on f.mountainIdx = m.mountainIdx\n" +
@@ -126,7 +127,7 @@ public class MountainDao {
                         rs.getString("userImage"),
                         rs.getInt("flagCount"),
                         rs.getString("agoTime")),
-                mountainIdx,mountainIdx);
+               mountainIdx,mountainIdx);
     }
     public GetRankRes getmyRank(int userIdx, int mountainIdx){
         return this.jdbcTemplate.queryForObject("select a.ranking, a.userIdx, userName, userImage, flagCount,b.agoTime,\n" +
@@ -141,7 +142,8 @@ public class MountainDao {
                         "                                                   f.userIdx,\n" +
                         "                                                          u.name                                                               as userName,\n" +
                         "                                                           u.userImageUrl                                                       as userImage,\n" +
-                        "                                                       COUNT(f.userIdx)                                                     as flagCount\n" +
+                        "                                                     (select count(*) from flag where  userIdx=f.userIdx)\n" +
+                        "                                                                                                      as flagCount" +
                         "\n" +
                         "                                                from flag f\n" +
                         "                                                             inner join mountain m on f.mountainIdx = m.mountainIdx\n" +
@@ -165,7 +167,7 @@ public class MountainDao {
                         rs.getString("userImage"),
                         rs.getInt("flagCount"),
                         rs.getString("agoTime")),
-                mountainIdx,mountainIdx,userIdx);
+              mountainIdx,mountainIdx,userIdx);
     }
 
     public GetInfoRes getInfo(int userIdx, int mountainIdx){
