@@ -62,6 +62,7 @@ public class MountainController {
 
             else{
                 int userIdx=jwtService.getUserIdx();
+
                 GetMountainRankRes getMountainRankRes = mountainProvider.getMountainRank(userIdx,mountainIdx);
                 return new BaseResponse<>(getMountainRankRes);
             }

@@ -66,11 +66,18 @@ public class UserProvider {
         }
 
         PostUserLoginPWRes postUserLoginPWRes = userDao.checkAccount(email); // 여기서 잘 못받아오면 에러나옴 그러므로 미리 위에서 체크하는 것임
-
+        System.out.println(postUserLoginPWRes);
         String realpw;
+
+
+
         try{
+
+
             realpw = new AES128(Secret.USER_INFO_PASSWORD_KEY).decrypt(postUserLoginPWRes.getPassword());
+
         } catch (Exception ignored) {
+            System.out.println(ignored);
             throw new BaseException(PASSWORD_ENCRYPTION_ERROR);
         }
         //System.out.println("테스트2:"+postUserLoginPWRes.getEmailId());
