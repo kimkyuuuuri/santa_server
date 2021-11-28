@@ -56,7 +56,7 @@ public class FlagController {
 
 
     @ResponseBody
-    @PostMapping("/flags/{mountainIdx}")
+    @PostMapping("flags/{mountainIdx}/")
     public BaseResponse<PostFlagPictureRes> createFlag(@RequestBody PostFlagPictureReq postFlagPictureReq,@PathVariable("mountainIdx")int mountainIdx ) throws BaseException {
         try{
             if(jwtService.getJwt()==null){

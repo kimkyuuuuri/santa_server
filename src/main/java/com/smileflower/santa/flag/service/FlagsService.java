@@ -30,20 +30,29 @@ public class FlagsService {
         boolean isFlag = flagRepository.findIsFlagByLatAndLong(gpsInfoRequest.getLatitude(),gpsInfoRequest.getLongitude(),mountainIdx)==1;
 
         if(isFlag && !isDoubleVisited){
+
+
             String fileName = createFileName(file.getOriginalFilename());
+
             ObjectMetadata objectMetadata = new ObjectMetadata();
 
             objectMetadata.setContentType(file.getContentType());
 
             try (InputStream inputStream = file.getInputStream()) {
                 s3Service.uploadFile(inputStream, objectMetadata, fileName);
+
                 updateImageUrlByIdx(userIdx, mountainIdx, fileName, gpsInfoRequest.getAltitude());
+
+                updateUserHeight(userIdx, gpsInfoRequest.getAltitude());
+
+
             } catch (IOException e) {
                 throw new IllegalArgumentException(String.format("파일 변환 중 에러가 발생하였습니다 (%s)", file.getOriginalFilename()));
             }
             return new UploadImageResponse(isFlag,isDoubleVisited,s3Service.getFileUrl(fileName));
         }
         else{
+
             return new UploadImageResponse(isFlag,isDoubleVisited,null);
         }
 
@@ -52,7 +61,10 @@ public class FlagsService {
     private int updateImageUrlByIdx(int userIdx, Long mountainIdx, String fileName, Double altitude){
         return flagRepository.updateImageUrlByIdx(userIdx,mountainIdx,fileName,altitude);
     }
+    private void updateUserHeight(int userIdx,Double altitude){
 
+      flagRepository.updateUserHeight(userIdx,altitude);
+    }
 
     private String createFileName(String originalFileName){
         return

@@ -6,4 +6,5 @@ public interface FlagRepository {
     int findTodayFlagByIdx(int userIdx);
 
     int findIsFlagByLatAndLong(double latitude, double longitude, Long mountainIdx);
+    void updateUserHeight(int userIdx, double height);
 }
