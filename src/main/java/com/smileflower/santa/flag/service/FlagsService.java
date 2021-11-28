@@ -8,6 +8,7 @@ import com.smileflower.santa.utils.S3Service;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.transaction.Transactional;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.UUID;
@@ -23,7 +24,7 @@ public class FlagsService {
         this.s3Service = s3Service;
     }
 
-
+    @Transactional
     public UploadImageResponse uploadImage(GpsInfoRequest gpsInfoRequest, MultipartFile file, int userIdx, Long mountainIdx) {
 
         boolean isDoubleVisited = flagRepository.findTodayFlagByIdx(userIdx)!=0;
@@ -42,7 +43,6 @@ public class FlagsService {
                 s3Service.uploadFile(inputStream, objectMetadata, fileName);
 
                 updateImageUrlByIdx(userIdx, mountainIdx, fileName, gpsInfoRequest.getAltitude());
-
                 updateUserHeight(userIdx, gpsInfoRequest.getAltitude());
 
 
