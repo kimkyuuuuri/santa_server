@@ -40,6 +40,20 @@ public class FlagJdbcRepository implements FlagRepository {
         );
 
     }
+    @Override
+    public void updateFlagTotalHeight(int userIdx,Long mountainIdx,int flagIdx,double height) {
+
+        double flagTotalHeight=this.jdbcTemplate.queryForObject("select totalheight from flag where userIdx=? and mountainIdx=? order by totalHeight desc limit 1",
+                Integer.class,
+                userIdx,mountainIdx);
+
+        double totalHeight= height+flagTotalHeight;
+
+        this.jdbcTemplate.update("update flag set totalHeight=? where flagIdx=?",
+                totalHeight,flagIdx
+        );
+
+    }
 
     @Override
     public int findTodayFlagByIdx(int userIdx){

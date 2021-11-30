@@ -30,8 +30,8 @@ public class FlagsService {
         boolean isDoubleVisited = flagRepository.findTodayFlagByIdx(userIdx)!=0;
         boolean isFlag = flagRepository.findIsFlagByLatAndLong(gpsInfoRequest.getLatitude(),gpsInfoRequest.getLongitude(),mountainIdx)==1;
 
-        if(isFlag && !isDoubleVisited){
-
+        //if(isFlag && !isDoubleVisited){
+            if(true){
 
             String fileName = createFileName(file.getOriginalFilename());
 
@@ -42,8 +42,9 @@ public class FlagsService {
             try (InputStream inputStream = file.getInputStream()) {
                 s3Service.uploadFile(inputStream, objectMetadata, fileName);
 
-                updateImageUrlByIdx(userIdx, mountainIdx, fileName, gpsInfoRequest.getAltitude());
+                int flagIdx=updateImageUrlByIdx(userIdx, mountainIdx, fileName, gpsInfoRequest.getAltitude());
                 updateUserHeight(userIdx, gpsInfoRequest.getAltitude());
+                updateFlagTotalHeight(userIdx,mountainIdx, flagIdx,gpsInfoRequest.getAltitude());
 
 
             } catch (IOException e) {
@@ -65,7 +66,10 @@ public class FlagsService {
 
       flagRepository.updateUserHeight(userIdx,altitude);
     }
+    private void updateFlagTotalHeight(int userIdx,Long mountainIdx,int flagIdx,Double altitude){
 
+        flagRepository.updateFlagTotalHeight(userIdx,mountainIdx,flagIdx,altitude);
+    }
     private String createFileName(String originalFileName){
         return
                 UUID.randomUUID().toString().concat(getFileExtension(originalFileName));
