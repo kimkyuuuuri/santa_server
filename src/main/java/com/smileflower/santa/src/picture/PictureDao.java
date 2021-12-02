@@ -23,13 +23,13 @@ public class PictureDao {
                 userIdx,pictureIdx);
     }
     public int postPictureSaveRes(int userIdx,int pictureIdx){
-        return this.jdbcTemplate.queryForObject("insert into save (userIdx,pictureIdx ) VALUES (?,?)",
-                int.class,
+        return this.jdbcTemplate.update("insert into save (userIdx,pictureIdx) VALUES (? , ?)",
+
                 userIdx,pictureIdx);
     }
     public int patchPictureSaveRes(int userIdx,int pictureIdx){
-        return this.jdbcTemplate.queryForObject("update save set status='f'",
-                int.class,
+        return this.jdbcTemplate.update("update save set status='f' where userIdx=? and pictureIdx=? order by createdAt desc limit 1",
+
                 userIdx,pictureIdx);
     }
 

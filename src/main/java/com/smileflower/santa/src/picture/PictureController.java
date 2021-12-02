@@ -35,8 +35,8 @@ public class PictureController {
     }
 
     @ResponseBody
-    @PostMapping("/save")
-    public BaseResponse<PostPictureSaveRes> save(@RequestBody PostPictureSaveReq postPictureSaveReq) throws BaseException {
+    @PostMapping("/{pictureIdx}/save")
+    public BaseResponse<PostPictureSaveRes> save(@PathVariable("pictureIdx") int pictureIdx) throws BaseException {
         try {
             if (jwtService.getJwt() == null) {
                 return new BaseResponse<>(EMPTY_JWT);
@@ -47,7 +47,7 @@ public class PictureController {
             }
 
 
-                PostPictureSaveRes postPictureSaveRes = pictureService.postPictureSaveRes(jwtService.getUserIdx(), postPictureSaveReq.getPictureIdx());
+                PostPictureSaveRes postPictureSaveRes = pictureService.postPictureSaveRes(jwtService.getUserIdx(), pictureIdx);
                 return new BaseResponse<>(postPictureSaveRes);
             } catch (BaseException exception) {
                 return new BaseResponse<>((exception.getStatus()));

@@ -33,15 +33,18 @@ public class PictureService{
 
 
     public PostPictureSaveRes postPictureSaveRes(int userIdx,int pictureIdx) throws BaseException {
-        if (pictureProvider.checkSaveExist(userIdx,pictureIdx)==1) {
-        int pictureSaveIdx =pictureDao.postPictureSaveRes(userIdx, pictureIdx);
-            return  new PostPictureSaveRes(pictureSaveIdx);
-        }
 
+        if (pictureProvider.checkSaveExist(userIdx,pictureIdx)!=1) {
+
+             int pictureSaveIdx =pictureDao.postPictureSaveRes(userIdx, pictureIdx);
+
+            return  new PostPictureSaveRes(pictureSaveIdx,"좋아요 완료");
+        }
         else {
 
             int pictureSaveIdx =pictureDao.patchPictureSaveRes(userIdx, pictureIdx);
-            return  new PostPictureSaveRes(pictureSaveIdx);
+
+            return  new PostPictureSaveRes(pictureSaveIdx,"좋아요 취소");
         }
     }
 
