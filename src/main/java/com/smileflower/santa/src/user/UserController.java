@@ -1,6 +1,6 @@
 package com.smileflower.santa.src.user;
 
-import com.fasterxml.jackson.databind.ser.Serializers;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import com.smileflower.santa.config.BaseException;
@@ -10,8 +10,6 @@ import com.smileflower.santa.utils.JwtService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-
-import java.util.List;
 
 
 import static com.smileflower.santa.config.BaseResponseStatus.*;

@@ -24,5 +24,12 @@ public class PictureProvider {
         this.jwtService = jwtService;
         this.s3Service = s3Service;
     }
-
+    public int checkSaveExist(int userIdx,int pictureIdx){
+        int exist = pictureDao.checkSaveExist(userIdx,pictureIdx);
+        return exist;
+    }
+    public int checkJwt(String jwt) {
+        int exist = pictureDao.checkJwt(jwt);
+        return exist;
+    }
 }
