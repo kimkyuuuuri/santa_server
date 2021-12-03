@@ -40,5 +40,9 @@ public class PictureDao {
                 jwt);
     }
 
-
+    public int checkPictureExist(int pictureIdx){
+        return this.jdbcTemplate.queryForObject("select EXISTS(select pictureIdx from picture where pictureIdx=? and status='t') as exist",
+                int.class,
+                pictureIdx);
+    }
 }

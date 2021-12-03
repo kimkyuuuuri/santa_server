@@ -28,6 +28,10 @@ public class PictureProvider {
         int exist = pictureDao.checkSaveExist(userIdx,pictureIdx);
         return exist;
     }
+    public int checkPictureExist(int pictureIdx){
+        int exist = pictureDao.checkPictureExist(pictureIdx);
+        return exist;
+    }
     public int checkJwt(String jwt) {
         int exist = pictureDao.checkJwt(jwt);
         return exist;
