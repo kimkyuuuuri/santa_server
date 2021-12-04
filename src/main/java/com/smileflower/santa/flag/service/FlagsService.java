@@ -30,8 +30,8 @@ public class FlagsService {
         boolean isDoubleVisited = flagRepository.findTodayFlagByIdx(userIdx)!=0;
         boolean isFlag = flagRepository.findIsFlagByLatAndLong(gpsInfoRequest.getLatitude(),gpsInfoRequest.getLongitude(),mountainIdx)==1;
 
-        //if(isFlag && !isDoubleVisited){
-            if(true){
+        if(isFlag && !isDoubleVisited){
+
 
             String fileName = createFileName(file.getOriginalFilename());
 
