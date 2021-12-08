@@ -191,6 +191,20 @@ public class UserController {
             return new BaseResponse<>((exception.getStatus()));
         }
     }
-
+    @ResponseBody
+    @PatchMapping("/nickname/{userIdx}")
+    public BaseResponse modifyNickname(@PathVariable("userIdx") int userIdx,@RequestBody PostNameReq postNameReq){
+        try{
+            String name=postNameReq.getName();
+            int userIdxByJWt = jwtService.getUserIdx();
+            if (userIdx != userIdxByJWt){
+                return new BaseResponse<>(INVALID_USER_JWT);
+            }
+            userService.modifyNickname(userIdx,name);
+            return new BaseResponse();
+        }catch (BaseException exception){
+            return new BaseResponse<>((exception.getStatus()));
+        }
+    }
 
 }

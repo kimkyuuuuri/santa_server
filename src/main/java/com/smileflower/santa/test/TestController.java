@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/test")
 public class TestController {
     final Logger logger = LoggerFactory.getLogger(this.getClass());
-
     @Autowired
     public TestController() {
     }
@@ -42,3 +41,4 @@ public class TestController {
         return "Success Test Santa";
     }
 }
+//git test

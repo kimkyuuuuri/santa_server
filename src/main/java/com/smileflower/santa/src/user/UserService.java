@@ -132,6 +132,13 @@ public class UserService {
         return new DeleteUserRes(userIdx);
 
     }
+
+    public void modifyNickname(int userIdx,String name) throws BaseException{
+        if (userProvider.checkUserIdx(userIdx)!=1) {
+            throw new BaseException(INVALID_USER);
+        }
+        userDao.modifyNickname(userIdx,name);
+    }
 }
 
 
