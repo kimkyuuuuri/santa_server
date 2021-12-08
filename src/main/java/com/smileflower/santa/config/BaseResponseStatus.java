@@ -44,7 +44,7 @@ public enum BaseResponseStatus {
     SEND_MAIL_ERROR(false, 2029, "인증코드 전송에 실패하였습니다."),
     POST_USERS_EMPTY_USER(false, 2030, "산타에 가입되어있지 않습니다."),
     FAIL_LOCATION(false,2031,"현재 해당 산의 위치가 아닙니다."),
-    POST_SAVE_EMPTY_PICTURE(false,2032,"없는 게시글입니다."),
+    POST_SAVE_EMPTY_PICTURE(false,2040,"없는 게시글입니다."),
 
 
 
@@ -63,6 +63,10 @@ public enum BaseResponseStatus {
     ALREADY_LOGOUT(false,3016,"이미 로그아웃되어 있습니다."),
     EMPTY_MOUNTAIN_INPUT(false,3017,"검색할 산 이름을 입력해주세요."),
 
+    //HOME
+    EMPTY_PICTURE(false,3020,"TOP 10 사진이 없습니다."),
+    EMPTY_USER(false,3021,"TOP 10 유저가 없습니다."),
+    EMPTY_MOUNTAIN(false,3022,"TOP 10 산이 없습니다."),
 
     /**
      * 4000 : Database, Server 오류
