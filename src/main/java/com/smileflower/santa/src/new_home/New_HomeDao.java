@@ -87,7 +87,7 @@ public class New_HomeDao {
                                 "from user\n" +
                                 "         left join (select userIdx,count(flagIdx) as flagCount,createdAt from flag group by userIdx) f\n" +
                                 "                   on f.userIdx = user.userIdx\n" +
-                                "order by user.height desc limit 6;",
+                                "order by user.height desc limit 5;",
                         (rk,rownum) -> new GetUsersRes(
                                 rk.getInt("userIdx"),
                                 rk.getString("userImageUrl"),
@@ -114,7 +114,7 @@ public class New_HomeDao {
                                 "                                left join (select userIdx,totalHeight from flag ) f2  on maxflag.maxHeight=f2.totalHeight\n" +
                                 "                                  left join (select userIdx,userImageUrl from user  where status='t'\n" +
                                 "                         ) u on f2.userIdx=u.userIdx\n" +
-                                "    order by flagCount desc limit 6;\n",
+                                "    order by flagCount desc limit 3;\n",
                         (rk,rownum) -> new GetMountainsRes(
                                 rk.getInt("mountainIdx"),
                                 rk.getString("mountainImageUrl"),
