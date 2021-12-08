@@ -168,6 +168,10 @@ public class UserDao {
                 jwt);
     }
 
+    public void modifyNickname(int userIdx,String name){
+        this.jdbcTemplate.update("UPDATE user SET name = ? WHERE userIdx = ?",
+                name,userIdx);
+    }
 
 
 }
