@@ -177,4 +177,16 @@ public class FlagDao {
                         rs.getString("high")),
                 userIdx);
     }
+    public Long report(Long flagIdx, int userIdx) {
+        String query = "insert into report (userIdx, flagIdx) VALUES (?,?)";
+        Object[] params = new Object[]{userIdx,flagIdx};
+        this.jdbcTemplate.update(query, params);
+        String lastInsertIdQuery = "select last_insert_id()";
+        return this.jdbcTemplate.queryForObject(lastInsertIdQuery,Long.class);
+    }
+
+    public int getReportCount(Long flagIdx) {
+        return this.jdbcTemplate.queryForObject("SELECT COUNT(*) FROM report WHERE flagIdx = ?",new Object[]{flagIdx}, int.class);
+    }
+
 }

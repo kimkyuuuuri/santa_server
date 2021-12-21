@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 import static com.smileflower.santa.config.BaseResponseStatus.EMPTY_JWT;
 
 @RestController
-@RequestMapping("/app/profile")
+@RequestMapping("/app/profiles")
 public class New_ProfileController {
     final Logger logger = LoggerFactory.getLogger(this.getClass());
 

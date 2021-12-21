@@ -169,4 +169,24 @@ public class FlagController {
         }
     }
 
+    @ResponseBody
+    @PostMapping("/flags/{flagIdx}/report")
+    public BaseResponse<PostFlagReportRes> report(@PathVariable("flagIdx")Long flagIdx ) throws BaseException {
+        try{
+            if(jwtService.getJwt()==null){
+                return new BaseResponse<>(EMPTY_JWT);
+            }
+
+            else{
+                int userIdx=jwtService.getUserIdx();
+                PostFlagReportRes postFlagReportRes = flagService.report(userIdx,flagIdx);
+                return new BaseResponse<>(postFlagReportRes);
+            }
+
+        }catch(BaseException exception){
+            return new BaseResponse<>((exception.getStatus()));
+        }
+
+    }
+
 }

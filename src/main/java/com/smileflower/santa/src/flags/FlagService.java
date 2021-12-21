@@ -3,6 +3,7 @@ package com.smileflower.santa.src.flags;
 
 import com.smileflower.santa.config.BaseException;
 import com.smileflower.santa.config.secret.Secret;
+import com.smileflower.santa.profile.model.dto.ReportFlagResponse;
 import com.smileflower.santa.src.flags.model.*;
 import com.smileflower.santa.src.flags.FlagDao;
 import com.smileflower.santa.src.flags.FlagProvider;
@@ -83,4 +84,11 @@ public class FlagService {
         }
 
     }
+
+    @Transactional
+    public PostFlagReportRes report(int userIdx, Long flagIdx) {
+        flagDao.report(flagIdx,userIdx);
+        return new PostFlagReportRes(flagIdx,flagDao.getReportCount(flagIdx));
+    }
+
 }
