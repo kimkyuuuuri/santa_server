@@ -2,7 +2,7 @@ package com.smileflower.santa.src.profile;
 
 import com.smileflower.santa.config.BaseException;
 import com.smileflower.santa.config.BaseResponse;
-import com.smileflower.santa.src.profile.model.GetProfileRes;
+import com.smileflower.santa.src.profile.model.*;
 import com.smileflower.santa.utils.JwtService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -11,6 +11,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.List;
 
 import static com.smileflower.santa.config.BaseResponseStatus.EMPTY_JWT;
 
@@ -55,5 +57,24 @@ public class New_ProfileController {
 
 
 
+    @ResponseBody
+    @GetMapping("/map")
+    public BaseResponse<List<GetMapRes>> getMapRes() throws BaseException {
+
+        try{
+            if(jwtService.getJwt()==null){
+                return new BaseResponse<>(EMPTY_JWT);
+            }
+
+            else{
+                int userIdx=jwtService.getUserIdx();
+                List<GetMapRes> getMapRes= newProfileProvider.getMapRes(userIdx);
+                return new BaseResponse<>(getMapRes);
+            }
+
+        }catch(BaseException exception){
+            return new BaseResponse<>((exception.getStatus()));
+        }
+    }
 
 }

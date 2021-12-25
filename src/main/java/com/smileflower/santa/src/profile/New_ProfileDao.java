@@ -1,6 +1,7 @@
 package com.smileflower.santa.src.profile;
 
 
+import com.smileflower.santa.profile.model.dto.FlagsForMapResponse;
 import com.smileflower.santa.src.profile.model.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -65,6 +66,22 @@ public class New_ProfileDao {
                 rs.getString("name")
         ));
 
+    }
+
+    public List<GetMapRes> getMapRes(int userIdx) {
+        String query = "Select ANY_VALUE(f.userIdx) as userIdx, ANY_VALUE(f.mountainIdx) as mountainIdx, COUNT(f.mountainIdx) as cnt, m.name, m.imageUrl, m.latitude, m.longitude, m.address from flag f LEFT JOIN mountain m ON f.mountainIdx = m.mountainIdx where f.useridx = ? group by f.mountainIdx";
+        Object[] param = new Object[]{userIdx};
+        List<GetMapRes> getMapRes = this.jdbcTemplate.query(query,param,(rs,rowNum) -> new GetMapRes(
+                rs.getInt("userIdx"),
+                rs.getLong("mountainIdx"),
+                rs.getString("name"),
+                rs.getString("imageUrl"),
+                rs.getDouble("latitude"),
+                rs.getDouble("longitude"),
+                rs.getInt("cnt"),
+                rs.getString("address")
+        ));
+        return getMapRes;
     }
 
 }
