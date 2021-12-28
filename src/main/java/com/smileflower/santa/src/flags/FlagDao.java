@@ -246,4 +246,5 @@ public class FlagDao {
                         ") DATA\n",
                 new Object[]{latitude, longitude, latitude, mountainIdx}, Integer.class);
     }
+
 }

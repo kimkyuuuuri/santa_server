@@ -84,4 +84,12 @@ public class New_ProfileDao {
         return getMapRes;
     }
 
+    public int postPictureRes(int userIdx,String imageUrl) {
+        String query = "insert into picture (userIdx, imgUrl) VALUES (?,?)";
+        Object[] params = new Object[]{userIdx,imageUrl};
+        this.jdbcTemplate.update(query, params);
+
+        String lastInsertIdQuery = "select last_insert_id()";
+        return this.jdbcTemplate.queryForObject(lastInsertIdQuery,int.class);
+    }
 }

@@ -2,15 +2,15 @@ package com.smileflower.santa.src.profile;
 
 import com.smileflower.santa.config.BaseException;
 import com.smileflower.santa.config.BaseResponse;
+import com.smileflower.santa.src.flags.model.PostFlagHardReq;
+import com.smileflower.santa.src.flags.model.PostFlagHardRes;
 import com.smileflower.santa.src.profile.model.*;
 import com.smileflower.santa.utils.JwtService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -97,4 +97,23 @@ public class New_ProfileController {
         }
     }
 
+    @ResponseBody
+    @PostMapping("/picture")
+    public BaseResponse<PostPictureRes> postPictureRes(@RequestPart(required = false) MultipartFile file ) throws BaseException {
+        try{
+            if(jwtService.getJwt()==null){
+                return new BaseResponse<>(EMPTY_JWT);
+            }
+
+            else{
+                int userIdx=jwtService.getUserIdx();
+                PostPictureRes postPictureRes = newProfileService.postPictureRes(userIdx,file);
+                return new BaseResponse<>(postPictureRes);
+            }
+
+        }catch(BaseException exception){
+            return new BaseResponse<>((exception.getStatus()));
+        }
+
+    }
 }

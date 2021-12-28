@@ -1,11 +1,7 @@
 package com.smileflower.santa.src.profile;
 
 import com.smileflower.santa.config.BaseException;
-import com.smileflower.santa.profile.model.domain.Picture;
-import com.smileflower.santa.profile.model.dto.FlagResponse;
-import com.smileflower.santa.profile.model.dto.FlagsForMapResponse;
-import com.smileflower.santa.profile.model.dto.PostsResponse;
-import com.smileflower.santa.profile.model.dto.ProfilePostsResponse;
+
 import com.smileflower.santa.src.profile.model.*;
 import com.smileflower.santa.utils.JwtService;
 import com.smileflower.santa.utils.S3Service;
