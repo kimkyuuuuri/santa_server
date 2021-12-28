@@ -77,4 +77,24 @@ public class New_ProfileController {
         }
     }
 
+    @ResponseBody
+    @GetMapping("/posts")
+    public BaseResponse<GetMyPostsRes> getMyPostsRes() throws BaseException {
+
+        try{
+            if(jwtService.getJwt()==null){
+                return new BaseResponse<>(EMPTY_JWT);
+            }
+
+            else{
+                int userIdx=jwtService.getUserIdx();
+                GetMyPostsRes getMyPostsRes= newProfileProvider.getMyPostsRes(userIdx);
+                return new BaseResponse<>(getMyPostsRes);
+            }
+
+        }catch(BaseException exception){
+            return new BaseResponse<>((exception.getStatus()));
+        }
+    }
+
 }

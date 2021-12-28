@@ -1,7 +1,11 @@
 package com.smileflower.santa.src.profile;
 
 import com.smileflower.santa.config.BaseException;
+import com.smileflower.santa.profile.model.domain.Picture;
+import com.smileflower.santa.profile.model.dto.FlagResponse;
 import com.smileflower.santa.profile.model.dto.FlagsForMapResponse;
+import com.smileflower.santa.profile.model.dto.PostsResponse;
+import com.smileflower.santa.profile.model.dto.ProfilePostsResponse;
 import com.smileflower.santa.src.profile.model.*;
 import com.smileflower.santa.utils.JwtService;
 import com.smileflower.santa.utils.S3Service;
@@ -63,7 +67,22 @@ public class New_ProfileProvider {
         return getProfileRes;
 
     }
+    public GetMyPostsRes getMyPostsRes(int userIdx) {
+        List<GetPostsRes> getPostsRes = new ArrayList<>();
+        List<GetFlagRes> getFlagRes = newProfileDao.getFlagRes(userIdx);
+        List<GetPicturesRes> getPicturesRes =newProfileDao.getPicturesRes(userIdx);
+        GetUserRes getUserRes= newProfileDao.getUserRes(userIdx);
+        for(int i=0;i<getPicturesRes.size();i++){
+            getPostsRes.add(new GetPostsRes(false,null,getPicturesRes.get(i).getPictureIdx(),getPicturesRes.get(i).getUserIdx(),0,null,null,getPicturesRes.get(i).getCreatedAt().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")),s3Service.getFileUrl(getPicturesRes.get(i).getImageUrl())));
+        }
+        for(int i=0;i<getFlagRes.size();i++){
+            getPostsRes.add(new GetPostsRes(true,getFlagRes.get(i).getFlagIdx(),null,getFlagRes.get(i).getUserIdx(),getFlagRes.get(i).getFlagCount(),getFlagRes.get(i).getMountainIdx(),getFlagRes.get(i).getName(),getFlagRes.get(i).getCreatedAt(),s3Service.getFileUrl(getFlagRes.get(i).getPictureUrl())));
+        }
+        Collections.sort(getPostsRes);
 
+        return new GetMyPostsRes(userIdx,getUserRes.getUserName(),getPostsRes);
+
+    }
 
     public List<GetMapRes> getMapRes(int userIdx) {
         List<GetMapRes> getMapRes = newProfileDao.getMapRes(userIdx);
