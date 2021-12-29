@@ -92,4 +92,15 @@ public class New_ProfileDao {
         String lastInsertIdQuery = "select last_insert_id()";
         return this.jdbcTemplate.queryForObject(lastInsertIdQuery,int.class);
     }
+
+    public int patchProfileImg(int userIdx, String filename) {
+        String query = "update user set userImageUrl = ? where userIdx = ? ";
+        Object[] params = new Object[]{filename, userIdx};
+        return this.jdbcTemplate.update(query,params);
+    }
+    public int deleteProfileImg(int userIdx) {
+        String query = "update user set userImageUrl = null where userIdx = ? ";
+        int param = userIdx;
+        return this.jdbcTemplate.update(query,param);
+    }
 }

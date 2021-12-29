@@ -1,8 +1,13 @@
 package com.smileflower.santa.src.profile;
 
 
+import com.amazonaws.services.kms.model.NotFoundException;
 import com.amazonaws.services.s3.model.ObjectMetadata;
+import com.smileflower.santa.profile.model.domain.Profile;
 import com.smileflower.santa.profile.model.dto.CreatePictureResponse;
+import com.smileflower.santa.profile.model.dto.UploadImageResponse;
+import com.smileflower.santa.src.profile.model.GetProfileImgRes;
+import com.smileflower.santa.src.profile.model.GetUserRes;
 import com.smileflower.santa.src.profile.model.PostPictureRes;
 import com.smileflower.santa.utils.JwtService;
 import org.slf4j.Logger;
@@ -66,5 +71,38 @@ public class New_ProfileService {
         }catch(StringIndexOutOfBoundsException e){
             throw new IllegalArgumentException(String.format("잘못된 형식의 파일 (%s) 입니다",fileName));
         }
+    }
+
+
+    public GetProfileImgRes patchProfileImg(MultipartFile file, int userIdx){
+
+        //delete pre file
+        GetUserRes getUserRes= newProfileDao.getUserRes(userIdx);
+
+        if(getUserRes.getUserImageUrl()!=null){
+            s3Service.deleteFile(getUserRes.getUserImageUrl());
+        }
+        String fileName = createFileName(file.getOriginalFilename());
+
+        ObjectMetadata objectMetadata = new ObjectMetadata();
+
+        objectMetadata.setContentType(file.getContentType());
+
+        try(InputStream inputStream = file.getInputStream()){
+            s3Service.uploadFile(inputStream,objectMetadata,fileName);
+            newProfileDao.patchProfileImg(userIdx,fileName);
+        }catch(IOException e){
+            throw new IllegalArgumentException(String.format("파일 변환 중 에러가 발생하였습니다 (%s)", file.getOriginalFilename()));
+        }
+        return new GetProfileImgRes(s3Service.getFileUrl(fileName));
+    }
+    public GetProfileImgRes deleteProfileImg(int userIdx){
+        //delete file
+        GetUserRes getUserRes= newProfileDao.getUserRes(userIdx);
+        s3Service.deleteFile(getUserRes.getUserImageUrl());
+
+        newProfileDao.deleteProfileImg(userIdx);
+
+        return new GetProfileImgRes(null);
     }
 }

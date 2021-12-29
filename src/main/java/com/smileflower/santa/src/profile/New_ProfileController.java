@@ -2,6 +2,8 @@ package com.smileflower.santa.src.profile;
 
 import com.smileflower.santa.config.BaseException;
 import com.smileflower.santa.config.BaseResponse;
+import com.smileflower.santa.exception.ApiResult;
+import com.smileflower.santa.profile.model.dto.UploadImageResponse;
 import com.smileflower.santa.src.flags.model.PostFlagHardReq;
 import com.smileflower.santa.src.flags.model.PostFlagHardRes;
 import com.smileflower.santa.src.profile.model.*;
@@ -136,5 +138,20 @@ public class New_ProfileController {
             return new BaseResponse<>((exception.getStatus()));
         }
     }
+    @PatchMapping("/profile-img")
+    public BaseResponse<GetProfileImgRes> patchProfileImg(@RequestPart(required = false) MultipartFile file){
+        int userIdx=-1;
+        if(jwtService.validateToken()){
+            userIdx = jwtService.getUserIdxV2();
+        }
+        if(file != null){
+            GetProfileImgRes getProfileImgRes= newProfileService.patchProfileImg(file,userIdx);
+            return new BaseResponse<>(getProfileImgRes);
 
+        }
+        else {
+            GetProfileImgRes getProfileImgRes= newProfileService.deleteProfileImg(userIdx);
+           return new BaseResponse<>(getProfileImgRes);
+        }
+    }
 }
