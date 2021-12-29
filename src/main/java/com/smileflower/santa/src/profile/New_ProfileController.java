@@ -116,4 +116,25 @@ public class New_ProfileController {
         }
 
     }
+
+    @ResponseBody
+    @GetMapping("/profile-img")
+    public BaseResponse<GetProfileImgRes> getProfileImgRes() throws BaseException {
+
+        try{
+            if(jwtService.getJwt()==null){
+                return new BaseResponse<>(EMPTY_JWT);
+            }
+
+            else{
+                int userIdx=jwtService.getUserIdx();
+                GetProfileImgRes getProfileImgRes= newProfileProvider.getProfileImgRes(userIdx);
+                return new BaseResponse<>(getProfileImgRes);
+            }
+
+        }catch(BaseException exception){
+            return new BaseResponse<>((exception.getStatus()));
+        }
+    }
+
 }

@@ -1,7 +1,10 @@
 package com.smileflower.santa.src.profile;
 
+import com.amazonaws.services.kms.model.NotFoundException;
 import com.smileflower.santa.config.BaseException;
 
+import com.smileflower.santa.profile.model.domain.Profile;
+import com.smileflower.santa.profile.model.dto.UploadImageResponse;
 import com.smileflower.santa.src.profile.model.*;
 import com.smileflower.santa.utils.JwtService;
 import com.smileflower.santa.utils.S3Service;
@@ -88,5 +91,15 @@ public class New_ProfileProvider {
         }
         return getMapRes;
     }
+    public GetProfileImgRes getProfileImgRes(int userIdx){
+        //delete file
+        GetUserRes getUserRes= newProfileDao.getUserRes(userIdx);
 
+
+        if(getUserRes.getUserImageUrl()!=null) {
+            return new GetProfileImgRes(s3Service.getFileUrl(getUserRes.getUserImageUrl()));
+        }
+        else
+            return new GetProfileImgRes(null);
+    }
 }
