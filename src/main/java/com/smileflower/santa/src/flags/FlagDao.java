@@ -235,6 +235,12 @@ public class FlagDao {
 
     }
 
+    public boolean deleteFlag(Long flagIdx) {
+        String query = "delete from flag where flagIdx = ?";
+        Object[] params = new Object[]{flagIdx};
+        int changedCnt = this.jdbcTemplate.update(query,params);
+        return changedCnt==1 ? true : false;
+    }
 
     public int findIsFlagByLatAndLong(double latitude, double longitude, Long mountainIdx) {
         return this.jdbcTemplate.queryForObject("SELECT DATA.distance < 20 as isFlag\n" +

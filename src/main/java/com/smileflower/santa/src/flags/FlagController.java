@@ -1,7 +1,9 @@
 package com.smileflower.santa.src.flags;
 
 import com.fasterxml.jackson.databind.ser.Serializers;
+import com.smileflower.santa.exception.ApiResult;
 import com.smileflower.santa.flag.model.GpsInfoRequest;
+import com.smileflower.santa.profile.model.dto.DeleteFlagResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import com.smileflower.santa.config.BaseException;
@@ -209,5 +211,22 @@ public class FlagController {
             return new BaseResponse<>((exception.getStatus()));
         }
 
+    }
+
+    @DeleteMapping("/flags/{flagIdx}")
+    public BaseResponse<DeleteFlagRes> deleteFlag(@PathVariable("flagIdx") Long flagIdx) {
+        try{
+            if(jwtService.getJwt()==null){
+                return new BaseResponse<>(EMPTY_JWT);
+            }
+
+            else{
+                int userIdx=jwtService.getUserIdx();
+                 DeleteFlagRes deleteFlagRes =  flagService.deleteFlag(flagIdx);
+                return new BaseResponse<>(deleteFlagRes);
+            }
+        } catch(BaseException exception){
+            return new BaseResponse<>((exception.getStatus()));
+        }
     }
 }

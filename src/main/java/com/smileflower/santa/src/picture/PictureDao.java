@@ -45,4 +45,11 @@ public class PictureDao {
                 int.class,
                 pictureIdx);
     }
+
+    public boolean deletePicture(Long pictureIdx) {
+        String query = "delete from picture where pictureIdx = ?";
+        Object[] params = new Object[]{pictureIdx};
+        int changedCnt = this.jdbcTemplate.update(query,params);
+        return changedCnt==1 ? true : false;
+    }
 }

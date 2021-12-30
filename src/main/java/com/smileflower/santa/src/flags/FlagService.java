@@ -5,6 +5,7 @@ import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.smileflower.santa.config.BaseException;
 import com.smileflower.santa.config.secret.Secret;
 import com.smileflower.santa.flag.model.GpsInfoRequest;
+import com.smileflower.santa.profile.model.dto.DeleteFlagResponse;
 import com.smileflower.santa.profile.model.dto.ReportFlagResponse;
 import com.smileflower.santa.src.flags.model.*;
 import com.smileflower.santa.src.flags.FlagDao;
@@ -155,5 +156,11 @@ public class FlagService {
         }catch(StringIndexOutOfBoundsException e){
             throw new IllegalArgumentException(String.format("잘못된 형식의 파일 (%s) 입니다",fileName));
         }
+    }
+
+    public DeleteFlagRes deleteFlag(Long flagIdx) {
+
+        return new DeleteFlagRes(flagDao.deleteFlag(flagIdx));
+
     }
 }

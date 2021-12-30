@@ -2,6 +2,7 @@ package com.smileflower.santa.src.picture;
 
 
 import com.smileflower.santa.config.BaseException;
+import com.smileflower.santa.src.flags.model.DeleteFlagRes;
 import com.smileflower.santa.src.picture.model.*;
 import com.smileflower.santa.src.user.model.PatchUserLogoutRes;
 import com.smileflower.santa.utils.JwtService;
@@ -48,4 +49,9 @@ public class PictureService{
         }
     }
 
+    public DeletePictureRes deletePicture(Long pictureIdx) {
+
+        return new DeletePictureRes(pictureDao.deletePicture(pictureIdx));
+
+    }
 }
