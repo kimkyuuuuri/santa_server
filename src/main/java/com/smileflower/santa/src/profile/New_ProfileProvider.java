@@ -102,4 +102,13 @@ public class New_ProfileProvider {
         else
             return new GetProfileImgRes(null);
     }
+
+    public GetResultRes getResultRes(int userIdx) {
+        int flagCount = newProfileDao.getFlagCount(userIdx);
+        int diffFlagCount = newProfileDao.getDiffFlagCount(userIdx);
+        int highCount = newProfileDao.getHighSum(userIdx);
+        return new GetResultRes(flagCount>0,flagCount>2,flagCount>6,flagCount>9,
+                highCount>4999, highCount>9999,highCount>19999,diffFlagCount>99,
+                diffFlagCount>2,diffFlagCount>6,diffFlagCount>9,(double)highCount/1000);
+    }
 }

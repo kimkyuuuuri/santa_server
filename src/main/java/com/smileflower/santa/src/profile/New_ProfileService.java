@@ -5,8 +5,10 @@ import com.amazonaws.services.kms.model.NotFoundException;
 import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.smileflower.santa.profile.model.domain.Profile;
 import com.smileflower.santa.profile.model.dto.CreatePictureResponse;
+import com.smileflower.santa.profile.model.dto.ResultResponse;
 import com.smileflower.santa.profile.model.dto.UploadImageResponse;
 import com.smileflower.santa.src.profile.model.GetProfileImgRes;
+import com.smileflower.santa.src.profile.model.GetResultRes;
 import com.smileflower.santa.src.profile.model.GetUserRes;
 import com.smileflower.santa.src.profile.model.PostPictureRes;
 import com.smileflower.santa.utils.JwtService;
@@ -105,4 +107,5 @@ public class New_ProfileService {
 
         return new GetProfileImgRes(null);
     }
+
 }

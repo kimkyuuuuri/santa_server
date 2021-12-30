@@ -103,4 +103,19 @@ public class New_ProfileDao {
         int param = userIdx;
         return this.jdbcTemplate.update(query,param);
     }
+
+    public int getFlagCount(int userIdx) {
+        return this.jdbcTemplate.queryForObject("SELECT COUNT(*) FROM flag WHERE userIdx = ?",new Object[]{userIdx}, Integer.class);
+    }
+
+
+    public int getDiffFlagCount(int userIdx) {
+        return this.jdbcTemplate.queryForObject("SELECT COUNT(A.mountainIdx) AS cnt FROM (SELECT DISTINCT mountainIdx FROM flag WHERE userIdx = ?) A",new Object[]{userIdx}, Integer.class);
+    }
+
+
+    public int getHighSum(int userIdx) {
+        return this.jdbcTemplate.queryForObject("SELECT COALESCE(SUM(height),0) as sum FROM flag WHERE userIdx = ?",new Object[]{userIdx}, Integer.class);
+    }
+
 }
