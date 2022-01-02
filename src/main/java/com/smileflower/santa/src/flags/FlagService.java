@@ -5,12 +5,8 @@ import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.smileflower.santa.config.BaseException;
 import com.smileflower.santa.config.secret.Secret;
 import com.smileflower.santa.flag.model.GpsInfoRequest;
-import com.smileflower.santa.profile.model.dto.DeleteFlagResponse;
-import com.smileflower.santa.profile.model.dto.ReportFlagResponse;
 import com.smileflower.santa.src.flags.model.*;
-import com.smileflower.santa.src.flags.FlagDao;
-import com.smileflower.santa.src.flags.FlagProvider;
-import com.smileflower.santa.utils.AES128;
+
 import com.smileflower.santa.utils.JwtService;
 import com.smileflower.santa.utils.S3Service;
 import org.slf4j.Logger;
@@ -33,6 +29,7 @@ import static com.smileflower.santa.config.BaseResponseStatus.*;
 
 // Service Create, Update, Delete 의 로직 처리
 @Service
+@Transactional
 public class FlagService {
     final Logger logger = LoggerFactory.getLogger(this.getClass());
 
@@ -96,9 +93,18 @@ public class FlagService {
     }
 
     @Transactional
-    public PostFlagReportRes report(int userIdx, Long flagIdx) {
-        flagDao.report(flagIdx,userIdx);
-        return new PostFlagReportRes(flagIdx,flagDao.getReportCount(flagIdx));
+    public PostFlagReportRes report(int userIdx, Long flagIdx) throws BaseException{
+        if (flagProvider.checkFlagExist(flagIdx) == 0)
+            throw new BaseException(INVALID_FLAG);
+
+        if (flagProvider.checkFlagReportExist(flagIdx,userIdx)==1)
+            throw new BaseException(POST_AUTH_EXISTS_REPORT);
+        else {
+
+            flagDao.report(flagIdx, userIdx);
+            return new PostFlagReportRes(flagIdx, flagDao.getReportCount(flagIdx));
+        }
+
     }
     @Transactional
     public PostFlagRes uploadImage(GpsInfoRequest gpsInfoRequest, MultipartFile file, int userIdx, Long mountainIdx) {

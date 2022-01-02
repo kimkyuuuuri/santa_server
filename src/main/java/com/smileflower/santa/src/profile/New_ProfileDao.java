@@ -30,6 +30,11 @@ public class New_ProfileDao {
 
 
 
+    public int checkUserExist(int userIdx){
+        return this.jdbcTemplate.queryForObject("select EXISTS(select userIdx from user where userIdx=? and status='t') as userExist",
+                int.class,
+                userIdx);
+    }
     public List<GetPicturesRes> getPicturesRes(int userIdx) {
         String query = "select * from picture where userIdx =?";
         Object[] param = new Object[]{userIdx};

@@ -105,4 +105,13 @@ public class FlagProvider {
     public char checkPick(int userIdx, int mountainIdx){
         return flagDao.checkPick(userIdx,mountainIdx);
     }
+
+    public int checkFlagExist(Long flagIdx){
+        return flagDao.checkFlagExist(flagIdx);
+    }
+
+
+    public int checkFlagReportExist(Long flagIdx, int userIdx){
+        return flagDao.checkFlagReportExist(flagIdx,userIdx);
+        }
 }

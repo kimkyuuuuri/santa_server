@@ -42,6 +42,14 @@ public class FlagDao {
         return this.jdbcTemplate.queryForObject("select Exists(select status from picklist\n" +
                 "where mountainIdx=? and userIdx=? ) as PickExist", int.class,mountainIdx,userIdx);
     }
+    public int checkFlagExist(Long flagIdx){
+        return this.jdbcTemplate.queryForObject("select Exists(select flagIdx from flag\n" +
+                "                where status='T' and flagIdx=? ) as FlagExist", int.class,flagIdx);
+    }
+    public int checkFlagReportExist(Long flagIdx,int userIdx){
+        return this.jdbcTemplate.queryForObject("select Exists(select reportIdx from report" +
+                "                where status='T' and flagIdx=? and userIdx=? ) as reportExist", int.class,flagIdx,userIdx);
+    }
     public int checkhigh(int mountainIdx){
         return this.jdbcTemplate.queryForObject("select high from mountain where mountainIdx =?", int.class,mountainIdx);
     }

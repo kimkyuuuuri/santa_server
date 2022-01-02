@@ -42,9 +42,17 @@ public enum BaseResponseStatus {
     POST_AUTH_EXISTS_EMAIL(false, 2027, "이미 회원가입이 완료된 이메일입니다."),
     INVALID_AUTH_EMAIL_CODE(false, 2028, "인증코드가 틀렸습니다."),
     SEND_MAIL_ERROR(false, 2029, "인증코드 전송에 실패하였습니다."),
+
     POST_USERS_EMPTY_USER(false, 2030, "산타에 가입되어있지 않습니다."),
     FAIL_LOCATION(false,2031,"현재 해당 산의 위치가 아닙니다."),
+
     POST_SAVE_EMPTY_PICTURE(false,2040,"없는 게시글입니다."),
+
+    //POST FLAG  REPORT
+    INVALID_FLAG(false,2050,"존재하지 않는 게시물입니다."),
+    POST_AUTH_EXISTS_REPORT(false,2051,"이미 신고한 게시물입니다."),
+
+
 
 
 

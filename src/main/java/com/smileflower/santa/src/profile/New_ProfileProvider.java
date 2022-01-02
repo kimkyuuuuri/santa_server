@@ -1,10 +1,8 @@
 package com.smileflower.santa.src.profile;
 
-import com.amazonaws.services.kms.model.NotFoundException;
 import com.smileflower.santa.config.BaseException;
 
-import com.smileflower.santa.profile.model.domain.Profile;
-import com.smileflower.santa.profile.model.dto.UploadImageResponse;
+import com.smileflower.santa.config.BaseResponseStatus;
 import com.smileflower.santa.src.profile.model.*;
 import com.smileflower.santa.utils.JwtService;
 import com.smileflower.santa.utils.S3Service;
@@ -23,6 +21,7 @@ import java.util.List;
 //Provider : Read의 비즈니스 로직 처리
 @Service
 public class New_ProfileProvider {
+
 
     private final New_ProfileDao newProfileDao;
     private final JwtService jwtService;
@@ -66,7 +65,10 @@ public class New_ProfileProvider {
         return getProfileRes;
 
     }
-    public GetMyPostsRes getMyPostsRes(int userIdx) {
+    public GetMyPostsRes getMyPostsRes(int userIdx)  throws BaseException{
+        if(userExist(userIdx)==0) {
+            throw new BaseException(BaseResponseStatus.INVALID_USER);
+        }
         List<GetPostsRes> getPostsRes = new ArrayList<>();
         List<GetFlagRes> getFlagRes = newProfileDao.getFlagRes(userIdx);
         List<GetPicturesRes> getPicturesRes =newProfileDao.getPicturesRes(userIdx);
@@ -110,5 +112,10 @@ public class New_ProfileProvider {
         return new GetResultRes(flagCount>0,flagCount>2,flagCount>6,flagCount>9,
                 highCount>4999, highCount>9999,highCount>19999,diffFlagCount>99,
                 diffFlagCount>2,diffFlagCount>6,diffFlagCount>9,(double)highCount/1000);
+    }
+
+    public int userExist(int userIdx){
+        int exist = newProfileDao.checkUserExist(userIdx);
+        return exist;
     }
 }

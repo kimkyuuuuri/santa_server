@@ -80,8 +80,8 @@ public class New_ProfileController {
     }
 
     @ResponseBody
-    @GetMapping("/posts")
-    public BaseResponse<GetMyPostsRes> getMyPostsRes() throws BaseException {
+    @GetMapping("/{userIdx}/posts")
+    public BaseResponse<GetMyPostsRes> getMyPostsRes(@PathVariable("userIdx")int userIdx) throws BaseException {
 
         try{
             if(jwtService.getJwt()==null){
@@ -89,7 +89,7 @@ public class New_ProfileController {
             }
 
             else{
-                int userIdx=jwtService.getUserIdx();
+                int userIdxByJwt=jwtService.getUserIdx();
                 GetMyPostsRes getMyPostsRes= newProfileProvider.getMyPostsRes(userIdx);
                 return new BaseResponse<>(getMyPostsRes);
             }
