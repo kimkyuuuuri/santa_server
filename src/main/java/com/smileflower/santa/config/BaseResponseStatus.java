@@ -22,6 +22,7 @@ public enum BaseResponseStatus {
     INVALID_JWT(false, 2002, "유효하지 않은 JWT입니다."),
     INVALID_USER_JWT(false,2003,"권한이 없는 유저의 접근입니다."),
     INVALID_USER(false,2004,"유저가 존재하지 않습니다"),
+    FILE_ERROR(false,2005,"파일 변환 중 에러가 발생하였습니다"),
     // users
     USERS_EMPTY_USER_ID(false, 2010, "유저 아이디 값을 확인해주세요."),
 
@@ -48,9 +49,13 @@ public enum BaseResponseStatus {
 
     POST_SAVE_EMPTY_PICTURE(false,2040,"없는 게시글입니다."),
 
-    //POST FLAG  REPORT
-    INVALID_FLAG(false,2050,"존재하지 않는 게시물입니다."),
+    //FLAG 신고, 삭제
+    INVALID_POST(false,2050,"존재하지 않는 게시물입니다."),
     POST_AUTH_EXISTS_REPORT(false,2051,"이미 신고한 게시물입니다."),
+    INVALID_POST_USER(false,2052,"본인 게시물이 아닙니다."),
+
+
+
 
 
 

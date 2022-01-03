@@ -222,7 +222,7 @@ public class FlagController {
 
             else{
                 int userIdx=jwtService.getUserIdx();
-                 DeleteFlagRes deleteFlagRes =  flagService.deleteFlag(flagIdx);
+                 DeleteFlagRes deleteFlagRes =  flagService.deleteFlag(flagIdx,userIdx);
                 return new BaseResponse<>(deleteFlagRes);
             }
         } catch(BaseException exception){

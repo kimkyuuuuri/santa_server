@@ -12,7 +12,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 
-
+import static com.smileflower.santa.config.BaseResponseStatus.INVALID_POST;
+import static com.smileflower.santa.config.BaseResponseStatus.INVALID_POST_USER;
 
 
 @Service
@@ -49,8 +50,11 @@ public class PictureService{
         }
     }
 
-    public DeletePictureRes deletePicture(Long pictureIdx) {
-
+    public DeletePictureRes deletePicture(int userIdx,long pictureIdx) throws BaseException{
+        if (pictureProvider.checkPictureExist(pictureIdx) == 0)
+            throw new BaseException(INVALID_POST);
+        else if (pictureProvider.checkPictureWhereUserExist(pictureIdx,userIdx) == 0)
+            throw new BaseException(INVALID_POST_USER);
         return new DeletePictureRes(pictureDao.deletePicture(pictureIdx));
 
     }

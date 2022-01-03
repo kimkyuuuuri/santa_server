@@ -4,6 +4,7 @@ package com.smileflower.santa.src.profile;
 import com.amazonaws.services.kms.model.NotFoundException;
 import com.amazonaws.services.s3.model.ObjectMetadata;
 
+import com.smileflower.santa.config.BaseException;
 import com.smileflower.santa.src.profile.model.GetProfileImgRes;
 import com.smileflower.santa.src.profile.model.GetResultRes;
 import com.smileflower.santa.src.profile.model.GetUserRes;
@@ -20,6 +21,8 @@ import javax.sql.DataSource;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.UUID;
+
+import static com.smileflower.santa.config.BaseResponseStatus.FILE_ERROR;
 
 // Service Create, Update, Delete 의 로직 처리
 @Service
@@ -44,7 +47,7 @@ public class New_ProfileService {
         this.s3Service = s3Service;
 
     }
-    public PostPictureRes postPictureRes(int userIdx, MultipartFile file) {
+    public PostPictureRes postPictureRes(int userIdx, MultipartFile file) throws BaseException {
         String fileName = createFileName(file.getOriginalFilename());
 
         ObjectMetadata objectMetadata = new ObjectMetadata();
@@ -55,25 +58,24 @@ public class New_ProfileService {
             s3Service.uploadFile(inputStream, objectMetadata, fileName);
 
         } catch (IOException e) {
-            throw new IllegalArgumentException(String.format("파일 변환 중 에러가 발생하였습니다 (%s)", file.getOriginalFilename()));
-        }
+             }
         return new PostPictureRes(newProfileDao.postPictureRes(userIdx, fileName));
     }
 
-    private String createFileName(String originalFileName){
+    private String createFileName(String originalFileName)throws BaseException{
         return
                 UUID.randomUUID().toString().concat(getFileExtension(originalFileName));
     }
-    private String getFileExtension(String fileName){
+    private String getFileExtension(String fileName) throws BaseException {
         try{
             return fileName.substring(fileName.lastIndexOf("."));
         }catch(StringIndexOutOfBoundsException e){
-            throw new IllegalArgumentException(String.format("잘못된 형식의 파일 (%s) 입니다",fileName));
+            throw new BaseException(FILE_ERROR);
         }
     }
 
 
-    public GetProfileImgRes patchProfileImg(MultipartFile file, int userIdx){
+    public GetProfileImgRes patchProfileImg(MultipartFile file, int userIdx)throws BaseException{
 
         //delete pre file
         GetUserRes getUserRes= newProfileDao.getUserRes(userIdx);
@@ -91,8 +93,7 @@ public class New_ProfileService {
             s3Service.uploadFile(inputStream,objectMetadata,fileName);
             newProfileDao.patchProfileImg(userIdx,fileName);
         }catch(IOException e){
-            throw new IllegalArgumentException(String.format("파일 변환 중 에러가 발생하였습니다 (%s)", file.getOriginalFilename()));
-        }
+            throw new BaseException(FILE_ERROR);   }
         return new GetProfileImgRes(s3Service.getFileUrl(fileName));
     }
     public GetProfileImgRes deleteProfileImg(int userIdx){

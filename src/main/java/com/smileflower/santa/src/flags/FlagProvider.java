@@ -110,7 +110,9 @@ public class FlagProvider {
         return flagDao.checkFlagExist(flagIdx);
     }
 
-
+    public int checkFlagWhereUserExist(Long flagIdx,int userIdx){
+        return flagDao.checkFlagWhereUserExist(flagIdx,userIdx);
+    }
     public int checkFlagReportExist(Long flagIdx, int userIdx){
         return flagDao.checkFlagReportExist(flagIdx,userIdx);
         }

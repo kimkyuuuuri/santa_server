@@ -46,6 +46,10 @@ public class FlagDao {
         return this.jdbcTemplate.queryForObject("select Exists(select flagIdx from flag\n" +
                 "                where status='T' and flagIdx=? ) as FlagExist", int.class,flagIdx);
     }
+    public int checkFlagWhereUserExist(Long flagIdx,int userIdx){
+        return this.jdbcTemplate.queryForObject("select Exists(select flagIdx from flag\n" +
+                "                where status='T' and flagIdx=? and userIdx=?) as FlagExist", int.class,flagIdx,userIdx);
+    }
     public int checkFlagReportExist(Long flagIdx,int userIdx){
         return this.jdbcTemplate.queryForObject("select Exists(select reportIdx from report" +
                 "                where status='T' and flagIdx=? and userIdx=? ) as reportExist", int.class,flagIdx,userIdx);

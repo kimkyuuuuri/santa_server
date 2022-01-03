@@ -2,10 +2,7 @@ package com.smileflower.santa.src.profile;
 
 import com.smileflower.santa.config.BaseException;
 import com.smileflower.santa.config.BaseResponse;
-import com.smileflower.santa.exception.ApiResult;
-import com.smileflower.santa.profile.model.dto.UploadImageResponse;
-import com.smileflower.santa.src.flags.model.PostFlagHardReq;
-import com.smileflower.santa.src.flags.model.PostFlagHardRes;
+
 import com.smileflower.santa.src.profile.model.*;
 import com.smileflower.santa.utils.JwtService;
 import org.slf4j.Logger;
@@ -139,7 +136,7 @@ public class New_ProfileController {
         }
     }
     @PatchMapping("/profile-img")
-    public BaseResponse<GetProfileImgRes> patchProfileImg(@RequestPart(required = false) MultipartFile file){
+    public BaseResponse<GetProfileImgRes> patchProfileImg(@RequestPart(required = false) MultipartFile file) throws BaseException{
         int userIdx=-1;
         if(jwtService.validateToken()){
             userIdx = jwtService.getUserIdxV2();

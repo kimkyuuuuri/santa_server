@@ -40,12 +40,15 @@ public class PictureDao {
                 jwt);
     }
 
-    public int checkPictureExist(int pictureIdx){
+    public int checkPictureExist(long pictureIdx){
         return this.jdbcTemplate.queryForObject("select EXISTS(select pictureIdx from picture where pictureIdx=? and status='t') as exist",
                 int.class,
                 pictureIdx);
     }
-
+    public int checkPictureWhereUserExist(Long pictureIdx,int userIdx){
+        return this.jdbcTemplate.queryForObject("select Exists(select pictureIdx from picture\n" +
+                "                where status='T' and pictureIdx=? and userIdx=?) as FlagExist", int.class,pictureIdx,userIdx);
+    }
     public boolean deletePicture(Long pictureIdx) {
         String query = "delete from picture where pictureIdx = ?";
         Object[] params = new Object[]{pictureIdx};

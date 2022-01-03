@@ -65,7 +65,7 @@ public class PictureController {
 
             else{
                 int userIdx=jwtService.getUserIdx();
-                DeletePictureRes deletePictureRes =  pictureService.deletePicture(pictureIdx);
+                DeletePictureRes deletePictureRes =  pictureService.deletePicture(userIdx,pictureIdx);
                 return new BaseResponse<>(deletePictureRes);
             }
         } catch(BaseException exception){

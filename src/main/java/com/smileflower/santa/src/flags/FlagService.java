@@ -95,7 +95,7 @@ public class FlagService {
     @Transactional
     public PostFlagReportRes report(int userIdx, Long flagIdx) throws BaseException{
         if (flagProvider.checkFlagExist(flagIdx) == 0)
-            throw new BaseException(INVALID_FLAG);
+            throw new BaseException(INVALID_POST);
 
         if (flagProvider.checkFlagReportExist(flagIdx,userIdx)==1)
             throw new BaseException(POST_AUTH_EXISTS_REPORT);
@@ -107,7 +107,7 @@ public class FlagService {
 
     }
     @Transactional
-    public PostFlagRes uploadImage(GpsInfoRequest gpsInfoRequest, MultipartFile file, int userIdx, Long mountainIdx) {
+    public PostFlagRes uploadImage(GpsInfoRequest gpsInfoRequest, MultipartFile file, int userIdx, Long mountainIdx)throws BaseException  {
 
         boolean isDoubleVisited = flagDao.findTodayFlagByIdx(userIdx)!=0;
         boolean isFlag = flagDao.findIsFlagByLatAndLong(gpsInfoRequest.getLatitude(),gpsInfoRequest.getLongitude(),mountainIdx)==1;
@@ -130,7 +130,7 @@ public class FlagService {
 
 
             } catch (IOException e) {
-                throw new IllegalArgumentException(String.format("파일 변환 중 에러가 발생하였습니다 (%s)", file.getOriginalFilename()));
+                throw new BaseException(FILE_ERROR);
             }
             return new PostFlagRes(isFlag,isDoubleVisited,s3Service.getFileUrl(fileName));
         }
@@ -152,20 +152,23 @@ public class FlagService {
 
         flagDao.updateFlagTotalHeight(userIdx,mountainIdx,flagIdx,altitude);
     }
-    private String createFileName(String originalFileName){
+    private String createFileName(String originalFileName)throws BaseException{
         return
                 UUID.randomUUID().toString().concat(getFileExtension(originalFileName));
     }
-    private String getFileExtension(String fileName){
+    private String getFileExtension(String fileName) throws BaseException{
         try{
             return fileName.substring(fileName.lastIndexOf("."));
         }catch(StringIndexOutOfBoundsException e){
-            throw new IllegalArgumentException(String.format("잘못된 형식의 파일 (%s) 입니다",fileName));
+            throw new BaseException(FILE_ERROR);
         }
     }
 
-    public DeleteFlagRes deleteFlag(Long flagIdx) {
-
+    public DeleteFlagRes deleteFlag(Long flagIdx,int userIdx) throws BaseException {
+        if (flagProvider.checkFlagExist(flagIdx) == 0)
+            throw new BaseException(INVALID_POST);
+        else if (flagProvider.checkFlagWhereUserExist(flagIdx,userIdx) == 0)
+            throw new BaseException(INVALID_POST_USER);
         return new DeleteFlagRes(flagDao.deleteFlag(flagIdx));
 
     }
