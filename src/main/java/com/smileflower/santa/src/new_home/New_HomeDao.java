@@ -33,12 +33,12 @@ public class New_HomeDao {
                 rs.getString("notice"),
                 getPicturesResList=this.jdbcTemplate.query("select user.userIdx,user.userImageUrl, (select\n" +
                         "                                                                          case\n" +
-                        "                                                                              when  count(*) > 0 and  count(*) < 2 then 'Lv1'\n" +
-                        "                                                                              when count(*)>= 2 and  count(*) < 4 then 'Lv2'\n" +
-                        "                                                                              when  count(*) >= 4 and  count(*) < 6 then 'Lv3'\n" +
-                        "                                                                              when  count(*)>= 6 and  count(*) < 8 then 'Lv4'\n" +
-                        "                                                                              when  count(*) >= 8 and  count(*) < 10 then 'Lv5'\n" +
-                        "                                                                              when  count(*) >= 10 then 'Lv6' end as level\n" +
+                        "                                                                              when  count(*) > 0 and  count(*) < 2 then 'Lv.1'\n" +
+                        "                                                                              when count(*)>= 2 and  count(*) < 4 then 'Lv.2'\n" +
+                        "                                                                              when  count(*) >= 4 and  count(*) < 6 then 'Lv.3'\n" +
+                        "                                                                              when  count(*)>= 6 and  count(*) < 8 then 'Lv.4'\n" +
+                        "                                                                              when  count(*) >= 8 and  count(*) < 10 then 'Lv.5'\n" +
+                        "                                                                              when  count(*) >= 10 then 'Lv.6' end as level\n" +
                         "                     from flag where  flag.userIdx=user.userIdx)\n" +
                         "    as level,user.name as userName,\n" +
                         "       (select count(*) from recomment where recomment.commentIdx=comment.commentIdx  ) +(select count(*) from comment where comment.pictureIdx=picture.pictureIdx)  as commentCount\n" +
@@ -64,12 +64,12 @@ public class New_HomeDao {
                 getUsersResList=this.jdbcTemplate.query("select user.userIdx, userImageUrl ,\n" +
                                 "        case\n" +
                                 "\n" +
-                                "                     when  f.flagCount> 0 and  f.flagCount < 2 then 'Lv1'\n" +
-                                "                     when f.flagCount>= 2 and  f.flagCount < 4 then 'Lv2'\n" +
-                                "                     when  f.flagCount >= 4 and  f.flagCount < 6 then 'Lv3'\n" +
-                                "                     when  f.flagCount>= 6 and  f.flagCount< 8 then 'Lv4'\n" +
-                                "                     when  f.flagCount >= 8 and  f.flagCount < 10 then 'Lv5'\n" +
-                                "                     when  f.flagCount >= 10 then 'Lv6' end\n" +
+                                "                     when  f.flagCount> 0 and  f.flagCount < 2 then 'Lv.1'\n" +
+                                "                     when f.flagCount>= 2 and  f.flagCount < 4 then 'Lv.2'\n" +
+                                "                     when  f.flagCount >= 4 and  f.flagCount < 6 then 'Lv.3'\n" +
+                                "                     when  f.flagCount>= 6 and  f.flagCount< 8 then 'Lv.4'\n" +
+                                "                     when  f.flagCount >= 8 and  f.flagCount < 10 then 'Lv.5'\n" +
+                                "                     when  f.flagCount >= 10 then 'Lv.6' end\n" +
                                 "\n" +
                                 "                                                                          as level,name as userName,\n" +
                                 "\n" +
@@ -87,7 +87,7 @@ public class New_HomeDao {
                                 "from user\n" +
                                 "         left join (select userIdx,count(flagIdx) as flagCount,createdAt from flag group by userIdx) f\n" +
                                 "                   on f.userIdx = user.userIdx\n" +
-                                "order by user.height desc limit 5;",
+                                "order by user.height desc limit 10;",
                         (rk,rownum) -> new GetUsersRes(
                                 rk.getInt("userIdx"),
                                 rk.getString("userImageUrl"),
@@ -131,12 +131,12 @@ public class New_HomeDao {
     public List<GetPicturesRes> getPicturesRes() {
         return this.jdbcTemplate.query("select user.userIdx,user.userImageUrl, (select\n" +
                 "                                                                          case\n" +
-                        "                                                                              when  count(*) > 0 and  count(*) < 2 then 'Lv1'\n" +
-                        "                                                                              when count(*)>= 2 and  count(*) < 4 then 'Lv2'\n" +
-                        "                                                                              when  count(*) >= 4 and  count(*) < 6 then 'Lv3'\n" +
-                        "                                                                              when  count(*)>= 6 and  count(*) < 8 then 'Lv4'\n" +
-                        "                                                                              when  count(*) >= 8 and  count(*) < 10 then 'Lv5'\n" +
-                        "                                                                              when  count(*) >= 10 then 'Lv6' end as level\n" +
+                        "                                                                              when  count(*) > 0 and  count(*) < 2 then 'Lv.1'\n" +
+                        "                                                                              when count(*)>= 2 and  count(*) < 4 then 'Lv.2'\n" +
+                        "                                                                              when  count(*) >= 4 and  count(*) < 6 then 'Lv.3'\n" +
+                        "                                                                              when  count(*)>= 6 and  count(*) < 8 then 'Lv.4'\n" +
+                        "                                                                              when  count(*) >= 8 and  count(*) < 10 then 'Lv.5'\n" +
+                        "                                                                              when  count(*) >= 10 then 'Lv.6' end as level\n" +
                         "                     from flag where  flag.userIdx=user.userIdx)\n" +
                         "    as level,user.name as userName,\n" +
                         "       (select count(*) from recomment where recomment.commentIdx=comment.commentIdx  ) +(select count(*) from comment where comment.pictureIdx=picture.pictureIdx)  as commentCount\n" +
@@ -165,12 +165,12 @@ public class New_HomeDao {
         return this.jdbcTemplate.query("select user.userIdx, userImageUrl ,\n" +
                 "        case\n" +
                         "\n" +
-                        "                     when  f.flagCount> 0 and  f.flagCount < 2 then 'Lv1'\n" +
-                        "                     when f.flagCount>= 2 and  f.flagCount < 4 then 'Lv2'\n" +
-                        "                     when  f.flagCount >= 4 and  f.flagCount < 6 then 'Lv3'\n" +
-                        "                     when  f.flagCount>= 6 and  f.flagCount< 8 then 'Lv4'\n" +
-                        "                     when  f.flagCount >= 8 and  f.flagCount < 10 then 'Lv5'\n" +
-                        "                     when  f.flagCount >= 10 then 'Lv6' end\n" +
+                        "                     when  f.flagCount> 0 and  f.flagCount < 2 then 'Lv.1'\n" +
+                        "                     when f.flagCount>= 2 and  f.flagCount < 4 then 'Lv.2'\n" +
+                        "                     when  f.flagCount >= 4 and  f.flagCount < 6 then 'Lv.3'\n" +
+                        "                     when  f.flagCount>= 6 and  f.flagCount< 8 then 'Lv.4'\n" +
+                        "                     when  f.flagCount >= 8 and  f.flagCount < 10 then 'Lv.5'\n" +
+                        "                     when  f.flagCount >= 10 then 'Lv.6' end\n" +
                         "\n" +
                         "                                                                          as level,name as userName,\n" +
                         "\n" +
