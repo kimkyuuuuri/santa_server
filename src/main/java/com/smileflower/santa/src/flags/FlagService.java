@@ -7,6 +7,7 @@ import com.smileflower.santa.config.secret.Secret;
 import com.smileflower.santa.flag.model.GpsInfoRequest;
 import com.smileflower.santa.src.flags.model.*;
 
+import com.smileflower.santa.src.picture.model.PostPictureSaveRes;
 import com.smileflower.santa.utils.JwtService;
 import com.smileflower.santa.utils.S3Service;
 import org.slf4j.Logger;
@@ -171,5 +172,23 @@ public class FlagService {
             throw new BaseException(INVALID_POST_USER);
         return new DeleteFlagRes(flagDao.deleteFlag(flagIdx));
 
+    }
+
+    public PostFlagSaveRes postFlagSaveRes(int userIdx, int flagIdx) throws BaseException {
+        if (flagProvider.checkFlagExist(flagIdx)!=1) {
+            throw new BaseException(INVALID_POST);
+        }
+        if (flagProvider.checkSaveExist(userIdx,flagIdx)!=1) {
+
+            int flagSaveIdx =flagDao.postFlagSaveRes(userIdx, flagIdx);
+
+            return  new PostFlagSaveRes(flagSaveIdx,"좋아요 완료");
+        }
+        else {
+
+            int flagSaveIdx =flagDao.patchFlagSaveRes(userIdx, flagIdx);
+
+            return  new PostFlagSaveRes(flagSaveIdx,"좋아요 취소");
+        }
     }
 }

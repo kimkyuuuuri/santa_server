@@ -18,7 +18,7 @@ public class PictureDao {
         this.jdbcTemplate = new JdbcTemplate(dataSource);
     }
     public int checkSaveExist(int userIdx,int pictureIdx){
-        return this.jdbcTemplate.queryForObject("select EXISTS(select saveIdx from picturesave where userIdx=? and pictureIdx=? and status='t') as exist",
+        return this.jdbcTemplate.queryForObject("select EXISTS(select picturesaveIdx from picturesave where userIdx=? and pictureIdx=? and status='t') as exist",
                 int.class,
                 userIdx,pictureIdx);
     }

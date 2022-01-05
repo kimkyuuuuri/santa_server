@@ -265,4 +265,33 @@ public class FlagDao {
                 new Object[]{latitude, longitude, latitude, mountainIdx}, Integer.class);
     }
 
+
+    public int postFlagSaveRes(int userIdx,int flagIdx){
+        return this.jdbcTemplate.update("insert into flagsave (userIdx,flagIdx) VALUES (? , ?)",
+
+                userIdx,flagIdx);
+    }
+    public int patchFlagSaveRes(int userIdx,int flagIdx){
+        return this.jdbcTemplate.update("update flagsave set status='f' where userIdx=? and flagIdx=? order by createdAt desc limit 1",
+
+                userIdx,flagIdx);
+    }
+
+    public int checkSaveExist(int userIdx,int flagIdx){
+        return this.jdbcTemplate.queryForObject("select EXISTS(select flagsaveIdx from flagsave where userIdx=? and flagIdx=? and status='t') as exist",
+                int.class,
+                userIdx,flagIdx);
+    }
+    public int checkJwt(String jwt){
+        return this.jdbcTemplate.queryForObject("select EXISTS(select status from jwtmanagement\n" +
+                        "where jwt=? and status='F') as exist",
+                int.class,
+                jwt);
+    }
+    public int checkFlagExist(long flagIdx){
+        return this.jdbcTemplate.queryForObject("select EXISTS(select flagIdx from flag where flagIdx=? and status='t') as exist",
+                int.class,
+                flagIdx);
+    }
+
 }

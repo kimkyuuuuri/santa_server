@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ser.Serializers;
 import com.smileflower.santa.exception.ApiResult;
 import com.smileflower.santa.flag.model.GpsInfoRequest;
 import com.smileflower.santa.profile.model.dto.DeleteFlagResponse;
+import com.smileflower.santa.src.picture.model.PostPictureSaveRes;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import com.smileflower.santa.config.BaseException;
@@ -40,7 +41,28 @@ public class FlagController {
         this.jwtService = jwtService;
     }
 
-    //Query String
+
+
+    @ResponseBody
+    @PostMapping("/flags/{flagIdx}/save")
+    public BaseResponse<PostFlagSaveRes> save(@PathVariable("flagIdx") int flagIdx) throws BaseException {
+        try {
+            if (jwtService.getJwt() == null) {
+                return new BaseResponse<>(EMPTY_JWT);
+            }
+
+            else if (flagProvider.checkJwt(jwtService.getJwt()) == 1) {
+                return new BaseResponse<>(INVALID_JWT);
+
+            }
+
+
+            PostFlagSaveRes postFlagSaveRes = flagService.postFlagSaveRes(jwtService.getUserIdx(), flagIdx);
+            return new BaseResponse<>(postFlagSaveRes);
+        } catch (BaseException exception) {
+            return new BaseResponse<>((exception.getStatus()));
+        }
+    }
     @ResponseBody
     @GetMapping("/flags")
     public BaseResponse<GetFlagRes> getFlag(@RequestParam(required = true) String mountain) {

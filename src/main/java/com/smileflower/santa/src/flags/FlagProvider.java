@@ -116,4 +116,18 @@ public class FlagProvider {
     public int checkFlagReportExist(Long flagIdx, int userIdx){
         return flagDao.checkFlagReportExist(flagIdx,userIdx);
         }
+
+    public int checkJwt(String jwt) {
+        int exist = flagDao.checkJwt(jwt);
+        return exist;
+    }
+    public int checkSaveExist(int userIdx,int flagIdx){
+        int exist =flagDao.checkSaveExist(userIdx,flagIdx);
+        return exist;
+    }
+    public int checkFlagExist(long flagIdx){
+        int exist = flagDao.checkFlagExist(flagIdx);
+        return exist;
+    }
+
 }

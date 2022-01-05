@@ -2,6 +2,7 @@ package com.smileflower.santa.src.picture;
 
 
 import com.smileflower.santa.config.BaseException;
+import com.smileflower.santa.config.BaseResponse;
 import com.smileflower.santa.src.flags.model.DeleteFlagRes;
 import com.smileflower.santa.src.picture.model.*;
 import com.smileflower.santa.src.user.model.PatchUserLogoutRes;
@@ -36,6 +37,9 @@ public class PictureService{
 
     public PostPictureSaveRes postPictureSaveRes(int userIdx,int pictureIdx) throws BaseException {
 
+        if (pictureProvider.checkPictureExist(pictureIdx)!=1) {
+            throw new BaseException(INVALID_POST);
+        }
         if (pictureProvider.checkSaveExist(userIdx,pictureIdx)!=1) {
 
              int pictureSaveIdx =pictureDao.postPictureSaveRes(userIdx, pictureIdx);

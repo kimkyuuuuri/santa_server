@@ -47,7 +47,7 @@ public enum BaseResponseStatus {
     POST_USERS_EMPTY_USER(false, 2030, "산타에 가입되어있지 않습니다."),
     FAIL_LOCATION(false,2031,"현재 해당 산의 위치가 아닙니다."),
 
-    POST_SAVE_EMPTY_PICTURE(false,2040,"없는 게시글입니다."),
+
 
     //FLAG 신고, 삭제
     INVALID_POST(false,2050,"존재하지 않는 게시물입니다."),
