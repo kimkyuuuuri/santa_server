@@ -18,17 +18,17 @@ public class PictureDao {
         this.jdbcTemplate = new JdbcTemplate(dataSource);
     }
     public int checkSaveExist(int userIdx,int pictureIdx){
-        return this.jdbcTemplate.queryForObject("select EXISTS(select saveIdx from save where userIdx=? and pictureIdx=? and status='t') as exist",
+        return this.jdbcTemplate.queryForObject("select EXISTS(select saveIdx from picturesave where userIdx=? and pictureIdx=? and status='t') as exist",
                 int.class,
                 userIdx,pictureIdx);
     }
     public int postPictureSaveRes(int userIdx,int pictureIdx){
-        return this.jdbcTemplate.update("insert into save (userIdx,pictureIdx) VALUES (? , ?)",
+        return this.jdbcTemplate.update("insert into picturesave (userIdx,pictureIdx) VALUES (? , ?)",
 
                 userIdx,pictureIdx);
     }
     public int patchPictureSaveRes(int userIdx,int pictureIdx){
-        return this.jdbcTemplate.update("update save set status='f' where userIdx=? and pictureIdx=? order by createdAt desc limit 1",
+        return this.jdbcTemplate.update("update picturesave set status='f' where userIdx=? and pictureIdx=? order by createdAt desc limit 1",
 
                 userIdx,pictureIdx);
     }

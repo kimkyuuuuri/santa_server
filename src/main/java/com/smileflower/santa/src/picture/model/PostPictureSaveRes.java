@@ -8,6 +8,6 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 public class PostPictureSaveRes {
-    private int saveIdx;
+    private int picturesaveIdx;
     private String result;
 }

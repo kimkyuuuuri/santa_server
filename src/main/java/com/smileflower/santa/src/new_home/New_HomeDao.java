@@ -42,12 +42,12 @@ public class New_HomeDao {
                         "                     from flag where  flag.userIdx=user.userIdx)\n" +
                         "    as level,user.name as userName,\n" +
                         "       (select count(*) from recomment where recomment.commentIdx=comment.commentIdx  ) +(select count(*) from comment where comment.pictureIdx=picture.pictureIdx)  as commentCount\n" +
-                        "     ,count( distinct  save.saveIdx) as saveCount,picture.pictureIdx,picture.imgUrl as pictureImageUrl from picture\n" +
-                        "    left join save on picture.pictureIdx = save.pictureIdx\n" +
+                        "     ,count( distinct  picturesave.picturesaveIdx) as saveCount,picture.pictureIdx,picture.imgUrl as pictureImageUrl from picture\n" +
+                        "    left join picturesave on picture.pictureIdx = picturesave.pictureIdx\n" +
                         "    inner join user on picture.userIdx = user.userIdx\n" +
                         "    left join comment on picture.pictureIdx = comment.pictureIdx\n" +
                         "\n" +
-                        "where save.status='t' group by save.pictureIdx order by  saveCount desc,commentCount desc limit 6",
+                        "where picturesave.status='t' group by picturesave.pictureIdx order by  saveCount desc,commentCount desc limit 6",
                         (rk,rownum) -> new GetPicturesRes(
                                 rk.getInt("userIdx"),
                                 rk.getString("userImageUrl"),
@@ -140,12 +140,12 @@ public class New_HomeDao {
                         "                     from flag where  flag.userIdx=user.userIdx)\n" +
                         "    as level,user.name as userName,\n" +
                         "       (select count(*) from recomment where recomment.commentIdx=comment.commentIdx  ) +(select count(*) from comment where comment.pictureIdx=picture.pictureIdx)  as commentCount\n" +
-                        "     ,count( distinct  save.saveIdx) as saveCount,picture.pictureIdx,picture.imgUrl as pictureImageUrl from picture\n" +
-                        "    left join save on picture.pictureIdx = save.pictureIdx\n" +
+                        "     ,count( distinct  picturesave.saveIdx) as saveCount,picture.pictureIdx,picture.imgUrl as pictureImageUrl from picture\n" +
+                        "    left join picturesave on picture.pictureIdx = picturesave.pictureIdx\n" +
                         "    inner join user on picture.userIdx = user.userIdx\n" +
                         "    left join comment on picture.pictureIdx = comment.pictureIdx\n" +
                         "\n" +
-                        "where save.status='t' group by save.pictureIdx order by  saveCount desc,commentCount desc limit 10",
+                        "where picturesave.status='t' group by picturesave.pictureIdx order by  saveCount desc,commentCount desc limit 10",
                 (rk,rownum) -> new GetPicturesRes(
                         rk.getInt("userIdx"),
                         rk.getString("userImageUrl"),
