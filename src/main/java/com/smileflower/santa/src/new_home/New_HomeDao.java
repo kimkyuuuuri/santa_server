@@ -81,8 +81,8 @@ public class New_HomeDao {
                                 "                               ELSE\n" +
                                 "                                   concat(timestampdiff(day, max(flag.createdAt), current_timestamp()), '일전') end from flag\n" +
                                 "                    where  user.userIdx=flag.userIdx and flag.status='t') as  agoTime,\n" +
-                                "       case when user.height<1000 then concat(user.height, 'm')\n" +
-                                "            else concat( user.height/1000, 'km') end as height\n" +
+                                "       case when user.height<1000 then concat(Round(user.height,2), 'm')\n" +
+                                "            else concat( Round(user.height/1000,2), 'km') end as height\n" +
                                 "\n" +
                                 "from user\n" +
                                 "         left join (select userIdx,count(flagIdx) as flagCount,createdAt from flag group by userIdx) f\n" +
@@ -182,8 +182,8 @@ public class New_HomeDao {
                         "                               ELSE\n" +
                         "                                   concat(timestampdiff(day, max(flag.createdAt), current_timestamp()), '일전') end from flag\n" +
                         "                    where  user.userIdx=flag.userIdx and flag.status='t') as  agoTime,\n" +
-                        "       case when user.height<1000 then concat(user.height, 'm')\n" +
-                        "            else concat( user.height/1000, 'km') end as height\n" +
+                        "       case when user.height<1000 then concat(Round(user.height,2), 'm')\n" +
+                        "            else concat( Round(user.height/1000,2), 'km') end as height\n" +
                         "\n" +
                         "from user\n" +
                         "         left join (select userIdx,count(flagIdx) as flagCount,createdAt from flag group by userIdx) f\n" +
