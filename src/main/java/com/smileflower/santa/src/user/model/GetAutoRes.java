@@ -10,7 +10,7 @@ import lombok.Setter;
 public class GetAutoRes {
     private int userIdx;
     private String emailId;
-    private String stauts;
+    private String status;
     public GetAutoRes(){
 
     }

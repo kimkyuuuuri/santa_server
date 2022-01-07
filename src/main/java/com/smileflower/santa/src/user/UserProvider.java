@@ -118,10 +118,10 @@ public class UserProvider {
     public GetAutoRes getAuto(String jwt, int userIdx) throws BaseException {
         GetAutoRes getAutoRes = new GetAutoRes();
         if (userDao.getAuto(userIdx)=='I') {
-            getAutoRes.setStauts("T");
+            getAutoRes.setStatus("T");
         }
         else{
-            getAutoRes.setStauts("F");
+            getAutoRes.setStatus("F");
         }
         getAutoRes.setUserIdx(userIdx);
         getAutoRes.setEmailId(userDao.getEmailId(userIdx));
