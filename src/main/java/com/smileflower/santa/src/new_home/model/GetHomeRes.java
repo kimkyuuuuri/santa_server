@@ -10,13 +10,13 @@ import java.util.List;
 
 public class GetHomeRes {
     private String notice;
-    private List<GetPicturesRes> getPicturesResList;
+    private List<GetFlagsRes> getFlagResList;
     private List<GetUsersRes> getUsersResList;
     private List<GetMountainsRes> getMountainsResList;
 
-    public GetHomeRes(String notice,List<GetPicturesRes> getPicturesResList, List<GetUsersRes> getUsersResList, List<GetMountainsRes> getMountainsResList) {
+    public GetHomeRes(String notice, List<GetFlagsRes> getFlagResList, List<GetUsersRes> getUsersResList, List<GetMountainsRes> getMountainsResList) {
         this.notice=notice;
-        this.getPicturesResList=getPicturesResList;
+        this.getFlagResList=getFlagResList;
         this.getUsersResList=getUsersResList;
         this.getMountainsResList=getMountainsResList;
     }

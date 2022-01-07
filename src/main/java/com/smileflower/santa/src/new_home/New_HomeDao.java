@@ -15,7 +15,7 @@ public class New_HomeDao {
 
     private JdbcTemplate jdbcTemplate;
     private GetHomeRes getHomeRes;
-    private List<GetPicturesRes> getPicturesResList;
+    private List<GetFlagsRes> getFlagsResList;
     private List<GetUsersRes> getUsersResList;
     private List<GetMountainsRes> getMountainsResList;
 
@@ -31,7 +31,7 @@ public class New_HomeDao {
         return this.jdbcTemplate.queryForObject(getNoticeQuery,
                 (rs, rowNum) -> new GetHomeRes(
                 rs.getString("notice"),
-                getPicturesResList=this.jdbcTemplate.query("select user.userIdx,user.userImageUrl, (select\n" +
+                getFlagsResList=this.jdbcTemplate.query("select user.userIdx,user.userImageUrl, (select\n" +
                         "                                                                          case\n" +
                         "                                                                              when  count(*) > 0 and  count(*) < 2 then 'Lv.1'\n" +
                         "                                                                              when count(*)>= 2 and  count(*) < 4 then 'Lv.2'\n" +
@@ -41,14 +41,14 @@ public class New_HomeDao {
                         "                                                                              when  count(*) >= 10 then 'Lv.6' end as level\n" +
                         "                     from flag where  flag.userIdx=user.userIdx)\n" +
                         "    as level,user.name as userName,\n" +
-                        "       (select count(*) from recomment where recomment.commentIdx=comment.commentIdx  ) +(select count(*) from comment where comment.pictureIdx=picture.pictureIdx)  as commentCount\n" +
-                        "     ,count( distinct  picturesave.picturesaveIdx) as saveCount,picture.pictureIdx,picture.imgUrl as pictureImageUrl from picture\n" +
-                        "    left join picturesave on picture.pictureIdx = picturesave.pictureIdx\n" +
-                        "    inner join user on picture.userIdx = user.userIdx\n" +
-                        "    left join comment on picture.pictureIdx = comment.pictureIdx\n" +
+                        "       (select count(*) from flagrecomment where flagrecomment.flagcommentIdx=flagcomment.flagcommentIdx  ) +(select count(*) from flagcomment where flagcomment.flagIdx=flag.flagIdx)  as commentCount\n" +
+                        "     ,count( distinct  flagsave.flagsaveIdx) as saveCount,flag.flagIdx,flag.pictureUrl as flagImageUrl from flag\n" +
+                        "    left join flagsave on flag.flagIdx = flagsave.flagIdx\n" +
+                        "    inner join user on flag.userIdx = user.userIdx\n" +
+                        "    left join flagcomment on flag.flagIdx = flagcomment.flagIdx\n" +
                         "\n" +
-                        "where picturesave.status='t' group by picturesave.pictureIdx order by  saveCount desc,commentCount desc limit 6",
-                        (rk,rownum) -> new GetPicturesRes(
+                        "where flagsave.status='t' group by flagsave.flagIdx order by  saveCount desc,commentCount desc limit 6",
+                        (rk,rownum) -> new GetFlagsRes(
                                 rk.getInt("userIdx"),
                                 rk.getString("userImageUrl"),
                                 rk.getString("level"),
@@ -56,8 +56,8 @@ public class New_HomeDao {
 
                                 rk.getInt("commentCount"),
                                 rk.getInt("saveCount"),
-                                rk.getInt("pictureIdx"),
-                                rk.getString("pictureImageUrl")
+                                rk.getInt("flagIdx"),
+                                rk.getString("flagImageUrl")
 
 
                         )),
@@ -128,7 +128,7 @@ public class New_HomeDao {
 
     }
 
-    public List<GetPicturesRes> getPicturesRes() {
+    public List<GetFlagsRes> getFlagRes() {
         return this.jdbcTemplate.query("select user.userIdx,user.userImageUrl, (select\n" +
                 "                                                                          case\n" +
                         "                                                                              when  count(*) > 0 and  count(*) < 2 then 'Lv.1'\n" +
@@ -146,7 +146,7 @@ public class New_HomeDao {
                         "    left join comment on picture.pictureIdx = comment.pictureIdx\n" +
                         "\n" +
                         "where picturesave.status='t' group by picturesave.pictureIdx order by  saveCount desc,commentCount desc limit 10",
-                (rk,rownum) -> new GetPicturesRes(
+                (rk,rownum) -> new GetFlagsRes(
                         rk.getInt("userIdx"),
                         rk.getString("userImageUrl"),
                         rk.getString("level"),

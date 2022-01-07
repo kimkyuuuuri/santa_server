@@ -2,7 +2,6 @@ package com.smileflower.santa.src.new_home;
 
 
 import com.smileflower.santa.config.BaseException;
-import com.smileflower.santa.config.BaseResponse;
 import com.smileflower.santa.config.BaseResponseStatus;
 import com.smileflower.santa.src.new_home.model.*;
 import com.smileflower.santa.utils.JwtService;
@@ -14,8 +13,6 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-
-import static com.smileflower.santa.config.BaseResponseStatus.EMPTY_JWT;
 
 
 //Provider : Read의 비즈니스 로직 처리
@@ -41,12 +38,12 @@ public class New_HomeProvider {
 
         GetHomeRes getHomeRes = newHomeDao.getHomeRes(userIdx);
 
-        for (int i = 0; i < getHomeRes.getGetPicturesResList().size(); i++) {
-            if (getHomeRes.getGetPicturesResList().get(i).getPictureImageUrl() != null)
-                getHomeRes.getGetPicturesResList().get(i).setPictureImageUrl(s3Service.getFileUrl(getHomeRes.getGetPicturesResList().get(i).getPictureImageUrl()));
+        for (int i = 0; i < getHomeRes.getGetFlagResList().size(); i++) {
+            if (getHomeRes.getGetFlagResList().get(i).getFlagImageUrl() != null)
+                getHomeRes.getGetFlagResList().get(i).setFlagImageUrl(s3Service.getFileUrl(getHomeRes.getGetFlagResList().get(i).getFlagImageUrl()));
 
-            if (getHomeRes.getGetPicturesResList().get(i).getUserImageUrl() != null)
-                getHomeRes.getGetPicturesResList().get(i).setUserImageUrl(s3Service.getFileUrl(getHomeRes.getGetUsersResList().get(i).getUserImageUrl()));
+            if (getHomeRes.getGetFlagResList().get(i).getUserImageUrl() != null)
+                getHomeRes.getGetFlagResList().get(i).setUserImageUrl(s3Service.getFileUrl(getHomeRes.getGetUsersResList().get(i).getUserImageUrl()));
         }
         for (int i = 0; i < getHomeRes.getGetUsersResList().size(); i++) {
             if (getHomeRes.getGetUsersResList().get(i).getUserImageUrl() != null)
@@ -63,21 +60,21 @@ public class New_HomeProvider {
 
     }
 
-    public List<GetPicturesRes> getPicturesRes() throws BaseException {
-        List<GetPicturesRes> getPicturesRes = newHomeDao.getPicturesRes();
+    public List<GetFlagsRes> getFlagsRes() throws BaseException {
+        List<GetFlagsRes> getFlagRes = newHomeDao.getFlagRes();
 
 
-            if(getPicturesRes.size()==0)
+            if(getFlagRes.size()==0)
                 throw new BaseException(BaseResponseStatus.EMPTY_PICTURE);
 
-            for (int i = 0; i < getPicturesRes.size(); i++) {
-                if (getPicturesRes.get(i).getPictureImageUrl() != null)
-                    getPicturesRes.get(i).setPictureImageUrl(s3Service.getFileUrl(getPicturesRes.get(i).getPictureImageUrl()));
-                if (getPicturesRes.get(i).getUserImageUrl() != null)
-                    getPicturesRes.get(i).setUserImageUrl(s3Service.getFileUrl(getPicturesRes.get(i).getUserImageUrl()));
+            for (int i = 0; i < getFlagRes.size(); i++) {
+                if (getFlagRes.get(i).getFlagImageUrl() != null)
+                    getFlagRes.get(i).setFlagImageUrl(s3Service.getFileUrl(getFlagRes.get(i).getFlagImageUrl()));
+                if (getFlagRes.get(i).getUserImageUrl() != null)
+                    getFlagRes.get(i).setUserImageUrl(s3Service.getFileUrl(getFlagRes.get(i).getUserImageUrl()));
 
             }
-            return getPicturesRes;
+            return getFlagRes;
 
     }
 

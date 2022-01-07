@@ -57,7 +57,7 @@ public class New_HomeController {
 
     @ResponseBody
     @GetMapping("/pictures")
-    public BaseResponse <List<GetPicturesRes>> getPicturesRes() throws BaseException {
+    public BaseResponse <List<GetFlagsRes>> getPicturesRes() throws BaseException {
 
         try{
             if(jwtService.getJwt()==null){
@@ -66,8 +66,8 @@ public class New_HomeController {
 
             else{
                 int userIdx=jwtService.getUserIdx();
-                List<GetPicturesRes> getPicturesRes= newHomeProvider.getPicturesRes();
-                return new BaseResponse<>(getPicturesRes);
+                List<GetFlagsRes> getFlagsRes = newHomeProvider.getFlagsRes();
+                return new BaseResponse<>(getFlagsRes);
             }
 
         }catch(BaseException exception){

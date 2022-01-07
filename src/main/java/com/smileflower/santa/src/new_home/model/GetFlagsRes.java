@@ -7,25 +7,25 @@ import lombok.Setter;
 @Getter
 @Setter
 
-public class GetPicturesRes {
+public class GetFlagsRes {
     private int userIdx;
     private String userImageUrl;
     private String level;
     private String userName;
     private int commentCount;
     private int saveCount;
-    private int pictureIdx;
-    private String pictureImageUrl;
+    private int flagIdx;
+    private String flagImageUrl;
 
 
-    public GetPicturesRes(int userIdx, String userImageUrl, String level, String userName, int commentCount, int saveCount, int pictureIdx, String pictureImageUrl) {
+    public GetFlagsRes(int userIdx, String userImageUrl, String level, String userName, int commentCount, int saveCount, int flagIdx, String flagImageUrl) {
         this.userIdx=userIdx;
         this.userImageUrl=userImageUrl;
         this.level=level;
         this.userName=userName;
         this.commentCount=commentCount;
         this.saveCount=saveCount;
-        this.pictureIdx=pictureIdx;
-        this.pictureImageUrl=pictureImageUrl;
+        this.flagIdx=flagIdx;
+        this.flagImageUrl=flagImageUrl;
     }
 }
