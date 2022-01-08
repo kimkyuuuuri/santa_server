@@ -40,4 +40,8 @@ public class PictureProvider {
         int exist = pictureDao.checkJwt(jwt);
         return exist;
     }
+    public int checkPictureReportExist(Long flagIdx, int userIdx){
+        return pictureDao.checkPictureReportExist(flagIdx,userIdx);
+    }
+
 }

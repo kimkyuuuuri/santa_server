@@ -3,6 +3,7 @@ package com.smileflower.santa.src.picture;
 import com.smileflower.santa.config.BaseException;
 import com.smileflower.santa.config.BaseResponse;
 import com.smileflower.santa.src.flags.model.DeleteFlagRes;
+import com.smileflower.santa.src.flags.model.PostFlagReportRes;
 import com.smileflower.santa.src.picture.model.*;
 
 import org.slf4j.Logger;
@@ -53,6 +54,26 @@ public class PictureController {
                 return new BaseResponse<>((exception.getStatus()));
             }
         }
+
+    @ResponseBody
+    @PostMapping("/{pictureIdx}/report")
+    public BaseResponse<PostPictureReportRes> report(@PathVariable("pictureIdx")Long pictureIdx ) throws BaseException {
+        try{
+            if(jwtService.getJwt()==null){
+                return new BaseResponse<>(EMPTY_JWT);
+            }
+
+            else{
+                int userIdx=jwtService.getUserIdx();
+                PostPictureReportRes postPictureReportRes = pictureService.report(userIdx,pictureIdx);
+                return new BaseResponse<>(postPictureReportRes);
+            }
+
+        }catch(BaseException exception){
+            return new BaseResponse<>((exception.getStatus()));
+        }
+
+    }
     @DeleteMapping("/{pictureIdx}")
     public BaseResponse<DeletePictureRes> deleteFlag(@PathVariable("pictureIdx") Long pictureIdx) {
         try{

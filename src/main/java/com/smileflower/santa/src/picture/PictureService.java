@@ -4,6 +4,7 @@ package com.smileflower.santa.src.picture;
 import com.smileflower.santa.config.BaseException;
 import com.smileflower.santa.config.BaseResponse;
 import com.smileflower.santa.src.flags.model.DeleteFlagRes;
+import com.smileflower.santa.src.flags.model.PostFlagReportRes;
 import com.smileflower.santa.src.picture.model.*;
 import com.smileflower.santa.src.user.model.PatchUserLogoutRes;
 import com.smileflower.santa.utils.JwtService;
@@ -12,9 +13,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import static com.smileflower.santa.config.BaseResponseStatus.INVALID_POST;
-import static com.smileflower.santa.config.BaseResponseStatus.INVALID_POST_USER;
+import static com.smileflower.santa.config.BaseResponseStatus.*;
 
 
 @Service
@@ -60,6 +61,21 @@ public class PictureService{
         else if (pictureProvider.checkPictureWhereUserExist(pictureIdx,userIdx) == 0)
             throw new BaseException(INVALID_POST_USER);
         return new DeletePictureRes(pictureDao.deletePicture(pictureIdx));
+
+    }
+
+    @Transactional
+    public PostPictureReportRes report(int userIdx, Long pictureIdx) throws BaseException{
+        if (pictureProvider.checkPictureExist(pictureIdx) == 0)
+            throw new BaseException(INVALID_POST);
+
+        if (pictureProvider.checkPictureReportExist(pictureIdx,userIdx)==1)
+            throw new BaseException(POST_AUTH_EXISTS_REPORT);
+        else {
+
+            pictureDao.report(pictureIdx, userIdx);
+            return new PostPictureReportRes(pictureIdx, pictureDao.getReportCount(pictureIdx));
+        }
 
     }
 }

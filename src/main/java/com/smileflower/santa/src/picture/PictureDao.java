@@ -55,4 +55,19 @@ public class PictureDao {
         int changedCnt = this.jdbcTemplate.update(query,params);
         return changedCnt==1 ? true : false;
     }
+
+    public Long report(Long  pictureIdx, int userIdx) {
+        String query = "insert into picturereport (userIdx, pictureIdx) VALUES (?,?)";
+        Object[] params = new Object[]{userIdx,pictureIdx};
+        this.jdbcTemplate.update(query, params);
+        String lastInsertIdQuery = "select last_insert_id()";
+        return this.jdbcTemplate.queryForObject(lastInsertIdQuery,Long.class);
+    }
+    public int checkPictureReportExist(Long pictureIdx,int userIdx){
+        return this.jdbcTemplate.queryForObject("select Exists(select picturereportIdx from picturereport" +
+                "                where status='T' and pictureIdx=? and userIdx=? ) as reportExist", int.class,pictureIdx,userIdx);
+    }
+    public int getReportCount(Long pictureIdx) {
+        return this.jdbcTemplate.queryForObject("SELECT COUNT(*) FROM picturereport WHERE pictureIdx = ?",new Object[]{pictureIdx}, int.class);
+    }
 }
