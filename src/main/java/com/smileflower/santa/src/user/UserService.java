@@ -1,26 +1,28 @@
 package com.smileflower.santa.src.user;
 
 
-
 import com.smileflower.santa.config.BaseException;
 import com.smileflower.santa.config.secret.Secret;
 import com.smileflower.santa.src.user.model.*;
 import com.smileflower.santa.utils.AES128;
 import com.smileflower.santa.utils.JwtService;
-import com.fasterxml.jackson.databind.ser.Serializers;
+import com.smileflower.santa.utils.S3Service;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.stereotype.Service;
 
 import javax.sql.DataSource;
 import javax.transaction.Transactional;
+import java.util.List;
 
 import static com.smileflower.santa.config.BaseResponseStatus.*;
+import static sun.jvm.hotspot.runtime.BasicObjectLock.size;
 
 // Service Create, Update, Delete 의 로직 처리
 @Service
+@Transactional
 public class UserService {
     final Logger logger = LoggerFactory.getLogger(this.getClass());
 
@@ -28,6 +30,7 @@ public class UserService {
     private final UserProvider userProvider;
     private final JwtService jwtService;
     private JdbcTemplate jdbcTemplate;
+    private final S3Service s3Service;
 
     @Autowired
     public void setDataSource(DataSource dataSource) {
@@ -35,10 +38,11 @@ public class UserService {
     }
 
     @Autowired
-    public UserService(UserDao userDao, UserProvider userProvider, JwtService jwtService) {
+    public UserService(UserDao userDao, UserProvider userProvider, JwtService jwtService,S3Service s3Service) {
         this.userDao = userDao;
         this.userProvider = userProvider;
         this.jwtService = jwtService;
+        this.s3Service=s3Service;
 
     }
 
@@ -127,6 +131,19 @@ public class UserService {
         if (userProvider.checkUserIdx(userIdx)!=1) {
             throw new BaseException(INVALID_USER);
         }
+        GetUserRes getUserRes=userDao.getUserRes(userIdx);
+        List<GetFlagRes> getFlagRes=userDao.getFlagRes(userIdx);
+        List<GetPictureRes> getPictureRes=userDao.getPictueRes(userIdx);
+        for(int i=0;i<getFlagRes.size();i++){
+            s3Service.deleteFile(getFlagRes.get(i).getPictureImgUrl());
+        }
+        for(int i=0;i<getPictureRes.size();i++){
+            s3Service.deleteFile(getPictureRes.get(i).getPictureImgUrl());
+        }
+
+
+        if(getUserRes.getPictureImgUrl()!=null)
+            s3Service.deleteFile(getUserRes.getPictureImgUrl());
         int delete = userDao.deleteUser(userIdx);
 
         return new DeleteUserRes(userIdx);

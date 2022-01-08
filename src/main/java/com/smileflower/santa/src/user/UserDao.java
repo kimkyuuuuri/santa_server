@@ -56,9 +56,14 @@ public class UserDao {
     }
 
     public int deleteUser(int userIdx) {
-        String query = "delete from user where userIdx = ?";
+        String userQuery = "delete from user where userIdx = ?";
+        String pictureQuery="delete from picture where userIdx=?";
+        String flagQuery="delete from flag where userIdx=?";
+
         Object[] params = new Object[]{userIdx};
-        int changedCnt = this.jdbcTemplate.update(query,params);
+        this.jdbcTemplate.update(pictureQuery,params);
+        this.jdbcTemplate.update(flagQuery,params);
+        int changedCnt = this.jdbcTemplate.update(userQuery,params);
         return changedCnt;
     }
 
@@ -135,7 +140,29 @@ public class UserDao {
                 emailId);
     }
 
+    public List<GetFlagRes> getFlagRes(int userIdx){
+        return this.jdbcTemplate.query("select pictureUrl as pictureImgUrl from flag where userIdx=?",
+                (rs, rowNum) -> new GetFlagRes(
+                        rs.getString("pictureImgUrl")),
 
+                userIdx);
+    }
+
+    public List<GetPictureRes> getPictueRes(int userIdx){
+        return this.jdbcTemplate.query("select imgUrl as pictureImgUrl from picture where userIdx=?",
+                (rs, rowNum) -> new GetPictureRes(
+                        rs.getString("pictureImgUrl")),
+
+                userIdx);
+    }
+
+    public GetUserRes getUserRes(int userIdx){
+        return this.jdbcTemplate.queryForObject("select userImageUrl as pictureImgUrl from user where userIdx=?",
+                (rs, rowNum) -> new GetUserRes(
+                        rs.getString("pictureImgUrl")),
+
+                userIdx);
+    }
     public String getUserNameByEmail(String emailId){
         return this.jdbcTemplate.queryForObject("select name from User\n" +
                         "where emailId=?",
