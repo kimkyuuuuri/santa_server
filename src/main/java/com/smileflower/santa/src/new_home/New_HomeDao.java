@@ -201,6 +201,11 @@ public class New_HomeDao {
 
     }
 
+    public int getCommentCount(){
+        return this.jdbcTemplate.queryForObject("select ((select count(*) from flagrecomment where flagrecomment.flagcommentIdx=flagcomment.flagcommentIdx  ) +(select count(*) from flagcomment where flagcomment.flagIdx=?)) as count\n" +
+                "from flagcomment  where flagIdx=? order by createdAt limit 1;",(rk,rownum) -> rk.getInt("count"));
+    }
+
 
     public List<GetMountainsRes> getMountainsRes() {
         return this.jdbcTemplate.query("select mountain.mountainIdx as mountainIdx,mountain.imageUrl as mountainImageUrl, case when p.hot > 10 then 't' else 'f' end as isHot,\n" +
