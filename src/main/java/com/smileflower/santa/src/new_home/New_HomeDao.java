@@ -10,6 +10,8 @@ import org.springframework.stereotype.Repository;
 import javax.sql.DataSource;
 import java.util.List;
 
+import static org.thymeleaf.util.StringUtils.concat;
+
 @Repository
 public class New_HomeDao {
 
@@ -18,6 +20,8 @@ public class New_HomeDao {
     private List<GetFlagsRes> getFlagsResList;
     private List<GetUsersRes> getUsersResList;
     private List<GetMountainsRes> getMountainsResList;
+    private List<GetCommentRes> getCommentRes;
+    private int count=0;
 
     private List<GetMountainsIdxRes> getMountainsIdxResList;
     @Autowired
@@ -40,9 +44,10 @@ public class New_HomeDao {
                         "                                                                              when  count(*) >= 8 and  count(*) < 10 then 'Lv.5'\n" +
                         "                                                                              when  count(*) >= 10 then 'Lv.6' end as level\n" +
                         "                     from flag where  flag.userIdx=user.userIdx)\n" +
-                        "    as level,user.name as userName,\n" +
-                        "       (select count(*) from flagrecomment where flagrecomment.flagcommentIdx=flagcomment.flagcommentIdx  ) +(select count(*) from flagcomment where flagcomment.flagIdx=flag.flagIdx)  as commentCount\n" +
-                        "     ,count( distinct  flagsave.flagsaveIdx) as saveCount,flag.flagIdx,flag.pictureUrl as flagImageUrl from flag\n" +
+                        "    as level,user.name as userName," +
+                                "case when EXISTS(select flagsaveIdx from flagsave where flagsave.userIdx=? and flagsave.flagIdx=flag.flagIdx and flagsave.status='t') =1 then 'Y' else 'N' end as isFlag," +
+                        "       (select count(*) from flagrecomment where flagrecomment.flagcommentIdx=flagcomment.flagcommentIdx ) +(select count(*) from flagcomment where flagcomment.flagIdx=flag.flagIdx)  as commentCount\n" +
+                        "     ,count( distinct  flagsave.flagsaveIdx ) as saveCount,flag.flagIdx,flag.pictureUrl as flagImageUrl from flag\n" +
                         "    left join flagsave on flag.flagIdx = flagsave.flagIdx\n" +
                         "    inner join user on flag.userIdx = user.userIdx\n" +
                         "    left join flagcomment on flag.flagIdx = flagcomment.flagIdx\n" +
@@ -53,14 +58,14 @@ public class New_HomeDao {
                                 rk.getString("userImageUrl"),
                                 rk.getString("level"),
                                 rk.getString("userName"),
-
+                                rk.getString("isFlag"),
                                 rk.getInt("commentCount"),
                                 rk.getInt("saveCount"),
                                 rk.getInt("flagIdx"),
                                 rk.getString("flagImageUrl")
 
 
-                        )),
+                        ),userIdx),
                 getUsersResList=this.jdbcTemplate.query("select user.userIdx, userImageUrl ,\n" +
                                 "        case\n" +
                                 "\n" +
@@ -151,7 +156,7 @@ public class New_HomeDao {
                         rk.getString("userImageUrl"),
                         rk.getString("level"),
                         rk.getString("userName"),
-
+                        rk.getString("isFlag"),
                         rk.getInt("commentCount"),
                         rk.getInt("saveCount"),
                         rk.getInt("pictureIdx"),
@@ -201,10 +206,52 @@ public class New_HomeDao {
 
     }
 
-    public int getCommentCount(){
-        return this.jdbcTemplate.queryForObject("select ((select count(*) from flagrecomment where flagrecomment.flagcommentIdx=flagcomment.flagcommentIdx  ) +(select count(*) from flagcomment where flagcomment.flagIdx=?)) as count\n" +
-                "from flagcomment  where flagIdx=? order by createdAt limit 1;",(rk,rownum) -> rk.getInt("count"));
+    public List<GetFlagsMoreRes> getFlagsMoreRes(int userIdx) {
+
+        return this.jdbcTemplate.query("select user.userIdx,user.userImageUrl, (select\n" +
+                        "                                                                                          case\n" +
+                        "                                                                                       when  count(*) > 0 and  count(*) < 2 then 'Lv.1'\n" +
+                        "                                                                                                  when count(*)>= 2 and  count(*) < 4 then 'Lv.2'\n" +
+                        "                                                                                                   when  count(*) >= 4 and  count(*) < 6 then 'Lv.3'\n" +
+                        "                                                                                                 when  count(*)>= 6 and  count(*) < 8 then 'Lv.4'\n" +
+                        "                                                                                                  when  count(*) >= 8 and  count(*) < 10 then 'Lv.5'\n" +
+                        "                                                                                                   when  count(*) >= 10 then 'Lv.6' end as level\n" +
+                        "                                         from flag where  flag.userIdx=user.userIdx)\n" +
+                        "                           as level,user.name as userName," +
+                        "case when EXISTS(select flagsaveIdx from flagsave where flagsave.userIdx=? and flagsave.flagIdx=flag.flagIdx  and flagsave.status='t') =1 then 'Y' else 'N' end as isFlag," +
+                        "                             (select count(*) from flagrecomment where flagrecomment.flagcommentIdx=flagcomment.flagcommentIdx  ) +(select count(*) from flagcomment where flagcomment.flagIdx=flag.flagIdx)  as commentCount\n" +
+                        "                            ,count( distinct  flagsave.flagsaveIdx) as saveCount,flag.flagIdx,flag.pictureUrl as flagImageUrl\n" +
+                        "                        from flag\n" +
+                        "                            left join flagsave on flag.flagIdx = flagsave.flagIdx\n" +
+                        "                            inner join user on flag.userIdx = user.userIdx\n" +
+                        "                            left join flagcomment on flag.flagIdx = flagcomment.flagIdx\n" +
+                        "                        where flagsave.status='t' group by flagsave.flagIdx order by  saveCount desc,commentCount desc limit 10\n",
+                (rk,rownum) -> new GetFlagsMoreRes(
+                        rk.getInt("userIdx"),
+                        rk.getString("userImageUrl"),
+                        rk.getString("level"),
+                        rk.getString("userName"),
+                        rk.getString("isFlag"),
+                        rk.getInt("commentCount"),
+                        rk.getInt("saveCount"),
+                        rk.getInt("flagIdx"),
+                        rk.getString("flagImageUrl"),
+                        getCommentRes=this.jdbcTemplate.query("select user.userIdx, user.userImageUrl,user.name as userName, flagcomment.contents  from flagcomment inner join user on flagcomment.userIdx = user.userIdx\n" +
+                                "  where flagcomment.flagIdx=? order by flagcomment.createdAt limit 1",(rs,rownum2) -> new GetCommentRes(
+                        rs.getInt("userIdx"),
+                        rs.getString("userImageUrl"),
+                        rs.getString("userName"),
+                        rs.getString("contents"),
+                                this.jdbcTemplate.queryForObject("select ((select count(*) from flagrecomment where flagrecomment.flagcommentIdx=flagcomment.flagcommentIdx   ) +count(*) ) as count\n" +
+                                        "from flagcomment  where flagIdx=?  order by createdAt limit 1;",(rl,rownum3) -> rl.getInt("count"),rk.getInt("flagIdx")
+
+                                )) ,rk.getInt("flagIdx"))
+
+                        ),userIdx);
+
     }
+
+
 
 
     public List<GetMountainsRes> getMountainsRes() {

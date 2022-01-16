@@ -60,21 +60,23 @@ public class New_HomeProvider {
 
     }
 
-    public List<GetFlagsRes> getFlagsRes() throws BaseException {
-        List<GetFlagsRes> getFlagRes = newHomeDao.getFlagRes();
+    public List<GetFlagsMoreRes> getFlagsMoreRes(int userIdx) throws BaseException {
+        List<GetFlagsMoreRes> getFlagsMoreRes = newHomeDao.getFlagsMoreRes(userIdx);
 
 
-            if(getFlagRes.size()==0)
+            if(getFlagsMoreRes.size()==0)
                 throw new BaseException(BaseResponseStatus.EMPTY_PICTURE);
 
-            for (int i = 0; i < getFlagRes.size(); i++) {
-                if (getFlagRes.get(i).getFlagImageUrl() != null)
-                    getFlagRes.get(i).setFlagImageUrl(s3Service.getFileUrl(getFlagRes.get(i).getFlagImageUrl()));
-                if (getFlagRes.get(i).getUserImageUrl() != null)
-                    getFlagRes.get(i).setUserImageUrl(s3Service.getFileUrl(getFlagRes.get(i).getUserImageUrl()));
+            for (int i = 0; i < getFlagsMoreRes.size(); i++) {
+                if (getFlagsMoreRes.get(i).getFlagImageUrl() != null)
+                    getFlagsMoreRes.get(i).setFlagImageUrl(s3Service.getFileUrl(getFlagsMoreRes.get(i).getFlagImageUrl()));
+                if (getFlagsMoreRes.get(i).getUserImageUrl() != null)
+                    getFlagsMoreRes.get(i).setUserImageUrl(s3Service.getFileUrl(getFlagsMoreRes.get(i).getUserImageUrl()));
+                if (getFlagsMoreRes.get(i).getGetCommentRes().size()!= 0)
+                    getFlagsMoreRes.get(i).getGetCommentRes().get(0).setUserImageUrl(s3Service.getFileUrl(getFlagsMoreRes.get(i).getUserImageUrl()));
 
             }
-            return getFlagRes;
+            return getFlagsMoreRes;
 
     }
 
