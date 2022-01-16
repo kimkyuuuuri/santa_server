@@ -45,7 +45,7 @@ public class New_HomeDao {
                         "                                                                              when  count(*) >= 10 then 'Lv.6' end as level\n" +
                         "                     from flag where  flag.userIdx=user.userIdx)\n" +
                         "    as level,user.name as userName," +
-                                "case when EXISTS(select flagsaveIdx from flagsave where flagsave.userIdx=? and flagsave.flagIdx=flag.flagIdx and flagsave.status='t') =1 then 'Y' else 'N' end as isFlag," +
+                                "case when EXISTS(select flagsaveIdx from flagsave where flagsave.userIdx=? and flagsave.flagIdx=flag.flagIdx and flagsave.status='t') =1 then 'Y' else 'N' end as isSaved," +
                         "       (select count(*) from flagrecomment where flagrecomment.flagcommentIdx=flagcomment.flagcommentIdx ) +(select count(*) from flagcomment where flagcomment.flagIdx=flag.flagIdx)  as commentCount\n" +
                         "     ,count( distinct  flagsave.flagsaveIdx ) as saveCount,flag.flagIdx,flag.pictureUrl as flagImageUrl from flag\n" +
                         "    left join flagsave on flag.flagIdx = flagsave.flagIdx\n" +
@@ -58,7 +58,7 @@ public class New_HomeDao {
                                 rk.getString("userImageUrl"),
                                 rk.getString("level"),
                                 rk.getString("userName"),
-                                rk.getString("isFlag"),
+                                rk.getString("isSaved"),
                                 rk.getInt("commentCount"),
                                 rk.getInt("saveCount"),
                                 rk.getInt("flagIdx"),
@@ -218,7 +218,7 @@ public class New_HomeDao {
                         "                                                                                                   when  count(*) >= 10 then 'Lv.6' end as level\n" +
                         "                                         from flag where  flag.userIdx=user.userIdx)\n" +
                         "                           as level,user.name as userName," +
-                        "case when EXISTS(select flagsaveIdx from flagsave where flagsave.userIdx=? and flagsave.flagIdx=flag.flagIdx  and flagsave.status='t') =1 then 'Y' else 'N' end as isFlag," +
+                        "case when EXISTS(select flagsaveIdx from flagsave where flagsave.userIdx=? and flagsave.flagIdx=flag.flagIdx  and flagsave.status='t') =1 then 'Y' else 'N' end as isSaved," +
                         "                             (select count(*) from flagrecomment where flagrecomment.flagcommentIdx=flagcomment.flagcommentIdx  ) +(select count(*) from flagcomment where flagcomment.flagIdx=flag.flagIdx)  as commentCount\n" +
                         "                            ,count( distinct  flagsave.flagsaveIdx) as saveCount,flag.flagIdx,flag.pictureUrl as flagImageUrl\n" +
                         "                        from flag\n" +
@@ -231,7 +231,7 @@ public class New_HomeDao {
                         rk.getString("userImageUrl"),
                         rk.getString("level"),
                         rk.getString("userName"),
-                        rk.getString("isFlag"),
+                        rk.getString("isSaved"),
                         rk.getInt("commentCount"),
                         rk.getInt("saveCount"),
                         rk.getInt("flagIdx"),
