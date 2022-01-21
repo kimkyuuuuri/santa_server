@@ -99,12 +99,12 @@ public class FlagDao {
                         "             u.userImageUrl                                     as userImage,\n" +
                         "             COUNT(f.userIdx)                                   as flagCount,\n" +
                         "             case\n" +
-                        "                 when a.level > 0 and a.level<2 then 'Lv1'\n" +
-                        "                 when a.level >= 2 and a.level<4 then 'Lv2'\n" +
-                        "                 when a.level >= 4 and a.level<6 then 'Lv3'\n" +
-                        "                 when a.level >= 6 and a.level< 8 then 'Lv4'\n" +
-                        "                 when a.level >= 8 and a.level<10 then 'Lv5'\n" +
-                        "                 when a.level >= 10 then 'Lv6'end               as level\n" +
+                        "                 when a.level > 0 and a.level<2 then 'Lv.1'\n" +
+                        "                 when a.level >= 2 and a.level<4 then 'Lv.2'\n" +
+                        "                 when a.level >= 4 and a.level<6 then 'Lv.3'\n" +
+                        "                 when a.level >= 6 and a.level< 8 then 'Lv.4'\n" +
+                        "                 when a.level >= 8 and a.level<10 then 'Lv.5'\n" +
+                        "                 when a.level >= 10 then 'Lv.6'end               as level\n" +
                         "      from flag f\n" +
                         "               inner join mountain m on f.mountainIdx = m.mountainIdx\n" +
                         "               inner join user u on f.userIdx = u.userIdx\n" +
@@ -133,12 +133,12 @@ public class FlagDao {
                         "                       u.userImageUrl   as userImage,\n" +
                         "                       COUNT(f.userIdx) as flagCount,\n" +
                         "                      case\n" +
-                        "                 when a.level > 0 and a.level<2 then 'Lv1'\n" +
-                        "                 when a.level >= 2 and a.level<4 then 'Lv2'\n" +
-                        "                 when a.level >= 4 and a.level<6 then 'Lv3'\n" +
-                        "                 when a.level >= 6 and a.level< 8 then 'Lv4'\n" +
-                        "                 when a.level >= 8 and a.level<10 then 'Lv5'\n" +
-                        "                 when a.level >= 10 then 'Lv6'end               as level\n" +
+                        "                 when a.level > 0 and a.level<2 then 'Lv.1'\n" +
+                        "                 when a.level >= 2 and a.level<4 then 'Lv.2'\n" +
+                        "                 when a.level >= 4 and a.level<6 then 'Lv.3'\n" +
+                        "                 when a.level >= 6 and a.level< 8 then 'Lv.4'\n" +
+                        "                 when a.level >= 8 and a.level<10 then 'Lv.5'\n" +
+                        "                 when a.level >= 10 then 'Lv.6'end               as level\n" +
                         "                from flag f\n" +
                         "                         inner join mountain m on f.mountainIdx = m.mountainIdx\n" +
                         "                         inner join user u on f.userIdx = u.userIdx\n" +
