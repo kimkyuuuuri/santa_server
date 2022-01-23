@@ -56,9 +56,9 @@ public enum BaseResponseStatus {
 
 
 
-
-
-
+    // post flag
+    INVALID_FLAG_LOCATION(false,2060,"정복 가능한 위치가 아닙니다."),
+    POST_FLAGS_EXISTS_FLAG(false,2061,"이미 오늘 정복한 산입니다."),
 
 
 
