@@ -22,7 +22,7 @@ public class AppleController {
      * @param checkUserRequest
      * @return CheckUserResponse
      */
-    @GetMapping(value = "/api/apple")
+    @GetMapping(value = "/app/apple")
     @ResponseBody
     public ApiResult<CheckUserResponse> checkUser(@RequestBody CheckUserRequest checkUserRequest) {
         return ApiResult.OK(
@@ -35,7 +35,7 @@ public class AppleController {
      * @param appleLoginRequest
      * @return AppleLoginResponse
      */
-    @PostMapping(value = "/api/apple/login")
+    @PostMapping(value = "/app/apple/login")
     @ResponseBody
     public ApiResult<AppleLoginResponse> appleLogin(@RequestBody AppleLoginRequest appleLoginRequest) {
         return ApiResult.OK(
@@ -48,7 +48,7 @@ public class AppleController {
      * @param appleSigninRequest
      * @return AppleLoginResponse
      */
-    @PostMapping(value = "/api/apple/join")
+    @PostMapping(value = "/app/apple/join")
     @ResponseBody
     public ApiResult<AppleSigninResponse> appleJoin(@RequestBody AppleSigninRequest appleSigninRequest) {
 
