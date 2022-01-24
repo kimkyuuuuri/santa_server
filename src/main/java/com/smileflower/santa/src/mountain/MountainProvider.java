@@ -42,6 +42,15 @@ public class MountainProvider {
         }
         return getMountainRes;
     }
+
+    public List<GetMountainRes> getMountainPaging(int userIdx,int index) throws BaseException {
+        List<GetMountainRes> getMountainRes = mountainDao.getMountainPaging(userIdx,index);
+        for(int i=0;i<getMountainRes.size();i++){
+            if(getMountainRes.get(i).getMountainImg()!=null)
+                getMountainRes.get(i).setMountainImg(s3Service.getFileUrl(getMountainRes.get(i).getMountainImg()));
+        }
+        return getMountainRes;
+    }
     public GetMountainIdxRes getMountainIdx(int userIdx,String mountain) throws BaseException {
         if(mountainDao.checkMountain(mountain)==1){
             GetMountainIdxRes getMountainIdxRes = mountainDao.getMountainIdx(mountain);

@@ -52,6 +52,27 @@ public class MountainController {
             return new BaseResponse<>((exception.getStatus()));
         }
     }
+
+
+    @ResponseBody
+    @GetMapping("/paging")
+    public BaseResponse<List<GetMountainRes>> getMountainPaging(@RequestParam(required = true) int index) throws BaseException {
+        try{
+            if(jwtService.getJwt()==null){
+                return new BaseResponse<>(EMPTY_JWT);
+            }
+
+            else{
+                int userIdx=jwtService.getUserIdx();
+                List<GetMountainRes> getMountainRes = mountainProvider.getMountainPaging(userIdx,index);
+                return new BaseResponse<>(getMountainRes);
+            }
+
+        }catch(BaseException exception){
+            return new BaseResponse<>((exception.getStatus()));
+        }
+    }
+
     @ResponseBody
     @GetMapping("/{mountainIdx}/rank")
     public BaseResponse<GetMountainRankRes> getMountainRank(@PathVariable("mountainIdx")int mountainIdx) throws BaseException {
