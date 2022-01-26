@@ -15,4 +15,5 @@ public class GetMountainRes {
     private String high;
     private String hot;
     private String pick;
+    private String competing;
 }
