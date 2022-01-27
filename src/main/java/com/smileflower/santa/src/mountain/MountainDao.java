@@ -32,7 +32,7 @@ public class MountainDao {
                         "                                           else 5 end as difficulty\n" +
                         "                                        ,\n" +
                         "                                       concat('(', m.high, 'm)') as high,\n" +
-                        "                                       case when a.hot > 10 then '인기' else null end as hot,\n" +
+                        "                                       case when a.hot > 10 then 'T' else 'F' end as hot,\n" +
                         "                                       case when b.status = 'T' then 'T' else 'F' end as pick\n" +
                         "                                          , ( select ( case when EXISTS(select flagIdx from flag where flag.mountainIdx=m.mountainIdx and flag.status='t')\n" +
                         "                                                       then 'T' else 'F' end ) )as competing" +
@@ -67,7 +67,7 @@ public class MountainDao {
                         "                                           else 5 end as difficulty\n" +
                         "                                        ,\n" +
                         "                                       concat('(', m.high, 'm)') as high,\n" +
-                        "                                       case when a.hot > 10 then '인기' else null end as hot,\n" +
+                        "                                       case when a.hot > 10 then 'T' else 'F' end as hot,\n" +
                         "                                       case when b.status = 'T' then 'T' else 'F' end as pick" +
                         "                                 , ( select ( case when EXISTS(select flagIdx from flag where flag.mountainIdx=m.mountainIdx and flag.status='t')\n" +
                         "                                   then 'T' else 'F' end ) )as competing" +
