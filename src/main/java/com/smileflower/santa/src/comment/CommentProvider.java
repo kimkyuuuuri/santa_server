@@ -12,6 +12,8 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+import static com.smileflower.santa.config.BaseResponseStatus.INVALID_POST;
+
 
 @Service
 public class CommentProvider {
@@ -29,41 +31,50 @@ public class CommentProvider {
         this.jwtService = jwtService;
         this.s3Service = s3Service;
     }
-    public int checkSaveExist(int userIdx,int pictureIdx){
-        int exist = commentDao.checkSaveExist(userIdx,pictureIdx);
+
+    public int checkSaveExist(int userIdx, int pictureIdx) {
+        int exist = commentDao.checkSaveExist(userIdx, pictureIdx);
         return exist;
     }
-    public int checkPictureExist(long pictureIdx){
+
+    public int checkPictureExist(long pictureIdx) {
         int exist = commentDao.checkPictureExist(pictureIdx);
         return exist;
     }
 
-    public int checkPictureWhereUserExist(Long pictureIdx,int userIdx){
-        return commentDao.checkPictureWhereUserExist(pictureIdx,userIdx);
+    public int checkPictureWhereUserExist(Long pictureIdx, int userIdx) {
+        return commentDao.checkPictureWhereUserExist(pictureIdx, userIdx);
     }
+
     public int checkJwt(String jwt) {
         int exist = commentDao.checkJwt(jwt);
         return exist;
     }
 
-/*
-    public List<GetFlagCommentRes> getFlagComment(int flagIdx) throws BaseException {
-        List<GetFlagCommentRes> getFlagsMoreRes = commentDao.getFlagComment(flagIdx);
 
+    public List<GetFlagCommentRes> getFlagComment(Long flagIdx) throws BaseException {
+        if (checkFlagExist(flagIdx) == 0)
+            throw new BaseException(INVALID_POST);
 
-        if(getFlagsMoreRes.size()==0)
+        List<GetFlagCommentRes> getFlagCommentRes = commentDao.getFlagComment(flagIdx);
+
+        if (getFlagCommentRes.size() == 0)
             throw new BaseException(BaseResponseStatus.EMPTY_PICTURE);
 
-        for (int i = 0; i < getFlagsMoreRes.size(); i++) {
-            if (getFlagsMoreRes.get(i).getFlagImageUrl() != null)
-                getFlagsMoreRes.get(i).setFlagImageUrl(s3Service.getFileUrl(getFlagsMoreRes.get(i).getFlagImageUrl()));
-            if (getFlagsMoreRes.get(i).getUserImageUrl() != null)
-                getFlagsMoreRes.get(i).setUserImageUrl(s3Service.getFileUrl(getFlagsMoreRes.get(i).getUserImageUrl()));
-            if (getFlagsMoreRes.get(i).getGetCommentRes().size()!= 0)
-                getFlagsMoreRes.get(i).getGetCommentRes().get(0).setUserImageUrl(s3Service.getFileUrl(getFlagsMoreRes.get(i).getUserImageUrl()));
+        for (int i = 0; i < getFlagCommentRes.size(); i++) {
+            if (getFlagCommentRes.get(i).getUserImageUrl() != null)
+                getFlagCommentRes.get(i).setUserImageUrl(s3Service.getFileUrl(getFlagCommentRes.get(i).getUserImageUrl()));
+            for (int j = 0; j < getFlagCommentRes.get(i).getGetFlagRecommentRes().size(); j++) {
+                if (getFlagCommentRes.get(i).getGetFlagRecommentRes().get(j).getUserImageUrl() != null)
+                    getFlagCommentRes.get(i).getGetFlagRecommentRes().get(j).setUserImageUrl(s3Service.getFileUrl(getFlagCommentRes.get(i).getGetFlagRecommentRes().get(j).getUserImageUrl()));
 
+            }
         }
-        return getFlagsMoreRes;
+        return getFlagCommentRes;
 
-    }*/
+    }
+
+    public int checkFlagExist(Long flagIdx) {
+        return commentDao.checkFlagExist(flagIdx);
+    }
 }

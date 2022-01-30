@@ -16,4 +16,5 @@ public class GetFlagCommentRes {
     private String createdAt;
     private List<GetFlagRecommentRes> getFlagRecommentRes;
 
+
 }

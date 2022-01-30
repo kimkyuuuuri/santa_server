@@ -13,7 +13,7 @@ import java.util.List;
 public class CommentDao {
 
     private JdbcTemplate jdbcTemplate;
-    private GetFlagRecommentRes getFlagRecommentRes;
+    private List<GetFlagRecommentRes> getFlagRecommentRes;
 
     @Autowired
     public void setDataSource(DataSource dataSource) {
@@ -44,43 +44,48 @@ public class CommentDao {
                 "                where status='T' and pictureIdx=? and userIdx=?) as FlagExist", int.class,pictureIdx,userIdx);
     }
 
-   /* public List<GetFlagCommentRes> getFlagComment(int flagIdx) {
-        String getNoticeQuery = "select  case when exists(select noticeIdx from notice where userIdx=? and status='t') =1 then 't' else 'f' end as notice ";
-        return this.jdbcTemplate.query(getNoticeQuery,
+    public List<GetFlagCommentRes> getFlagComment(Long flagIdx) {
+        String getFlagCommentQuery = "select u.userIdx, u.userImageUrl, u.name as userName, flagcommentIdx as commentIdx, contents,\n" +
+                "       case\n" +
+                "                                                            when timestampdiff(minute , flagcomment.createdAt, current_timestamp()) < 60\n" +
+                "                                                          then concat(timestampdiff(minute, flagcomment.createdAt, current_timestamp()), '분전')\n" +
+                "                                                           when timestampdiff(hour, flagcomment.createdAt, current_timestamp()) < 24\n" +
+                "                                                                then concat(timestampdiff(hour , flagcomment.createdAt, current_timestamp()), '시간전')\n" +
+                "                                                           ELSE\n" +
+                "                                                               concat(timestampdiff(day, flagcomment.createdAt, current_timestamp()), '일전') end  as  createdAt from flagcomment\n" +
+                "left join user u on flagcomment.userIdx = u.userIdx\n" +
+                "where flagcomment.flagIdx=? and flagcomment.status='t';";
+            return this.jdbcTemplate.query(getFlagCommentQuery,
                 (rs, rowNum) -> new GetFlagCommentRes(
-                        rs.getString("notice"),
-                        getFlagRecommentRes=this.jdbcTemplate.query("select user.userIdx,user.userImageUrl, (select\n" +
-                                        "                                                                          case\n" +
-                                        "                                                                              when  count(*) > 0 and  count(*) < 2 then 'Lv.1'\n" +
-                                        "                                                                              when count(*)>= 2 and  count(*) < 4 then 'Lv.2'\n" +
-                                        "                                                                              when  count(*) >= 4 and  count(*) < 6 then 'Lv.3'\n" +
-                                        "                                                                              when  count(*)>= 6 and  count(*) < 8 then 'Lv.4'\n" +
-                                        "                                                                              when  count(*) >= 8 and  count(*) < 10 then 'Lv.5'\n" +
-                                        "                                                                              when  count(*) >= 10 then 'Lv.6' end as level\n" +
-                                        "                     from flag where  flag.userIdx=user.userIdx)\n" +
-                                        "    as level,user.name as userName," +
-                                        "case when EXISTS(select flagsaveIdx from flagsave where flagsave.userIdx=? and flagsave.flagIdx=flag.flagIdx and flagsave.status='t') =1 then 'Y' else 'N' end as isSaved," +
-                                        "       (select count(*) from flagrecomment where flagrecomment.flagcommentIdx=flagcomment.flagcommentIdx ) +(select count(*) from flagcomment where flagcomment.flagIdx=flag.flagIdx)  as commentCount\n" +
-                                        "     ,count( distinct  flagsave.flagsaveIdx ) as saveCount,flag.flagIdx,flag.pictureUrl as flagImageUrl from flag\n" +
-                                        "    left join flagsave on flag.flagIdx = flagsave.flagIdx\n" +
-                                        "    inner join user on flag.userIdx = user.userIdx\n" +
-                                        "    left join flagcomment on flag.flagIdx = flagcomment.flagIdx\n" +
-                                        "\n" +
-                                        "where flagsave.status='t' group by flagsave.flagIdx order by  saveCount desc,commentCount desc limit 6",
-                                (rk,rownum) -> new GetFlagRecommentRes(
+                        rs.getInt("userIdx"),
+                        rs.getString("userImageUrl"),
+                        rs.getString("userName"),
+                        rs.getInt("commentIdx"),
+                        rs.getString("contents"),
+                        rs.getString("createdAt"),
+                        getFlagRecommentRes=this.jdbcTemplate.query(" select u.userIdx, u.userImageUrl, u.name as userName, flagrecommentIdx as recommentIdx, contents,    case\n" +
+                                        "                                                                                                            when timestampdiff(minute , flagrecomment.createdAt, current_timestamp()) < 60\n" +
+                                        "                                                                                                                then concat(timestampdiff(minute, flagrecomment.createdAt, current_timestamp()), '분전')\n" +
+                                        "                                                                                                            when timestampdiff(hour, flagrecomment.createdAt, current_timestamp()) < 24\n" +
+                                        "                                                                                                                then concat(timestampdiff(hour , flagrecomment.createdAt, current_timestamp()), '시간전')\n" +
+                                        "                                                                                                            ELSE\n" +
+                                        "                                                                                                                concat(timestampdiff(day, flagrecomment.createdAt, current_timestamp()), '일전') end  as  createdAt\n" +
+                                        "        from flagrecomment\n" +
+                                        "inner join user u on flagrecomment.userIdx = u.userIdx\n" +
+                                        "where flagrecomment.flagcommentIdx=? and flagrecomment.status='t'; "  ,
+                                (rk, rowNum2) -> new GetFlagRecommentRes(
                                         rk.getInt("userIdx"),
                                         rk.getString("userImageUrl"),
-                                        rk.getString("level"),
                                         rk.getString("userName"),
-                                        rk.getString("isSaved"),
-                                        rk.getInt("commentCount"),
-                                        rk.getInt("saveCount"),
-                                        rk.getInt("flagIdx"),
-                                        rk.getString("flagImageUrl")
-
-
-                                ),rs.getInt("Idx")));
+                                        rk.getInt("recommentIdx"),
+                                        rk.getString("contents"),
+                                        rk.getString("createdAt"))
+                                ,rs.getInt("commentIdx"))),flagIdx);
 
     }
-*/
+
+    public int checkFlagExist(Long flagIdx){
+        return this.jdbcTemplate.queryForObject("select Exists(select flagIdx from flag\n" +
+                "                where status='T' and flagIdx=? ) as FlagExist", int.class,flagIdx);
+    }
 }

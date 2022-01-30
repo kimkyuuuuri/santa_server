@@ -10,6 +10,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 import static com.smileflower.santa.config.BaseResponseStatus.EMPTY_JWT;
 import static com.smileflower.santa.config.BaseResponseStatus.INVALID_JWT;
 
@@ -32,10 +34,10 @@ public class CommentController {
         this.commentService = commentService;
         this.jwtService = jwtService;
     }
-/*
+
     @ResponseBody
-    @PostMapping("/flags/{fagIdx}")
-    public BaseResponse<GetFlagCommentRes> getFlagComment(@PathVariable("flagIdx") int flagIdx) throws BaseException {
+    @GetMapping("/flags/{flagIdx}")
+    public BaseResponse<List<GetFlagCommentRes>> getFlagComment(@PathVariable("flagIdx") Long flagIdx) throws BaseException {
         try {
             if (jwtService.getJwt() == null) {
                 return new BaseResponse<>(EMPTY_JWT);
@@ -46,12 +48,12 @@ public class CommentController {
 
             }
 
-                GetFlagCommentRes getFlagCommentRes = commentProvider.getFlagComment( flagIdx);
+                List<GetFlagCommentRes> getFlagCommentRes = commentProvider.getFlagComment( flagIdx);
                 return new BaseResponse<>(getFlagCommentRes);
             } catch (BaseException exception) {
                 return new BaseResponse<>((exception.getStatus()));
             }
         }
-*/
+
 
 }
