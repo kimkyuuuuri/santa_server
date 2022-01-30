@@ -20,7 +20,7 @@ public class New_HomeDao {
     private List<GetFlagsRes> getFlagsResList;
     private List<GetUsersRes> getUsersResList;
     private List<GetMountainsRes> getMountainsResList;
-    private List<GetCommentRes> getCommentRes;
+    private List<GetCommentRes >getCommentRes;
     private int count=0;
 
     private List<GetMountainsIdxRes> getMountainsIdxResList;
