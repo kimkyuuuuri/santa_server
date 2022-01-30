@@ -84,6 +84,16 @@ public class CommentDao {
 
     }
 
+
+    public int createFlagComment(PostFlagCommentReq postFlagCommentReq,Long flagIdx,int userIdx){
+        Object[] createFlagCommentParams = new Object[]{userIdx, flagIdx, postFlagCommentReq.getContents()};
+
+        this.jdbcTemplate.update("insert into flagcomment (userIdx,flagIdx,contents) VALUES (? , ?,?)",
+
+                createFlagCommentParams);
+        return this.jdbcTemplate.queryForObject("select last_insert_id()",int.class);
+    }
+
     public int checkFlagExist(Long flagIdx){
         return this.jdbcTemplate.queryForObject("select Exists(select flagIdx from flag\n" +
                 "                where status='T' and flagIdx=? ) as FlagExist", int.class,flagIdx);

@@ -4,6 +4,8 @@ import com.smileflower.santa.config.BaseException;
 import com.smileflower.santa.config.BaseResponse;
 
 import com.smileflower.santa.src.comment.model.*;
+import com.smileflower.santa.src.flags.model.PostFlagHardReq;
+import com.smileflower.santa.src.flags.model.PostFlagHardRes;
 import com.smileflower.santa.utils.JwtService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -12,8 +14,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-import static com.smileflower.santa.config.BaseResponseStatus.EMPTY_JWT;
-import static com.smileflower.santa.config.BaseResponseStatus.INVALID_JWT;
+import static com.smileflower.santa.config.BaseResponseStatus.*;
 
 
 @RestController
@@ -54,6 +55,31 @@ public class CommentController {
                 return new BaseResponse<>((exception.getStatus()));
             }
         }
+
+    @ResponseBody
+    @PostMapping("/flags/{flagIdx}")
+    public BaseResponse<PostFlagCommentRes> createFlagComment(@RequestBody PostFlagCommentReq postFlagCommentReq, @PathVariable("flagIdx") long flagIdx ) throws BaseException {
+        try{
+            if(jwtService.getJwt()==null){
+                return new BaseResponse<>(EMPTY_JWT);
+            }
+            if(postFlagCommentReq.getContents()==null)
+                return new BaseResponse<>(POST_COMMENT_EMPTY_CONTENT);
+
+            if(postFlagCommentReq.getContents().length() > 450)
+                return new BaseResponse<>(POST_COMMENT_INVALID_CONTENT);
+
+            else{
+                int userIdx=jwtService.getUserIdx();
+                PostFlagCommentRes postFlagCommentRes = commentService.createFlagComment(postFlagCommentReq,flagIdx,userIdx);
+                return new BaseResponse<>(postFlagCommentRes);
+            }
+
+        }catch(BaseException exception){
+            return new BaseResponse<>((exception.getStatus()));
+        }
+
+    }
 
 
 }

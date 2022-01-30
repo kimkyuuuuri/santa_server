@@ -2,9 +2,7 @@ package com.smileflower.santa.src.comment;
 
 
 import com.smileflower.santa.config.BaseException;
-import com.smileflower.santa.src.picture.model.DeletePictureRes;
-import com.smileflower.santa.src.picture.model.PostPictureReportRes;
-import com.smileflower.santa.src.picture.model.PostPictureSaveRes;
+import com.smileflower.santa.src.comment.model.*;
 import com.smileflower.santa.utils.JwtService;
 import com.smileflower.santa.utils.S3Service;
 import org.slf4j.Logger;
@@ -26,13 +24,20 @@ public class CommentService {
     private JdbcTemplate jdbcTemplate;
     final Logger logger = LoggerFactory.getLogger(this.getClass());
 
-    public CommentService(CommentDao commentDao, JwtService jwtService, S3Service s3Service, CommentProvider commentProvider) {
+    public CommentService(CommentDao commentDao, JwtService jwtService, S3Service s3Service, CommentProvider commentProvider) throws BaseException {
         this.commentProvider = commentProvider;
         this.commentDao = commentDao;
         this.jwtService = jwtService;
         this.s3Service = s3Service;
     }
+    public PostFlagCommentRes createFlagComment(PostFlagCommentReq postFlagCommentReq, Long flagIdx, int userIdx) throws BaseException {
+        if (commentProvider.checkFlagExist(flagIdx) == 0)
+            throw new BaseException(INVALID_POST);
+            int flagCommentIdx = commentDao.createFlagComment(postFlagCommentReq, flagIdx, userIdx);
 
+            return new PostFlagCommentRes(flagCommentIdx);
+
+    }
 
 
 }
