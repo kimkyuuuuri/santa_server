@@ -62,7 +62,7 @@ public enum BaseResponseStatus {
 
     //post comment
     POST_COMMENT_EMPTY_CONTENT(false, 2070, "댓글 내용을 입력해주세요."),
-    POST_COMMENT_INVALID_CONTENT(false,2071,"댓글은 450 이내로 작성해주세요"),
+    POST_COMMENT_INVALID_CONTENT(false,2071,"댓글은 450 이내로 작성해주세요."),
 
 
 
