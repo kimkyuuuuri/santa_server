@@ -3,6 +3,7 @@ package com.smileflower.santa.src.comment;
 
 import com.smileflower.santa.config.BaseException;
 import com.smileflower.santa.src.comment.model.*;
+import com.smileflower.santa.src.flags.model.DeleteFlagRes;
 import com.smileflower.santa.utils.JwtService;
 import com.smileflower.santa.utils.S3Service;
 import org.slf4j.Logger;
@@ -39,5 +40,14 @@ public class CommentService {
 
     }
 
+    public PatchFlagCommentStatusRes deleteFlagComment(int userIdx, long flagCommentIdx) throws BaseException {
+        if (commentProvider.checkFlagCommentExist(flagCommentIdx) == 0)
+            throw new BaseException(INVALID_COMMENT);
+        else if (commentProvider.checkFlagCommentWhereUserExist(flagCommentIdx,userIdx) == 0)
+            throw new BaseException(INVALID_COMMENT_USER);
+        commentDao.deleteFlagComment(flagCommentIdx);
+        return new PatchFlagCommentStatusRes(flagCommentIdx);
+
+    }
 
 }

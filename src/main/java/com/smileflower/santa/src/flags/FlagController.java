@@ -63,6 +63,7 @@ public class FlagController {
             return new BaseResponse<>((exception.getStatus()));
         }
     }
+
     @ResponseBody
     @GetMapping("/flags")
     public BaseResponse<GetFlagRes> getFlag(@RequestParam(required = true) String mountain) {
@@ -215,6 +216,7 @@ public class FlagController {
         }
 
     }
+
     @PostMapping(path = "/flags/{mountainIdx}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public BaseResponse<PostFlagRes> uploadFlag(@RequestParam("latitude") double latitude, @RequestParam("longitude") double longitude,
                                                 @RequestParam("altitude") double altitude, @RequestPart(required = false) MultipartFile file,

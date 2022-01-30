@@ -11,6 +11,8 @@ public class GetFlagRecommentRes {
     private String userName;
     private int recommentIdx;
     private String contents;
+    private String status;
     private String createdAt;
+
 
 }

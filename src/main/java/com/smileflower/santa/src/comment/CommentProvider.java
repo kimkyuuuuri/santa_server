@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+import static com.smileflower.santa.config.BaseResponseStatus.EMPTY_COMMENT;
 import static com.smileflower.santa.config.BaseResponseStatus.INVALID_POST;
 
 
@@ -37,21 +38,22 @@ public class CommentProvider {
         return exist;
     }
 
-    public int checkPictureExist(long pictureIdx) {
-        int exist = commentDao.checkPictureExist(pictureIdx);
+
+    public int checkFlagCommentExist(long flagCommentIdx) {
+        int exist = commentDao.checkFlagCommentExist(flagCommentIdx);
         return exist;
     }
 
-    public int checkPictureWhereUserExist(Long pictureIdx, int userIdx) {
-        return commentDao.checkPictureWhereUserExist(pictureIdx, userIdx);
-    }
+
 
     public int checkJwt(String jwt) {
         int exist = commentDao.checkJwt(jwt);
         return exist;
     }
 
-
+    public int checkFlagCommentWhereUserExist(Long flagIdx,int userIdx){
+        return commentDao.checkFlagCommentWhereUserExist(flagIdx,userIdx);
+    }
     public List<GetFlagCommentRes> getFlagComment(Long flagIdx) throws BaseException {
         if (checkFlagExist(flagIdx) == 0)
             throw new BaseException(INVALID_POST);
@@ -59,7 +61,7 @@ public class CommentProvider {
         List<GetFlagCommentRes> getFlagCommentRes = commentDao.getFlagComment(flagIdx);
 
         if (getFlagCommentRes.size() == 0)
-            throw new BaseException(BaseResponseStatus.EMPTY_PICTURE);
+            throw new BaseException(EMPTY_COMMENT);
 
         for (int i = 0; i < getFlagCommentRes.size(); i++) {
             if (getFlagCommentRes.get(i).getUserImageUrl() != null)

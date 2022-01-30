@@ -64,6 +64,10 @@ public enum BaseResponseStatus {
     POST_COMMENT_EMPTY_CONTENT(false, 2070, "댓글 내용을 입력해주세요."),
     POST_COMMENT_INVALID_CONTENT(false,2071,"댓글은 450 이내로 작성해주세요."),
 
+    //comment 삭제
+    INVALID_COMMENT(false,2080,"존재하지 않는 댓글입니다."),
+
+    INVALID_COMMENT_USER(false,2081,"본인 댓글이 아닙니다."),
 
 
     /**
@@ -83,6 +87,9 @@ public enum BaseResponseStatus {
     EMPTY_PICTURE(false,3020,"TOP 10 사진이 없습니다."),
     EMPTY_USER(false,3021,"TOP 10 유저가 없습니다."),
     EMPTY_MOUNTAIN(false,3022,"TOP 10 산이 없습니다."),
+
+    //comment
+    EMPTY_COMMENT(false,3023,"댓글이 없습니다."),
 
     /**
      * 4000 : Database, Server 오류

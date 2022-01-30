@@ -13,6 +13,7 @@ public class GetFlagCommentRes {
     private String userName;
     private int commentIdx;
     private String contents;
+    private String status;
     private String createdAt;
     private List<GetFlagRecommentRes> getFlagRecommentRes;
 

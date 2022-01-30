@@ -4,6 +4,7 @@ import com.smileflower.santa.config.BaseException;
 import com.smileflower.santa.config.BaseResponse;
 
 import com.smileflower.santa.src.comment.model.*;
+import com.smileflower.santa.src.flags.model.PatchPickRes;
 import com.smileflower.santa.src.flags.model.PostFlagHardReq;
 import com.smileflower.santa.src.flags.model.PostFlagHardRes;
 import com.smileflower.santa.utils.JwtService;
@@ -81,5 +82,24 @@ public class CommentController {
 
     }
 
+    @ResponseBody
+    @PatchMapping ("/flag-comments/{flagIdx}")
+    public BaseResponse<PatchFlagCommentStatusRes> deleteFlagComment(@PathVariable("flagIdx") long flagIdx) throws BaseException {
+        try{
+            if(jwtService.getJwt()==null){
+                return new BaseResponse<>(EMPTY_JWT);
+            }
+
+            else{
+                int userIdx=jwtService.getUserIdx();
+                PatchFlagCommentStatusRes patchFlagCommentStatus = commentService.deleteFlagComment(userIdx,flagIdx);
+                return new BaseResponse<>(patchFlagCommentStatus);
+            }
+
+        }catch(BaseException exception){
+            return new BaseResponse<>((exception.getStatus()));
+        }
+
+    }
 
 }
