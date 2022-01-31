@@ -5,7 +5,7 @@ import lombok.*;
 @Getter
 @NoArgsConstructor(access=AccessLevel.PUBLIC)
 @AllArgsConstructor
-public class GetFlagRecommentRes {
+public class GetRecommentRes {
     private int userIdx;
     private String userImageUrl;
     private String userName;

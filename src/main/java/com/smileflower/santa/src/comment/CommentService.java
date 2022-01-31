@@ -3,14 +3,12 @@ package com.smileflower.santa.src.comment;
 
 import com.smileflower.santa.config.BaseException;
 import com.smileflower.santa.src.comment.model.*;
-import com.smileflower.santa.src.flags.model.DeleteFlagRes;
 import com.smileflower.santa.utils.JwtService;
 import com.smileflower.santa.utils.S3Service;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import static com.smileflower.santa.config.BaseResponseStatus.*;
 
@@ -31,23 +29,41 @@ public class CommentService {
         this.jwtService = jwtService;
         this.s3Service = s3Service;
     }
-    public PostFlagCommentRes createFlagComment(PostFlagCommentReq postFlagCommentReq, Long flagIdx, int userIdx) throws BaseException {
-        if (commentProvider.checkFlagExist(flagIdx) == 0)
-            throw new BaseException(INVALID_POST);
-            int flagCommentIdx = commentDao.createFlagComment(postFlagCommentReq, flagIdx, userIdx);
+    public PostCommentRes createComment(PostCommentReq postCommentReq, Long idx, int userIdx, String type) throws BaseException {
+        int commentIdx=0;
+        if(type.equals("flag")) {
+            if (commentProvider.checkFlagExist(idx) == 0)
+                throw new BaseException(INVALID_POST);
+            commentIdx = commentDao.createFlagComment(postCommentReq, idx, userIdx);
+        }
+        if(type.equals("picture")) {
+            if (commentProvider.checkPictureExist(idx) == 0)
+                throw new BaseException(INVALID_POST);
+            commentIdx = commentDao.createPictureComment(postCommentReq, idx, userIdx);
+        }
 
-            return new PostFlagCommentRes(flagCommentIdx);
-
-    }
-
-    public PatchFlagCommentStatusRes deleteFlagComment(int userIdx, long flagCommentIdx) throws BaseException {
-        if (commentProvider.checkFlagCommentExist(flagCommentIdx) == 0)
-            throw new BaseException(INVALID_COMMENT);
-        else if (commentProvider.checkFlagCommentWhereUserExist(flagCommentIdx,userIdx) == 0)
-            throw new BaseException(INVALID_COMMENT_USER);
-        commentDao.deleteFlagComment(flagCommentIdx);
-        return new PatchFlagCommentStatusRes(flagCommentIdx);
+            return new PostCommentRes(commentIdx);
 
     }
+
+    public PatchCommentStatusRes deleteComment(int userIdx, long commentIdx, String type) throws BaseException {
+       if(type.equals("flag")) {
+           if (commentProvider.checkFlagCommentExist(commentIdx) == 0)
+               throw new BaseException(INVALID_COMMENT);
+           else if (commentProvider.checkFlagCommentWhereUserExist(commentIdx, userIdx) == 0)
+               throw new BaseException(INVALID_COMMENT_USER);
+           commentDao.deleteFlagComment(commentIdx);
+       }
+       else if (type.equals("picture")) {
+           if (commentProvider.checkPictureCommentExist(commentIdx) == 0)
+               throw new BaseException(INVALID_COMMENT);
+           else if (commentProvider.checkPictureCommentWhereUserExist(commentIdx, userIdx) == 0)
+               throw new BaseException(INVALID_COMMENT_USER);
+           commentDao.deletePictureComment(commentIdx);
+       }
+           return new PatchCommentStatusRes(commentIdx);
+       }
+
+
 
 }

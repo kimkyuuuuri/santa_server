@@ -7,8 +7,8 @@ import lombok.Setter;
 @Getter
 @Setter
 @AllArgsConstructor
-public class PostFlagCommentRes {
-    private int flagCommentIdx;
+public class PostCommentRes {
+    private int commentIdx;
 
 
 }

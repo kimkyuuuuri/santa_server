@@ -4,9 +4,7 @@ import com.smileflower.santa.config.BaseException;
 import com.smileflower.santa.config.BaseResponse;
 
 import com.smileflower.santa.src.comment.model.*;
-import com.smileflower.santa.src.flags.model.PatchPickRes;
-import com.smileflower.santa.src.flags.model.PostFlagHardReq;
-import com.smileflower.santa.src.flags.model.PostFlagHardRes;
+
 import com.smileflower.santa.utils.JwtService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -38,8 +36,8 @@ public class CommentController {
     }
 
     @ResponseBody
-    @GetMapping("/flags/{flagIdx}")
-    public BaseResponse<List<GetFlagCommentRes>> getFlagComment(@PathVariable("flagIdx") Long flagIdx) throws BaseException {
+    @GetMapping("/{idx}")
+    public BaseResponse<List<GetCommentRes>> getFlagComment(@PathVariable("idx") Long Idx, @RequestParam("type") String type) throws BaseException {
         try {
             if (jwtService.getJwt() == null) {
                 return new BaseResponse<>(EMPTY_JWT);
@@ -50,30 +48,31 @@ public class CommentController {
 
             }
 
-                List<GetFlagCommentRes> getFlagCommentRes = commentProvider.getFlagComment( flagIdx);
-                return new BaseResponse<>(getFlagCommentRes);
+                    List<GetCommentRes> getCommentRes = commentProvider.getComment(Idx,type);
+
+                return new BaseResponse<>(getCommentRes);
             } catch (BaseException exception) {
                 return new BaseResponse<>((exception.getStatus()));
             }
         }
 
     @ResponseBody
-    @PostMapping("/flags/{flagIdx}")
-    public BaseResponse<PostFlagCommentRes> createFlagComment(@RequestBody PostFlagCommentReq postFlagCommentReq, @PathVariable("flagIdx") long flagIdx ) throws BaseException {
+    @PostMapping("/{idx}")
+    public BaseResponse<PostCommentRes> createFlagComment(@RequestBody PostCommentReq postCommentReq, @PathVariable("idx") long idx,@RequestParam("type") String type ) throws BaseException {
         try{
             if(jwtService.getJwt()==null){
                 return new BaseResponse<>(EMPTY_JWT);
             }
-            if(postFlagCommentReq.getContents()==null)
+            if(postCommentReq.getContents()==null)
                 return new BaseResponse<>(POST_COMMENT_EMPTY_CONTENT);
 
-            if(postFlagCommentReq.getContents().length() > 450)
+            if(postCommentReq.getContents().length() > 450)
                 return new BaseResponse<>(POST_COMMENT_INVALID_CONTENT);
 
             else{
                 int userIdx=jwtService.getUserIdx();
-                PostFlagCommentRes postFlagCommentRes = commentService.createFlagComment(postFlagCommentReq,flagIdx,userIdx);
-                return new BaseResponse<>(postFlagCommentRes);
+                PostCommentRes postCommentRes = commentService.createComment(postCommentReq,idx,userIdx,type);
+                return new BaseResponse<>(postCommentRes);
             }
 
         }catch(BaseException exception){
@@ -83,8 +82,8 @@ public class CommentController {
     }
 
     @ResponseBody
-    @PatchMapping ("/flag-comments/{flagIdx}")
-    public BaseResponse<PatchFlagCommentStatusRes> deleteFlagComment(@PathVariable("flagIdx") long flagIdx) throws BaseException {
+    @PatchMapping ("/{idx}")
+    public BaseResponse<PatchCommentStatusRes> deleteFlagComment(@PathVariable("idx") long idx ,@RequestParam("type") String type ) throws BaseException {
         try{
             if(jwtService.getJwt()==null){
                 return new BaseResponse<>(EMPTY_JWT);
@@ -92,7 +91,7 @@ public class CommentController {
 
             else{
                 int userIdx=jwtService.getUserIdx();
-                PatchFlagCommentStatusRes patchFlagCommentStatus = commentService.deleteFlagComment(userIdx,flagIdx);
+                PatchCommentStatusRes patchFlagCommentStatus = commentService.deleteComment(userIdx,idx,type);
                 return new BaseResponse<>(patchFlagCommentStatus);
             }
 

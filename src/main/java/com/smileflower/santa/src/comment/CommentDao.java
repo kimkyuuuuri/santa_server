@@ -13,7 +13,7 @@ import java.util.List;
 public class CommentDao {
 
     private JdbcTemplate jdbcTemplate;
-    private List<GetFlagRecommentRes> getFlagRecommentRes;
+    private List<GetRecommentRes> getRecommentRes;
 
     @Autowired
     public void setDataSource(DataSource dataSource) {
@@ -44,7 +44,7 @@ public class CommentDao {
                 "                where status='T' and pictureIdx=? and userIdx=?) as FlagExist", int.class,pictureIdx,userIdx);
     }
 
-    public List<GetFlagCommentRes> getFlagComment(Long flagIdx) {
+    public List<GetCommentRes> getFlagComment(Long flagIdx) {
         String getFlagCommentQuery = "select u.userIdx, u.userImageUrl, u.name as userName, flagcommentIdx as commentIdx, contents," +
                 "  flagcomment.status as status,\n" +
                 "       case\n" +
@@ -60,7 +60,7 @@ public class CommentDao {
                 "left join user u on flagcomment.userIdx = u.userIdx\n" +
                 "where flagcomment.flagIdx=? ";
             return this.jdbcTemplate.query(getFlagCommentQuery,
-                (rs, rowNum) -> new GetFlagCommentRes(
+                (rs, rowNum) -> new GetCommentRes(
                         rs.getInt("userIdx"),
                         rs.getString("userImageUrl"),
                         rs.getString("userName"),
@@ -68,7 +68,7 @@ public class CommentDao {
                         rs.getString("contents"),
                         rs.getString("status"),
                         rs.getString("createdAt"),
-                        getFlagRecommentRes=this.jdbcTemplate.query(" select u.userIdx, u.userImageUrl, u.name as userName, flagrecommentIdx as recommentIdx, contents," +
+                        getRecommentRes =this.jdbcTemplate.query(" select u.userIdx, u.userImageUrl, u.name as userName, flagrecommentIdx as recommentIdx, contents," +
                                         " flagrecomment.status as status,\n" +
                                         "       case\n" +
                                         "           when timestampdiff(minute , flagrecomment.createdAt, current_timestamp()) < 60\n" +
@@ -83,7 +83,7 @@ public class CommentDao {
                                         "    from flagrecomment\n" +
                                         "inner join user u on flagrecomment.userIdx = u.userIdx\n" +
                                         "where flagrecomment.flagcommentIdx=? and flagrecomment.status='t' "  ,
-                                (rk, rowNum2) -> new GetFlagRecommentRes(
+                                (rk, rowNum2) -> new GetRecommentRes(
                                         rk.getInt("userIdx"),
                                         rk.getString("userImageUrl"),
                                         rk.getString("userName"),
@@ -95,9 +95,60 @@ public class CommentDao {
 
     }
 
+    public List<GetCommentRes> getPictureComment(Long pictureIdx) {
+        String getPictureCommentQuery = "select u.userIdx, u.userImageUrl, u.name as userName, picturecommentIdx as commentIdx, contents," +
+                "  picturecomment.status as status,\n" +
+                "       case\n" +
+                "                                                            when timestampdiff(minute , picturecomment.createdAt, current_timestamp()) < 60\n" +
+                "                                                          then '방금 전'\n" +
+                "                                                            when timestampdiff(hour , picturecomment.createdAt, current_timestamp()) < 24\n" +
+                "                                                                then concat(timestampdiff(hour, picturecomment.createdAt, current_timestamp()), '시간 전')\n" +
+                "                                                           when  timestampdiff(hour, picturecomment.createdAt, current_timestamp()) < 168\n" +
+                "                                                                then concat(timestampdiff(day , picturecomment.createdAt, current_timestamp()), '일 전')\n" +
+                "\n" +
+                "                                                            ELSE\n" +
+                "                                                               concat(timestampdiff(week, picturecomment.createdAt, current_timestamp()), '주 전') end  as  createdAt from picturecomment\n" +
+                "left join user u on picturecomment.userIdx = u.userIdx\n" +
+                "where picturecomment.pictureIdx=? ";
+        return this.jdbcTemplate.query(getPictureCommentQuery,
+                (rs, rowNum) -> new GetCommentRes(
+                        rs.getInt("userIdx"),
+                        rs.getString("userImageUrl"),
+                        rs.getString("userName"),
+                        rs.getInt("commentIdx"),
+                        rs.getString("contents"),
+                        rs.getString("status"),
+                        rs.getString("createdAt"),
+                        getRecommentRes =this.jdbcTemplate.query(" select u.userIdx, u.userImageUrl, u.name as userName, picturerecommentIdx as recommentIdx, contents," +
+                                        " picturerecomment.status as status,\n" +
+                                        "       case\n" +
+                                        "           when timestampdiff(minute , picturerecomment.createdAt, current_timestamp()) < 60\n" +
+                                        "               then '방금 전'\n" +
+                                        "           when timestampdiff(hour , picturerecomment.createdAt, current_timestamp()) < 24\n" +
+                                        "               then concat(timestampdiff(hour, picturerecomment.createdAt, current_timestamp()), '시간 전')\n" +
+                                        "           when  timestampdiff(hour, picturerecomment.createdAt, current_timestamp()) < 168\n" +
+                                        "               then concat(timestampdiff(day , picturerecomment.createdAt, current_timestamp()), '일 전')\n" +
+                                        "\n" +
+                                        "           ELSE\n" +
+                                        "               concat(timestampdiff(week, picturerecomment.createdAt, current_timestamp()), '주 전') end  as  createdAt\n" +
+                                        "    from picturerecomment\n" +
+                                        "inner join user u on picturerecomment.userIdx = u.userIdx\n" +
+                                        "where picturerecomment.picturecommentIdx=? and picturerecomment.status='t' "  ,
+                                (rk, rowNum2) -> new GetRecommentRes(
+                                        rk.getInt("userIdx"),
+                                        rk.getString("userImageUrl"),
+                                        rk.getString("userName"),
+                                        rk.getInt("recommentIdx"),
+                                        rk.getString("contents"),
+                                        rk.getString("status"),
+                                        rk.getString("createdAt"))
+                                ,rs.getInt("commentIdx"))),pictureIdx);
 
-    public int createFlagComment(PostFlagCommentReq postFlagCommentReq,Long flagIdx,int userIdx){
-        Object[] createFlagCommentParams = new Object[]{userIdx, flagIdx, postFlagCommentReq.getContents()};
+    }
+
+
+    public int createFlagComment(PostCommentReq postCommentReq, Long flagIdx, int userIdx){
+        Object[] createFlagCommentParams = new Object[]{userIdx, flagIdx, postCommentReq.getContents()};
 
         this.jdbcTemplate.update("insert into flagcomment (userIdx,flagIdx,contents) VALUES (? , ?,?)",
 
@@ -105,23 +156,46 @@ public class CommentDao {
         return this.jdbcTemplate.queryForObject("select last_insert_id()",int.class);
     }
 
+    public int createPictureComment(PostCommentReq postCommentReq, Long pictureIdx, int userIdx){
+        Object[] createPictureCommentParams = new Object[]{userIdx, pictureIdx, postCommentReq.getContents()};
+
+        this.jdbcTemplate.update("insert into picturecomment (userIdx,pictureIdx,contents) VALUES (? , ?,?)",
+
+                createPictureCommentParams);
+        return this.jdbcTemplate.queryForObject("select last_insert_id()",int.class);
+    }
+
     public int checkFlagExist(Long flagIdx){
         return this.jdbcTemplate.queryForObject("select Exists(select flagIdx from flag\n" +
                 "                where status='T' and flagIdx=? ) as FlagExist", int.class,flagIdx);
     }
+    public int checkPictureExist(Long pictureIdx){
+        return this.jdbcTemplate.queryForObject("select Exists(select pictureIdx from picture\n" +
+                "                where status='T' and pictureIdx=? ) as pictureExist", int.class,pictureIdx);
+    }
 
     public void deleteFlagComment(Long flagCommentIdx) {
-        this.jdbcTemplate.update("update flagcomment status set status='f'  where flagCommentIdx=?",
+        this.jdbcTemplate.update("update flagcomment status set status='f'  where flagcommentIdx=?",
                 flagCommentIdx
         );
 
     }
 
+    public void deletePictureComment(Long pictureCommentIdx) {
+        this.jdbcTemplate.update("update picturecomment status set status='f'  where picturecommentIdx=?",
+                pictureCommentIdx
+        );
+
+    }
     public int checkFlagCommentExist(Long flagCommentIdx){
         return this.jdbcTemplate.queryForObject("select Exists(select flagCommentIdx from flagcomment\n" +
                 "                where status='t' and flagCommentIdx=? ) as FlagCommentExist", int.class,flagCommentIdx);
     }
 
+    public int checkPictureCommentExist(Long pictureCommentIdx){
+        return this.jdbcTemplate.queryForObject("select Exists(select pictureCommentIdx from picturecomment\n" +
+                "                where status='t' and pictureCommentIdx=? ) as pictureCommentExist", int.class,pictureCommentIdx);
+    }
     public int checkFlagWhereUserExist(Long flagIdx,int userIdx){
         return this.jdbcTemplate.queryForObject("select Exists(select flagIdx from flag\n" +
                 "                where status='t' and flagIdx=? and userIdx=?) as FlagExist", int.class,flagIdx,userIdx);
@@ -130,5 +204,9 @@ public class CommentDao {
     public int checkFlagCommentWhereUserExist(Long flagCommentIdx,int userIdx){
         return this.jdbcTemplate.queryForObject("select Exists(select flagCommentIdx from flagcomment\n" +
                 "                where status='t' and flagCommentIdx=? and userIdx=?) as FlagExist", int.class,flagCommentIdx,userIdx);
+    }
+    public int checkPictureCommentWhereUserExist(Long pictureCommentIdx,int userIdx){
+        return this.jdbcTemplate.queryForObject("select Exists(select pictureCommentIdx from picturecomment\n" +
+                "                where status='t' and pictureCommentIdx=? and userIdx=?) as pictureExist", int.class,pictureCommentIdx,userIdx);
     }
 }

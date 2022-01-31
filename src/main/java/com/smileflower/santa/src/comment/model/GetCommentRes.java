@@ -7,7 +7,7 @@ import java.util.List;
 @Getter
 @NoArgsConstructor(access=AccessLevel.PUBLIC)
 @AllArgsConstructor
-public class GetFlagCommentRes {
+public class GetCommentRes {
     private int userIdx;
     private String userImageUrl;
     private String userName;
@@ -15,7 +15,7 @@ public class GetFlagCommentRes {
     private String contents;
     private String status;
     private String createdAt;
-    private List<GetFlagRecommentRes> getFlagRecommentRes;
+    private List<GetRecommentRes> getRecommentRes;
 
 
 }

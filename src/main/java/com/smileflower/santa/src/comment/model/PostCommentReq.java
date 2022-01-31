@@ -5,8 +5,8 @@ import lombok.*;
 @Getter
 @NoArgsConstructor(access=AccessLevel.PUBLIC)
 @AllArgsConstructor
-public class PatchFlagCommentStatusRes {
-    private long flagCommentIdx;
+public class PostCommentReq {
+    private String contents;
 
 
 }
