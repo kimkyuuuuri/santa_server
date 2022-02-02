@@ -226,7 +226,7 @@ public class MountainDao {
                         "        ,\n" +
                         "       concat(m.high, 'm')                            as high,\n" +
                         " m.high as altitude,\n" +
-                        "       case when a.hot > 10 then '인기' else null end    as hot,\n" +
+                        "       case when a.hot > 10 then 'T' else 'F' end   as hot,\n" +
                         "       case when b.status = 'T' then 'T' else 'F' end as pick\n" +
                         "\n" +
                         "from mountain m\n" +

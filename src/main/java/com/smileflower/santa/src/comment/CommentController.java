@@ -37,18 +37,19 @@ public class CommentController {
 
     @ResponseBody
     @GetMapping("/{idx}")
-    public BaseResponse<List<GetCommentRes>> getFlagComment(@PathVariable("idx") Long Idx, @RequestParam("type") String type) throws BaseException {
+    public BaseResponse<List<GetCommentRes>> getComment(@PathVariable("idx") Long Idx, @RequestParam("type") String type) throws BaseException {
         try {
             if (jwtService.getJwt() == null) {
                 return new BaseResponse<>(EMPTY_JWT);
             }
 
+
             else if (commentProvider.checkJwt(jwtService.getJwt()) == 1) {
                 return new BaseResponse<>(INVALID_JWT);
 
             }
-
-                    List<GetCommentRes> getCommentRes = commentProvider.getComment(Idx,type);
+            int userIdx=jwtService.getUserIdx();
+                    List<GetCommentRes> getCommentRes = commentProvider.getComment(Idx,type,userIdx);
 
                 return new BaseResponse<>(getCommentRes);
             } catch (BaseException exception) {
@@ -58,7 +59,7 @@ public class CommentController {
 
     @ResponseBody
     @PostMapping("/{idx}")
-    public BaseResponse<PostCommentRes> createFlagComment(@RequestBody PostCommentReq postCommentReq, @PathVariable("idx") long idx,@RequestParam("type") String type ) throws BaseException {
+    public BaseResponse<PostCommentRes> createComment(@RequestBody PostCommentReq postCommentReq, @PathVariable("idx") long idx,@RequestParam("type") String type ) throws BaseException {
         try{
             if(jwtService.getJwt()==null){
                 return new BaseResponse<>(EMPTY_JWT);
@@ -66,13 +67,39 @@ public class CommentController {
             if(postCommentReq.getContents()==null)
                 return new BaseResponse<>(POST_COMMENT_EMPTY_CONTENT);
 
-            if(postCommentReq.getContents().length() > 450)
+            if(postCommentReq.getContents().length() > 100)
                 return new BaseResponse<>(POST_COMMENT_INVALID_CONTENT);
 
             else{
                 int userIdx=jwtService.getUserIdx();
                 PostCommentRes postCommentRes = commentService.createComment(postCommentReq,idx,userIdx,type);
                 return new BaseResponse<>(postCommentRes);
+            }
+
+        }catch(BaseException exception){
+            return new BaseResponse<>((exception.getStatus()));
+        }
+
+    }
+
+
+    @ResponseBody
+    @PostMapping("/recomment/{idx}")
+    public BaseResponse<PostRecommentRes> createRecomment(@RequestBody PostRecommentReq postRecommentReq, @PathVariable("idx") long idx,@RequestParam("type") String type ) throws BaseException {
+        try{
+            if(jwtService.getJwt()==null){
+                return new BaseResponse<>(EMPTY_JWT);
+            }
+            if(postRecommentReq.getContents()==null)
+                return new BaseResponse<>(POST_COMMENT_EMPTY_CONTENT);
+
+            if(postRecommentReq.getContents().length() > 450)
+                return new BaseResponse<>(POST_COMMENT_INVALID_CONTENT);
+
+            else{
+                int userIdx=jwtService.getUserIdx();
+                PostRecommentRes postRecommentRes = commentService.createRecomment(postRecommentReq,idx,userIdx,type);
+                return new BaseResponse<>(postRecommentRes);
             }
 
         }catch(BaseException exception){

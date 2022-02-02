@@ -61,7 +61,7 @@ public class CommentProvider {
     public int checkPictureCommentWhereUserExist(Long pictureIdx,int userIdx){
         return commentDao.checkPictureCommentWhereUserExist(pictureIdx,userIdx);
     }
-    public List<GetCommentRes> getComment(Long idx,String type) throws BaseException {
+    public List<GetCommentRes> getComment(Long idx,String type,int userIdx) throws BaseException {
         if(type.equals("flag")) {
             if (checkFlagExist(idx) == 0)
                 throw new BaseException(INVALID_POST);
@@ -77,11 +77,14 @@ public class CommentProvider {
         if (getCommentRes.size() == 0)
             throw new BaseException(EMPTY_COMMENT);
 
-
         for (int i = 0; i < getCommentRes.size(); i++) {
+            if (getCommentRes.get(i).getUserIdx()==userIdx)
+            {getCommentRes.get(i).setIsUsersComment("t");}
             if (getCommentRes.get(i).getUserImageUrl() != null)
                 getCommentRes.get(i).setUserImageUrl(s3Service.getFileUrl(getCommentRes.get(i).getUserImageUrl()));
             for (int j = 0; j < getCommentRes.get(i).getGetRecommentRes().size(); j++) {
+                if(getCommentRes.get(i).getGetRecommentRes().get(j).getUserIdx()==userIdx)
+                { getCommentRes.get(i).getGetRecommentRes().get(j).setIsUsersComment("t");  }
                 if (getCommentRes.get(i).getGetRecommentRes().get(j).getUserImageUrl() != null)
                     getCommentRes.get(i).getGetRecommentRes().get(j).setUserImageUrl(s3Service.getFileUrl(getCommentRes.get(i).getGetRecommentRes().get(j).getUserImageUrl()));
 

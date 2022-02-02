@@ -165,6 +165,25 @@ public class CommentDao {
         return this.jdbcTemplate.queryForObject("select last_insert_id()",int.class);
     }
 
+    public int createFlagRecomment(PostRecommentReq postReCommentReq, Long flagCommentIdx, int userIdx){
+        Object[] createFlagRecommentParams = new Object[]{userIdx, flagCommentIdx, postReCommentReq.getContents()};
+
+        this.jdbcTemplate.update("insert into flagrecomment (userIdx,flagcommentIdx,contents) VALUES (? , ?,?)",
+
+                createFlagRecommentParams);
+        return this.jdbcTemplate.queryForObject("select last_insert_id()",int.class);
+    }
+
+    public int createPictureRecomment(PostRecommentReq postReCommentReq, Long pictureCommentIdx, int userIdx){
+        Object[] createPictureRecommentParams = new Object[]{userIdx, pictureCommentIdx, postReCommentReq.getContents()};
+
+        this.jdbcTemplate.update("insert into picturerecomment (userIdx,picturecommentIdx,contents) VALUES (? , ?,?)",
+
+                createPictureRecommentParams);
+        return this.jdbcTemplate.queryForObject("select last_insert_id()",int.class);
+    }
+
+
     public int checkFlagExist(Long flagIdx){
         return this.jdbcTemplate.queryForObject("select Exists(select flagIdx from flag\n" +
                 "                where status='T' and flagIdx=? ) as FlagExist", int.class,flagIdx);

@@ -1,7 +1,7 @@
 package com.smileflower.santa.src.profile;
 
 
-import com.smileflower.santa.profile.model.dto.FlagsForMapResponse;
+
 import com.smileflower.santa.src.profile.model.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -49,7 +49,7 @@ public class New_ProfileDao {
         return getPicturesRes;
     }
 
-    public List<GetFlagRes>getFlagRes(int userIdx) {
+    public List<GetFlagRes> getFlagRes(int userIdx) {
         String query = "SELECT a.flagIdx, a.userIdx, a.mountainIdx, a.createdAt, a.pictureUrl, b.cnt, b.name from flag a left join (Select ANY_VALUE(f.userIdx) as userIdx, ANY_VALUE(f.mountainIdx) as mountainIdx, COUNT(f.mountainIdx) as cnt, m.name  from flag f LEFT JOIN mountain m ON f.mountainIdx = m.mountainIdx group by f.mountainIdx) b on a.mountainIdx = b.mountainIdx where a.useridx = ?";
         Object[] param = new Object[]{userIdx};
         List<GetFlagRes> getFlagRes = this.jdbcTemplate.query(query,param,(rs,rowNum) -> new GetFlagRes(
@@ -87,6 +87,36 @@ public class New_ProfileDao {
                 rs.getString("address")
         ));
         return getMapRes;
+    }
+
+    public List<GetMountainsRes> getMountainsRes(int userIdx) {
+        String getMountainQuery = "select mountain.mountainIdx as mountainIdx,mountain.imageUrl as mountainImageUrl,\n" +
+                "       case when   (select count(picklistIdx) as hot from picklist  where status='t' and picklist.mountainIdx=mountain.mountainIdx) > 10 then 't' else 'f'\n" +
+                "end as isHot ,\n" +
+                "\n" +
+                "       case when mountain.high<500 then 1\n" +
+                "            when mountain.high<800  then 2\n" +
+                "            when mountain.high<1000 then 3\n" +
+                "            when mountain.high<1300 then 4\n" +
+                "            else 5 end as difficulty,\n" +
+                "       mountain.name as mountainName,  concat('(', mountain.high, 'm)') as high,\n" +
+                "       case when   (select exists(select picklistIdx  from picklist  where status='t' and picklist.mountainIdx=mountain.mountainIdx and picklist.userIdx=?)) =1 then 't' else 'f'\n" +
+                "           end as isSaved\n" +
+                "from mountain\n" +
+                "                                                                  left join flag f on mountain.mountainIdx = f.mountainIdx\n" +
+                "\n" +
+                "                                                                  where f.userIdx=? group by f.mountainIdx;\n";
+        Object[] param = new Object[]{userIdx};
+        List<GetMountainsRes> getMountainsRes = this.jdbcTemplate.query(getMountainQuery,param,(rs,rowNum) -> new GetMountainsRes(
+                rs.getInt("mountainIdx"),
+                rs.getString("mountainImageUrl"),
+                rs.getString("isHot"),
+                rs.getInt("difficulty"),
+                rs.getString("mountainName"),
+                rs.getString("high"),
+                rs.getString("isSaved")
+        ));
+        return getMountainsRes;
     }
 
     public int postPictureRes(int userIdx,String imageUrl) {

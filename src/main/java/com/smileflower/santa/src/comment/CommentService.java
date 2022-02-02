@@ -29,6 +29,7 @@ public class CommentService {
         this.jwtService = jwtService;
         this.s3Service = s3Service;
     }
+
     public PostCommentRes createComment(PostCommentReq postCommentReq, Long idx, int userIdx, String type) throws BaseException {
         int commentIdx=0;
         if(type.equals("flag")) {
@@ -43,6 +44,27 @@ public class CommentService {
         }
 
             return new PostCommentRes(commentIdx);
+
+    }
+
+    public PostRecommentRes createRecomment(PostRecommentReq postRecommentReq, long commentIdx, int userIdx, String type) throws BaseException {
+       int recommentIdx=0;
+        if(type.equals("flag")) {
+            if (commentProvider.checkFlagCommentExist(commentIdx) == 0)
+                throw new BaseException(INVALID_COMMENT);
+            //else if (commentProvider.checkFlagCommentWhereUserExist(commentIdx, userIdx) == 0)
+              //  throw new BaseException(INVALID_COMMENT_USER);
+            recommentIdx = commentDao.createFlagRecomment(postRecommentReq, commentIdx, userIdx);
+        }
+        if(type.equals("picture")) {
+            if (commentProvider.checkPictureExist(commentIdx) == 0)
+                throw new BaseException(INVALID_POST);
+         //   else if (commentProvider.checkPictureCommentWhereUserExist(commentIdx, userIdx) == 0)
+               // throw new BaseException(INVALID_COMMENT_USER);
+            recommentIdx = commentDao.createPictureRecomment(postRecommentReq, commentIdx, userIdx);
+        }
+
+        return new PostRecommentRes(recommentIdx);
 
     }
 
