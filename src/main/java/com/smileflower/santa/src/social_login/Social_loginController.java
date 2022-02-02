@@ -1,12 +1,12 @@
-package com.smileflower.santa.src.kakao;
+package com.smileflower.santa.src.social_login;
 
 
 
+import com.smileflower.santa.apple.model.dto.*;
 import com.smileflower.santa.config.BaseException;
-import com.smileflower.santa.config.BaseResponse;
-import com.smileflower.santa.src.home.model.GetHomeRes;
-import com.smileflower.santa.src.kakao.model.KakaoProfile;
-import com.smileflower.santa.src.kakao.model.OAuthToken;
+import com.smileflower.santa.exception.ApiResult;
+import com.smileflower.santa.src.social_login.model.KakaoProfile;
+import com.smileflower.santa.src.social_login.model.OAuthToken;
 import lombok.RequiredArgsConstructor;
 
 import org.slf4j.Logger;
@@ -15,9 +15,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
@@ -29,18 +26,16 @@ import org.springframework.web.client.RestTemplate;
 
 import java.io.UnsupportedEncodingException;
 
-import static com.smileflower.santa.config.BaseResponseStatus.EMPTY_JWT;
-
 
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("/app/kakao")
-public class KakaoController {
+@RequestMapping("/app")
+public class Social_loginController {
 
     @Autowired
-    private final KakaoService kakaoService;
+    private final Social_loginService socialloginService;
     @Autowired
-    private final KakaoProvider kakaoProvider;
+    private final Social_loginProvider socialloginProvider;
     final Logger logger = LoggerFactory.getLogger(this.getClass());
 
     @ResponseBody
@@ -105,7 +100,7 @@ public class KakaoController {
         headers2.add("Authorization", "Bearer "+oauthToken.getAccess_token());
         headers2.add("Content-type", "application/x-www-form-urlencoded;charset=utf-8");
         System.out.println(oauthToken.getAccess_token());
-//토큰에서 아이디를 빼줌
+    //토큰에서 아이디를 빼줌
         // HttpHeader와 HttpBody를 하나의 오브젝트에 담기
         HttpEntity<MultiValueMap<String, String>> kakaoProfileRequest2 =
                 new HttpEntity<>(headers2);
@@ -135,13 +130,13 @@ public class KakaoController {
         // User 오브젝트 : username, password, email - email넣어야됨
         System.out.println("카카오 아이디(번호) : "+kakaoProfile.getId());
         System.out.println("카카오 이메일 : "+kakaoProfile.getKakao_account().getEmail());
-        System.out.println("이건 되나");
+
         System.out.println("카카오 아이디(번호) : "+kakaoProfile.getProperties().getNickname());
         // System.out.println("카카오 아이디(번호) : "+kakaoProfile.getProperties().getProfile_image());
 
 
         // 가입자 혹은 비가입자 체크 해서 처리
-// 수정하기
+
         //id를 넣으면 idx를 return?
         String a;
         String userId=Integer.toString(kakaoProfile.getId());
@@ -165,5 +160,55 @@ public class KakaoController {
         return kakaoProfile;
 
     }
+
+    @GetMapping(value = "/new-apple")
+    @ResponseBody
+    public ApiResult<CheckUserResponse> checkUser(@RequestBody CheckUserRequest checkUserRequest) {
+        return ApiResult.OK(
+                socialloginService.checkUser((checkUserRequest.getIdentifyToken()))
+        );
+    }
+    /**
+     * Sign in with Apple
+     *
+     * @param appleLoginRequest
+     * @return AppleLoginResponse
+     */
+    @PostMapping(value = "/new-apple/login")
+    @ResponseBody
+    public ApiResult<AppleLoginResponse> appleLogin(@RequestBody AppleLoginRequest appleLoginRequest) {
+        return ApiResult.OK(
+                socialloginService.loginUser(appleLoginRequest)
+        );
+    }
+    /**
+     * Sign up with Apple
+     *
+     * @param appleSigninRequest
+     * @return AppleLoginResponse
+     */
+    @PostMapping(value = "/new-apple/join")
+    @ResponseBody
+    public ApiResult<AppleSigninResponse> appleJoin(@RequestBody AppleSigninRequest appleSigninRequest) {
+
+        return ApiResult.OK(
+                socialloginService.createUser(appleSigninRequest)
+        );
+    }
+//    /**
+//     * Logout with Apple
+//     *
+//     * @param appleLoginRequest
+//     * @return AppleLoginResponse
+//     */
+//    @PatchMapping(value = "/api/apple/logout")
+//    @ResponseBody
+//    public ApiResult<AppleLoginResponse> appleLogout(@RequestBody AppleLoginRequest appleLoginRequest) {
+//        String client_secret = appleService.getAppleClientSecret(appleLoginRequest.getIdentifyToken());
+//        return ApiResult.OK(
+//                appleService.requestCodeValidations(client_secret, appleLoginRequest.getAuthorizationCode(), appleLoginRequest.getRefreshToken())
+//        );
+//    }
+
 
 }

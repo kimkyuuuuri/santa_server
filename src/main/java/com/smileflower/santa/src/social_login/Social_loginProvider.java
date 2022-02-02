@@ -1,5 +1,5 @@
 
-package com.smileflower.santa.src.kakao;
+package com.smileflower.santa.src.social_login;
 
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
@@ -9,9 +9,9 @@ import org.springframework.stereotype.Service;
 
 @RequiredArgsConstructor
 @Service
-public class KakaoProvider {
+public class Social_loginProvider {
     @Autowired
-    private final KakaoDao kakaoDao;
+    private final Social_loginDao socialloginDao;
 
     final Logger logger = LoggerFactory.getLogger(this.getClass());
 

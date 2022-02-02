@@ -1,4 +1,4 @@
-package com.smileflower.santa.src.kakao.model;
+package com.smileflower.santa.src.social_login.model;
 
 import lombok.Data;
 

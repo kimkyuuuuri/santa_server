@@ -45,7 +45,7 @@ public class New_HomeDao {
                         "                                                                              when  count(*) >= 10 then 'Lv.6' end as level\n" +
                         "                     from flag where  flag.userIdx=user.userIdx)\n" +
                         "    as level,user.name as userName," +
-                                "case when EXISTS(select flagsaveIdx from flagsave where flagsave.userIdx=? and flagsave.flagIdx=flag.flagIdx and flagsave.status='t') =1 then 'Y' else 'N' end as isSaved," +
+                                "case when EXISTS(select flagsaveIdx from flagsave where flagsave.userIdx=? and flagsave.flagIdx=flag.flagIdx and flagsave.status='t') =1 then 'T' else 'T' end as isSaved," +
                         "       (select count(*) from flagrecomment where flagrecomment.flagcommentIdx=flagcomment.flagcommentIdx ) +(select count(*) from flagcomment where flagcomment.flagIdx=flag.flagIdx)  as commentCount\n" +
                         "     ,count( distinct  flagsave.flagsaveIdx ) as saveCount,flag.flagIdx,flag.pictureUrl as flagImageUrl from flag\n" +
                         "    left join flagsave on flag.flagIdx = flagsave.flagIdx\n" +
@@ -218,7 +218,7 @@ public class New_HomeDao {
                         "                                                                                                   when  count(*) >= 10 then 'Lv.6' end as level\n" +
                         "                                         from flag where  flag.userIdx=user.userIdx)\n" +
                         "                           as level,user.name as userName," +
-                        "case when EXISTS(select flagsaveIdx from flagsave where flagsave.userIdx=? and flagsave.flagIdx=flag.flagIdx  and flagsave.status='t') =1 then 'Y' else 'N' end as isSaved," +
+                        "case when EXISTS(select flagsaveIdx from flagsave where flagsave.userIdx=? and flagsave.flagIdx=flag.flagIdx  and flagsave.status='t') =1 then 'T' else 'F' end as isSaved," +
                         "                             (select count(*) from flagrecomment where flagrecomment.flagcommentIdx=flagcomment.flagcommentIdx  ) +(select count(*) from flagcomment where flagcomment.flagIdx=flag.flagIdx)  as commentCount\n" +
                         "                            ,count( distinct  flagsave.flagsaveIdx) as saveCount,flag.flagIdx,flag.pictureUrl as flagImageUrl\n" +
                         "                        from flag\n" +
