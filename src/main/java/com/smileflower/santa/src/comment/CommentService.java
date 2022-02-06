@@ -86,6 +86,24 @@ public class CommentService {
            return new PatchCommentStatusRes(commentIdx);
        }
 
+    public PatchRecommentStatusRes deleteRecomment(int userIdx, long recommentIdx, String type) throws BaseException {
+        if(type.equals("flag")) {
+            if (commentProvider.checkFlagRecommentExist(recommentIdx) == 0)
+                throw new BaseException(INVALID_COMMENT);
+           // else if (commentProvider.checkFlagCommentWhereUserExist(recommentIdx, userIdx) == 0)
+             //   throw new BaseException(INVALID_COMMENT_USER);
+            commentDao.deleteFlagRecomment(recommentIdx);
+        }
+        else if (type.equals("picture")) {
+            if (commentProvider.checkPictureRecommentExist(recommentIdx) == 0)
+                throw new BaseException(INVALID_COMMENT);
+           // else if (commentProvider.checkPictureCommentWhereUserExist(recommentIdx, userIdx) == 0)
+             //   throw new BaseException(INVALID_COMMENT_USER);
+            commentDao.deletePictureRecomment(recommentIdx);
+        }
+        return new PatchRecommentStatusRes(recommentIdx);
+    }
+
 
 
 }

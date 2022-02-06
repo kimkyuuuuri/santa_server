@@ -206,6 +206,21 @@ public class CommentDao {
         );
 
     }
+
+    public void deleteFlagRecomment(Long flagRecommentIdx) {
+        this.jdbcTemplate.update("update flagrecomment status set status='f'  where flagrecommentIdx=?",
+                flagRecommentIdx
+        );
+
+    }
+
+    public void deletePictureRecomment(Long pictureRecommentIdx) {
+        this.jdbcTemplate.update("update picturerecomment status set status='f'  where picturerecommentIdx=?",
+                pictureRecommentIdx
+        );
+
+    }
+
     public int checkFlagCommentExist(Long flagCommentIdx){
         return this.jdbcTemplate.queryForObject("select Exists(select flagCommentIdx from flagcomment\n" +
                 "                where status='t' and flagCommentIdx=? ) as FlagCommentExist", int.class,flagCommentIdx);
@@ -214,6 +229,16 @@ public class CommentDao {
     public int checkPictureCommentExist(Long pictureCommentIdx){
         return this.jdbcTemplate.queryForObject("select Exists(select pictureCommentIdx from picturecomment\n" +
                 "                where status='t' and pictureCommentIdx=? ) as pictureCommentExist", int.class,pictureCommentIdx);
+    }
+
+    public int checkFlagRecommentExist(Long flagRecommentIdx){
+        return this.jdbcTemplate.queryForObject("select Exists(select flagRecommentIdx from flagrecomment\n" +
+                "                where status='t' and flagRecommentIdx=? ) as FlagRecommentExist", int.class,flagRecommentIdx);
+    }
+
+    public int checkPictureRecommentExist(Long pictureRecommentIdx){
+        return this.jdbcTemplate.queryForObject("select Exists(select pictureRecommentIdx from picturerecomment\n" +
+                "                where status='t' and pictureRecommentIdx=? ) as pictureRecommentExist", int.class,pictureRecommentIdx);
     }
     public int checkFlagWhereUserExist(Long flagIdx,int userIdx){
         return this.jdbcTemplate.queryForObject("select Exists(select flagIdx from flag\n" +

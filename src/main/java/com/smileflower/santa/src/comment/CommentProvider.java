@@ -49,6 +49,15 @@ public class CommentProvider {
         return exist;
     }
 
+    public int checkFlagRecommentExist(long flagRecommentIdx) {
+        int exist = commentDao.checkFlagRecommentExist(flagRecommentIdx);
+        return exist;
+    }
+
+    public int checkPictureRecommentExist(long pictureRecommentIdx) {
+        int exist = commentDao.checkPictureRecommentExist(pictureRecommentIdx);
+        return exist;
+    }
     public int checkJwt(String jwt) {
         int exist = commentDao.checkJwt(jwt);
         return exist;

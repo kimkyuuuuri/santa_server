@@ -110,7 +110,7 @@ public class CommentController {
 
     @ResponseBody
     @PatchMapping ("/{idx}")
-    public BaseResponse<PatchCommentStatusRes> deleteFlagComment(@PathVariable("idx") long idx ,@RequestParam("type") String type ) throws BaseException {
+    public BaseResponse<PatchCommentStatusRes> deleteComment(@PathVariable("idx") long idx ,@RequestParam("type") String type ) throws BaseException {
         try{
             if(jwtService.getJwt()==null){
                 return new BaseResponse<>(EMPTY_JWT);
@@ -128,4 +128,23 @@ public class CommentController {
 
     }
 
+    @ResponseBody
+    @PatchMapping ("recomment/{idx}")
+    public BaseResponse<PatchRecommentStatusRes> deleteRecomment(@PathVariable("idx") long idx ,@RequestParam("type") String type ) throws BaseException {
+        try{
+            if(jwtService.getJwt()==null){
+                return new BaseResponse<>(EMPTY_JWT);
+            }
+
+            else{
+                int userIdx=jwtService.getUserIdx();
+                PatchRecommentStatusRes patchFlagRecommentStatus = commentService.deleteRecomment(userIdx,idx,type);
+                return new BaseResponse<>(patchFlagRecommentStatus);
+            }
+
+        }catch(BaseException exception){
+            return new BaseResponse<>((exception.getStatus()));
+        }
+
+    }
 }
