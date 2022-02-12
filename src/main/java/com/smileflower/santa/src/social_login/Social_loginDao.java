@@ -1,9 +1,8 @@
 
 package com.smileflower.santa.src.social_login;
 
-
-import com.smileflower.santa.apple.model.domain.AppleUser;
-import com.smileflower.santa.apple.model.domain.Email;
+import com.smileflower.santa.src.social_login.model.AppleUser;
+import com.smileflower.santa.src.social_login.model.Email;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
@@ -20,7 +19,7 @@ public class Social_loginDao {
         this.jdbcTemplate = new JdbcTemplate(dataSource);
     }
 
-    public AppleUser save(AppleUser user) {
+    public AppleUser insertUser(AppleUser user) {
         String query = "insert into user (emailId, pw, kakao, apple, userImageUrl, name) VALUES (?,?,?,?,?,?)";
         Object[] params = new Object[]{user.getEmailId().getEmail(),user.getPasswd(),user.getIsKakao(),
                 user.getIsApple(),user.getUserImageUrl(),user.getName()};

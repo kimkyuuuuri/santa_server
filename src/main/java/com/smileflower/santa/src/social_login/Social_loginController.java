@@ -2,11 +2,14 @@ package com.smileflower.santa.src.social_login;
 
 
 
-import com.smileflower.santa.apple.model.dto.*;
 import com.smileflower.santa.config.BaseException;
+import com.smileflower.santa.config.BaseResponse;
 import com.smileflower.santa.exception.ApiResult;
-import com.smileflower.santa.src.social_login.model.KakaoProfile;
-import com.smileflower.santa.src.social_login.model.OAuthToken;
+
+import com.smileflower.santa.src.picture.model.DeletePictureRes;
+import com.smileflower.santa.src.picture.model.PostPictureSaveRes;
+import com.smileflower.santa.src.social_login.model.*;
+
 import lombok.RequiredArgsConstructor;
 
 import org.slf4j.Logger;
@@ -25,6 +28,9 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 
 import java.io.UnsupportedEncodingException;
+
+import static com.smileflower.santa.config.BaseResponseStatus.EMPTY_JWT;
+import static com.smileflower.santa.config.BaseResponseStatus.INVALID_JWT;
 
 
 @RequiredArgsConstructor
@@ -163,37 +169,52 @@ public class Social_loginController {
 
     @GetMapping(value = "/new-apple")
     @ResponseBody
-    public ApiResult<CheckUserResponse> checkUser(@RequestBody CheckUserRequest checkUserRequest) {
-        return ApiResult.OK(
-                socialloginService.checkUser((checkUserRequest.getIdentifyToken()))
-        );
+    public BaseResponse<CheckUserRes>  checkUser(@RequestBody CheckUserReq checkUserReq) {
+        try{
+        CheckUserRes checkUserRes=socialloginService.checkUser((checkUserReq.getIdentifyToken()));
+        return new BaseResponse<>(checkUserRes);
+    } catch(BaseException exception){
+        return new BaseResponse<>((exception.getStatus()));
     }
+    }
+
     /**
      * Sign in with Apple
      *
-     * @param appleLoginRequest
+     *
      * @return AppleLoginResponse
      */
     @PostMapping(value = "/new-apple/login")
     @ResponseBody
-    public ApiResult<AppleLoginResponse> appleLogin(@RequestBody AppleLoginRequest appleLoginRequest) {
-        return ApiResult.OK(
-                socialloginService.loginUser(appleLoginRequest)
-        );
+    public BaseResponse<AppleLoginRes> appleLogin(@RequestBody AppleLoginReq appleLoginReq) {
+
+        try{
+
+            AppleLoginRes appleLoginRes=socialloginService.loginUser(appleLoginReq);
+                return new BaseResponse<>(appleLoginRes);
+
+        } catch(BaseException exception){
+            return new BaseResponse<>((exception.getStatus()));
+        }
     }
     /**
      * Sign up with Apple
      *
-     * @param appleSigninRequest
+     *
      * @return AppleLoginResponse
      */
-    @PostMapping(value = "/new-apple/join")
+    @PostMapping(value = "/new-apple")
     @ResponseBody
-    public ApiResult<AppleSigninResponse> appleJoin(@RequestBody AppleSigninRequest appleSigninRequest) {
+    public BaseResponse<ApplePostUserRes> applePostUserRes (@RequestBody ApplePostUserReq applePostUserReq) {
 
-        return ApiResult.OK(
-                socialloginService.createUser(appleSigninRequest)
-        );
+        try{
+
+            ApplePostUserRes applePostUserRes=socialloginService.createUser(applePostUserReq);
+            return new BaseResponse<>(applePostUserRes);
+
+        } catch(BaseException exception){
+            return new BaseResponse<>((exception.getStatus()));
+        }
     }
 //    /**
 //     * Logout with Apple

@@ -1,8 +1,10 @@
 package com.smileflower.santa.src.social_login;
 
-import com.smileflower.santa.apple.model.domain.AppleUser;
-import com.smileflower.santa.apple.model.domain.Email;
-import com.smileflower.santa.apple.model.dto.*;
+import com.smileflower.santa.config.BaseException;
+import com.smileflower.santa.src.social_login.model.*;
+
+import com.smileflower.santa.src.social_login.model.Email;
+import com.smileflower.santa.src.social_login.utils.AppleJwtUtils;
 import com.smileflower.santa.utils.*;
 import io.jsonwebtoken.Claims;
 import lombok.RequiredArgsConstructor;
@@ -28,46 +30,47 @@ public class Social_loginService {
     private final JavaMailSender emailSender;
     private final SpringTemplateEngine templateEngine;
     @Autowired
-    private final new_AppleJwtUtils appleJwtUtils;
+    private final AppleJwtUtils appleJwtUtils;
 
     final Logger logger = LoggerFactory.getLogger(this.getClass());
 
 
 
-    public CheckUserResponse checkUser(String id_token) {
+    public CheckUserRes checkUser(String id_token) throws BaseException {
         Claims claim = appleJwtUtils.getClaimsBy(id_token);
         Email email = new Email((String)claim.get("email"));
         if(social_loginDao.findByEmail(email))
-            return new CheckUserResponse(email,true);
+            return new CheckUserRes(email,true);
         else
-            return new CheckUserResponse(email,false);
+            return new CheckUserRes(email,false);
 
     }
 
-    public AppleSigninResponse createUser(AppleSigninRequest appleSigninRequest){
-        if(social_loginDao.findByEmail(appleSigninRequest.getUserEmail()))
-            social_loginDao.save(new AppleUser(appleSigninRequest.getUserEmail(),appleSigninRequest.getName()));
-        AppleToken.Response appleLoginResponse = new AppleToken.Response();
+    public ApplePostUserRes createUser(ApplePostUserReq applePostUserReq) throws BaseException {
+        if(social_loginDao.findByEmail(applePostUserReq.getUserEmail()))
+            social_loginDao.insertUser(new AppleUser(applePostUserReq.getUserEmail(),applePostUserReq.getName()));
+
+        AppleToken.Response appleLoginRes = new AppleToken.Response();
         try {
-            appleLoginResponse = appleJwtUtils.getTokenByCode(appleJwtUtils.makeClientSecret(), appleSigninRequest.getAuthorizationCode());
+            appleLoginRes = appleJwtUtils.getTokenByCode(appleJwtUtils.makeClientSecret(), applePostUserReq.getAuthorizationCode());
         } catch (IOException e) {
             e.printStackTrace();
         }
-        return new AppleSigninResponse(appleLoginResponse.getRefresh_token(),appleSigninRequest.getUserEmail().getEmail(),appleSigninRequest.getName());
+        return new ApplePostUserRes(appleLoginRes.getRefresh_token(),applePostUserReq.getUserEmail().getEmail(),applePostUserReq.getName());
     }
 
-    public AppleLoginResponse loginUser(AppleLoginRequest appleLoginRequest){
+    public AppleLoginRes loginUser(AppleLoginReq appleLoginReq) throws BaseException {
         AppleToken.Response tokenResponse = new AppleToken.Response();
         try {
-            tokenResponse = appleJwtUtils.getTokenByRefreshToken(appleJwtUtils.makeClientSecret(), appleLoginRequest.getRefreshToken());
+            tokenResponse = appleJwtUtils.getTokenByRefreshToken(appleJwtUtils.makeClientSecret(), appleLoginReq.getRefreshToken());
         } catch (IOException e) {
             e.printStackTrace();
         }
-        return new AppleLoginResponse(appleJwtUtils.getEmail(tokenResponse.getId_token()).getEmail(),appleLoginRequest.getRefreshToken());
+        return new AppleLoginRes(appleJwtUtils.getEmail(tokenResponse.getId_token()).getEmail(),appleLoginReq.getRefreshToken());
     }
 
 
-    public String getAppleClientSecret(String id_token) {
+    public String getAppleClientSecret(String id_token) throws BaseException {
 
         if (appleJwtUtils.getClaimsBy(id_token)!=null) {
             try {
