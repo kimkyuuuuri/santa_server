@@ -2,10 +2,10 @@ package com.smileflower.santa.utils;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.smileflower.santa.apple.model.domain.Email;
-import com.smileflower.santa.apple.model.dto.ApplePublicKeyResponse;
-import com.smileflower.santa.apple.model.dto.AppleToken;
-import com.smileflower.santa.apple.utils.AppleClient;
+
+import com.smileflower.santa.src.social_login.model.ApplePublicKeyRes;
+import com.smileflower.santa.src.social_login.model.AppleToken;
+import com.smileflower.santa.src.social_login.utils.NewAppleClient;
 import io.jsonwebtoken.*;
 import org.bouncycastle.asn1.pkcs.PrivateKeyInfo;
 import org.bouncycastle.openssl.PEMParser;
@@ -35,7 +35,7 @@ import java.util.Map;
 
 @Component
 public class new_AppleJwtUtils {
-    private final AppleClient appleClient;
+    private final NewAppleClient appleClient;
 
     @Value("${APPLE.PUBLICKEY.URL}")
     private String APPLE_PUBLIC_KEYS_URL;
@@ -64,13 +64,13 @@ public class new_AppleJwtUtils {
     @Value("${APPLE.WEBSITE.URL}")
     private String APPLE_WEBSITE_URL;
 
-    public new_AppleJwtUtils(AppleClient appleClient) {
+    public new_AppleJwtUtils(NewAppleClient appleClient) {
         this.appleClient = appleClient;
     }
 
     public Claims getClaimsBy(String identityToken) {
         try {
-            ApplePublicKeyResponse response = appleClient.getAppleAuthPublicKey();
+            ApplePublicKeyRes response = appleClient.getAppleAuthPublicKey();
 
             String headerOfIdentityToken = identityToken.substring(0, identityToken.indexOf("."));
 
@@ -80,7 +80,7 @@ public class new_AppleJwtUtils {
             } catch (JsonProcessingException | UnsupportedEncodingException e) {
                 e.printStackTrace();
             }
-            ApplePublicKeyResponse.Key key = response.getMatchedKeyBy(header.get("kid"), header.get("alg"))
+            ApplePublicKeyRes.Key key = response.getMatchedKeyBy(header.get("kid"), header.get("alg"))
                     .orElseThrow(() -> new NullPointerException("Failed get public key from apple's id server."));
 
             byte[] nBytes = Base64.getUrlDecoder().decode(key.getN());

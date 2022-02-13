@@ -3,6 +3,7 @@ package com.smileflower.santa.src.profile;
 import com.smileflower.santa.config.BaseException;
 import com.smileflower.santa.config.BaseResponse;
 
+import com.smileflower.santa.src.mountain.model.GetMountainRes;
 import com.smileflower.santa.src.profile.model.*;
 import com.smileflower.santa.utils.JwtService;
 import org.slf4j.Logger;
@@ -69,6 +70,26 @@ public class New_ProfileController {
                 int userIdx=jwtService.getUserIdx();
                 List<GetMapRes> getMapRes= newProfileProvider.getMapRes(userIdx);
                 return new BaseResponse<>(getMapRes);
+            }
+
+        }catch(BaseException exception){
+            return new BaseResponse<>((exception.getStatus()));
+        }
+    }
+
+    @ResponseBody
+    @GetMapping("/list")
+    public BaseResponse<GetListRes> geListRes() throws BaseException {
+
+        try{
+            if(jwtService.getJwt()==null){
+                return new BaseResponse<>(EMPTY_JWT);
+            }
+
+            else{
+                int userIdx=jwtService.getUserIdx();
+                GetListRes getListRes= newProfileProvider.getListRes(userIdx);
+                return new BaseResponse<>(getListRes);
             }
 
         }catch(BaseException exception){

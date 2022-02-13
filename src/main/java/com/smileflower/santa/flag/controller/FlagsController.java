@@ -1,6 +1,6 @@
 package com.smileflower.santa.flag.controller;
 
-import com.smileflower.santa.apple.utils.AppleJwtUtils;
+
 import com.smileflower.santa.exception.ApiResult;
 import com.smileflower.santa.flag.model.GpsInfoRequest;
 import com.smileflower.santa.flag.model.UploadImageResponse;
@@ -18,8 +18,7 @@ import static com.smileflower.santa.config.BaseResponseStatus.EMPTY_JWT;
 @RestController
 public class FlagsController {
 
-    @Autowired
-    AppleJwtUtils appleJwtUtils;
+
     @Autowired
     FlagsService flagsService;
     @Autowired

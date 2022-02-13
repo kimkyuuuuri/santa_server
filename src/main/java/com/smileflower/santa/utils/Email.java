@@ -7,6 +7,9 @@ import java.util.Random;
 
 public class Email {
 
+    public Email(String email) {
+    }
+
     public static String setContext(String code, TemplateEngine templateEngine) { // 타임리프 설정하는 코드
         Context context = new Context();
         context.setVariable("code", code); // Template에 전달할 데이터 설정

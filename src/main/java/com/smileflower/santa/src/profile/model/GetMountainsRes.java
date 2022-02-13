@@ -1,12 +1,13 @@
 package com.smileflower.santa.src.profile.model;
 
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 
 @Getter
 @Setter
-
+@AllArgsConstructor
 public class GetMountainsRes {
     private int mountainIdx;
     private String mountainImageUrl;
@@ -17,6 +18,5 @@ public class GetMountainsRes {
     private String isSaved;
 
 
-    public GetMountainsRes(int mountainIdx, String mountainImageUrl, String isHot, int difficulty, String mountainName, String high, String isSaved) {
-    }
+
 }

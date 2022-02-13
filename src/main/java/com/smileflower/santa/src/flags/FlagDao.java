@@ -239,6 +239,20 @@ public class FlagDao {
 
     }
 
+    public void updateFlagTotalCount(int userIdx,Long mountainIdx,int flagIdx) {
+
+        int flagTotalCount=this.jdbcTemplate.queryForObject("select count from flag where userIdx=? and mountainIdx=? order by count desc limit 1",
+                Integer.class,
+                userIdx,mountainIdx);
+
+        int totalCount=flagTotalCount+1;
+
+        this.jdbcTemplate.update("update flag set count=? where flagIdx=?",
+                totalCount,flagIdx
+        );
+
+    }
+
 
     public int findTodayFlagByIdx(int userIdx){
         return this.jdbcTemplate.queryForObject("select COUNT(*) from flag " +

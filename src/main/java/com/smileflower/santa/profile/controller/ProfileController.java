@@ -1,6 +1,6 @@
 package com.smileflower.santa.profile.controller;
 
-import com.smileflower.santa.apple.utils.AppleJwtUtils;
+
 import com.smileflower.santa.exception.ApiResult;
 import com.smileflower.santa.profile.model.dto.*;
 import com.smileflower.santa.profile.service.ProfileService;
@@ -15,8 +15,6 @@ import java.util.List;
 @RestController
 public class ProfileController {
 
-    @Autowired
-    AppleJwtUtils appleJwtUtils;
     @Autowired
     ProfileService profileService;
     @Autowired

@@ -63,6 +63,7 @@ public class New_ProfileDao {
         ));
         return getFlagRes;
     }
+
     public GetUserRes getUserRes(int userIdx) {
         String query = "select userImageUrl,name from user where userIdx =?";
         Object[] param = new Object[]{userIdx};
@@ -73,6 +74,24 @@ public class New_ProfileDao {
 
     }
 
+    public GetFlagCountRes getFlagCounts(int userIdx) {
+        String query = "SELECT count(case when b.count>0 and b.count<4 then 1 end) as firstFlag, count(case when b.count>3 and b.count<7 then 1 end) as secondFlag\n" +
+                ", count(case when b.count>6  then 1 end) as thirdFlag\n" +
+                "FROM flag a\n" +
+                "         INNER JOIN (\n" +
+                "    SELECT max(count) as count, flagIdx,mountainIdx\n" +
+                "    FROM flag b where userIdx=?\n" +
+                "             group by b.mountainIdx\n" +
+                ") b ON b.flagIdx = a.flagIdx\n" +
+                "where a.userIdx=? and a.mountainIdx=b.mountainIdx";
+        Object[] param = new Object[]{userIdx,userIdx};
+        return this.jdbcTemplate.queryForObject(query,param,(rs, rowNum) -> new GetFlagCountRes(
+                rs.getInt("firstFlag"),
+                rs.getInt("secondFlag"),
+                rs.getInt("thirdFlag")
+        ));
+
+    }
     public List<GetMapRes> getMapRes(int userIdx) {
         String query = "Select ANY_VALUE(f.userIdx) as userIdx, ANY_VALUE(f.mountainIdx) as mountainIdx, COUNT(f.mountainIdx) as cnt, m.name, m.imageUrl, m.latitude, m.longitude, m.address from flag f LEFT JOIN mountain m ON f.mountainIdx = m.mountainIdx where f.useridx = ? group by f.mountainIdx";
         Object[] param = new Object[]{userIdx};
@@ -107,6 +126,38 @@ public class New_ProfileDao {
                 "\n" +
                 "                                                                  where f.userIdx=? group by f.mountainIdx;\n";
         Object[] param = new Object[]{userIdx};
+        List<GetMountainsRes> getMountainsRes = this.jdbcTemplate.query(getMountainQuery,param,(rs,rowNum) -> new GetMountainsRes(
+                rs.getInt("mountainIdx"),
+                rs.getString("mountainImageUrl"),
+                rs.getString("isHot"),
+                rs.getInt("difficulty"),
+                rs.getString("mountainName"),
+                rs.getString("high"),
+                rs.getString("isSaved")
+        ));
+        return getMountainsRes;
+    }
+
+
+    public List<GetMountainsRes> getMountainsForListRes(int userIdx) {
+        String getMountainQuery = "select mountain.mountainIdx as mountainIdx,mountain.imageUrl as mountainImageUrl,\n" +
+                "       case when   (select count(picklistIdx) as hot from picklist  where status='t' and picklist.mountainIdx=mountain.mountainIdx) > 10 then 't' else 'f'\n" +
+                "end as isHot ,\n" +
+                "\n" +
+                "       case when mountain.high<500 then 1\n" +
+                "            when mountain.high<800  then 2\n" +
+                "            when mountain.high<1000 then 3\n" +
+                "            when mountain.high<1300 then 4\n" +
+                "            else 5 end as difficulty,\n" +
+                "       mountain.name as mountainName,  concat('(', mountain.high, 'm)') as high,\n" +
+                "       case when   (select exists(select picklistIdx  from picklist  where status='t' and picklist.mountainIdx=mountain.mountainIdx and picklist.userIdx=?)) =1 then 't' else 'f'\n" +
+                "           end as isSaved, MAX(f.createdAt) as orderColumn\n" +
+                "from mountain\n" +
+                "                                                                  left join flag f on mountain.mountainIdx = f.mountainIdx\n" +
+                "\n" +
+                "                                                                  where f.userIdx=? group by f.mountainIdx\n" +
+                "order by orderColumn desc;";
+        Object[] param = new Object[]{userIdx,userIdx};
         List<GetMountainsRes> getMountainsRes = this.jdbcTemplate.query(getMountainQuery,param,(rs,rowNum) -> new GetMountainsRes(
                 rs.getInt("mountainIdx"),
                 rs.getString("mountainImageUrl"),

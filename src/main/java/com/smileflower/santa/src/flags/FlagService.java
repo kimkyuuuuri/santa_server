@@ -131,7 +131,7 @@ public class FlagService {
                 int flagIdx=updateImageUrlByIdx(userIdx, mountainIdx, fileName, gpsInfoRequest.getAltitude());
                 updateUserHeight(userIdx, gpsInfoRequest.getAltitude());
                 updateFlagTotalHeight(userIdx,mountainIdx, flagIdx,gpsInfoRequest.getAltitude());
-
+                updateFlagTotalCount(userIdx,mountainIdx,flagIdx);
 
             } catch (IOException e) {
                 throw new BaseException(FILE_ERROR);
@@ -156,6 +156,12 @@ public class FlagService {
 
         flagDao.updateFlagTotalHeight(userIdx,mountainIdx,flagIdx,altitude);
     }
+
+    private void updateFlagTotalCount(int userIdx,Long mountainIdx,int flagIdx){
+
+        flagDao.updateFlagTotalCount(userIdx,mountainIdx,flagIdx);
+    }
+
     private String createFileName(String originalFileName)throws BaseException{
         return
                 UUID.randomUUID().toString().concat(getFileExtension(originalFileName));

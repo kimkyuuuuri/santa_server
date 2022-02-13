@@ -5,15 +5,13 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.List;
+
 @Getter
 @Setter
 @AllArgsConstructor
-public class GetFlagCountRes {
-    private int firstFlag;
-    private int secondFlag;
-    private int thirdFlag;
-
-
-
+public class GetListRes {
+    private GetFlagCountRes getFlagCountRes;
+    private List<GetMountainsRes> getMountainsRes;
 
 }

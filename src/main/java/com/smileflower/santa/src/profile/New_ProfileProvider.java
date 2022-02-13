@@ -93,6 +93,24 @@ public class New_ProfileProvider {
         }
         return getMapRes;
     }
+
+
+    public GetListRes getListRes(int userIdx) {
+
+        GetFlagCountRes getFlagCountRes =newProfileDao.getFlagCounts(userIdx);
+        List<GetMountainsRes> getMountainsRes=newProfileDao.getMountainsForListRes(userIdx);
+
+
+       for(int i=0;i<getMountainsRes.size();i++){
+            if(getMountainsRes.get(i).getMountainImageUrl()!=null)
+                getMountainsRes.get(i).setMountainImageUrl(s3Service.getFileUrl(getMountainsRes.get(i).getMountainImageUrl()));
+        }
+        GetListRes getListRes = new GetListRes(getFlagCountRes,getMountainsRes);
+
+
+        return getListRes;
+    }
+
     public GetProfileImgRes getProfileImgRes(int userIdx){
         //delete file
         GetUserRes getUserRes= newProfileDao.getUserRes(userIdx);
@@ -117,5 +135,10 @@ public class New_ProfileProvider {
     public int userExist(int userIdx){
         int exist = newProfileDao.checkUserExist(userIdx);
         return exist;
+    }
+
+    public int getFlagCount(int userIdx){
+        int flagCount = newProfileDao.getFlagCount(userIdx);
+        return flagCount;
     }
 }

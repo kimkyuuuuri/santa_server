@@ -31,8 +31,8 @@ import java.util.Date;
 import java.util.Map;
 
 @Component
-public class AppleJwtUtils {
-    private final AppleClient appleClient;
+public class NewAppleJwtUtils {
+    private final NewAppleClient newAppleClient;
 
     @Value("${APPLE.PUBLICKEY.URL}")
     private String APPLE_PUBLIC_KEYS_URL;
@@ -61,13 +61,13 @@ public class AppleJwtUtils {
     @Value("${APPLE.WEBSITE.URL}")
     private String APPLE_WEBSITE_URL;
 
-    public AppleJwtUtils(AppleClient appleClient) {
-        this.appleClient = appleClient;
+    public NewAppleJwtUtils(NewAppleClient newAppleClient) {
+        this.newAppleClient = newAppleClient;
     }
 
     public Claims getClaimsBy(String identityToken) {
         try {
-            ApplePublicKeyRes response = appleClient.getAppleAuthPublicKey();
+            ApplePublicKeyRes response = newAppleClient.getAppleAuthPublicKey();
 
             String headerOfIdentityToken = identityToken.substring(0, identityToken.indexOf("."));
 
@@ -144,12 +144,12 @@ public class AppleJwtUtils {
     public AppleToken.Response getTokenByCode(String client_secret, String code) throws IOException {
         AppleToken.Request request = AppleToken.Request.of(code,CLIENT_ID, client_secret,"authorization_code",null);
 
-        AppleToken.Response response = appleClient.getToken(request);
+        AppleToken.Response response = newAppleClient.getToken(request);
         return response;
     }
     public AppleToken.Response getTokenByRefreshToken(String client_secret, String refresh_token) throws IOException {
         AppleToken.Request request = AppleToken.Request.of(null,CLIENT_ID,client_secret,"refresh_token",refresh_token);
-        AppleToken.Response response = appleClient.getToken(request);
+        AppleToken.Response response = newAppleClient.getToken(request);
         return response;
     }
 }

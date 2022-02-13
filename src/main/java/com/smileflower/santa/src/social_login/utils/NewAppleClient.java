@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
 @FeignClient(name = "appleClient", url = "https://appleid.apple.com/auth", configuration = FeignConfig.class)
-public interface AppleClient {
+public interface NewAppleClient {
     @GetMapping(value = "/keys")
     ApplePublicKeyRes getAppleAuthPublicKey();
     @PostMapping(value = "/token", consumes = "application/x-www-form-urlencoded", produces = "application/json")
