@@ -4,10 +4,7 @@ package com.smileflower.santa.src.social_login;
 
 import com.smileflower.santa.config.BaseException;
 import com.smileflower.santa.config.BaseResponse;
-import com.smileflower.santa.exception.ApiResult;
 
-import com.smileflower.santa.src.picture.model.DeletePictureRes;
-import com.smileflower.santa.src.picture.model.PostPictureSaveRes;
 import com.smileflower.santa.src.social_login.model.*;
 
 import lombok.RequiredArgsConstructor;
@@ -22,15 +19,13 @@ import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
-import org.springframework.util.LinkedMultiValueMap;
+
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 
 import java.io.UnsupportedEncodingException;
 
-import static com.smileflower.santa.config.BaseResponseStatus.EMPTY_JWT;
-import static com.smileflower.santa.config.BaseResponseStatus.INVALID_JWT;
 
 
 @RequiredArgsConstructor
@@ -51,62 +46,70 @@ public class Social_loginController {
     }
 
     @ResponseBody
-    @GetMapping ("/kakao-createUser")
-    public String kakaoCreateUser() throws BaseException {
-        return "hi";
+    @PostMapping ("/kakao-createUser")
+    public BaseResponse<PostUserRes> kakaoCreateUser(@RequestBody PostUserReq postUserReq) throws BaseException {
+
+        try {
+
+            RestTemplate rt2 = new RestTemplate();
+
+            HttpHeaders headers2 = new HttpHeaders();
+            headers2.add("Authorization", "Bearer " + postUserReq.getAccessToken());
+            headers2.add("Content-type", "application/x-www-form-urlencoded;charset=utf-8");
+
+            // HttpHeader와 HttpBody를 하나의 오브젝트에 담기
+            HttpEntity<MultiValueMap<String, String>> kakaoProfileRequest2 =
+                    new HttpEntity<>(headers2);
+
+            // Http 요청하기 - Post방식으로 - 그리고 response 변수의 응답 받음.
+            ResponseEntity<String> response2 = rt2.exchange(
+                    "https://kapi.kakao.com/v2/user/me",
+                    HttpMethod.POST,
+                    kakaoProfileRequest2,
+                    String.class
+            );
+
+
+            ObjectMapper objectMapper = new ObjectMapper();
+            KakaoProfile kakaoProfile = null;
+            try {
+
+                kakaoProfile = objectMapper.readValue(response2.getBody(), KakaoProfile.class);
+
+            } catch (JsonMappingException e) {
+                e.printStackTrace();
+            } catch (JsonProcessingException e) {
+                e.printStackTrace();
+            }
+
+            String userId = Integer.toString(kakaoProfile.getId());
+
+            // User 오브젝트 : username, password, email - email넣어야됨
+      /*  System.out.println("카카오 아이디(번호) : "+kakaoProfile.getId());
+        System.out.println("카카오 이메일 : "+kakaoProfile.getKakao_account().getEmail());
+
+        System.out.println("카카오 아이디(번호) : "+kakaoProfile.getProperties().getNickname());
+        // System.out.println("카카오 아이디(번호) : "+kakaoProfile.getProperties().getProfile_image());
+*/
+            PostUserRes postUserRes = socialloginService.createKakaoUser(kakaoProfile.getKakao_account().getEmail(), kakaoProfile.getProperties().getNickname());
+
+            return new BaseResponse<>(postUserRes);
+        } catch (BaseException exception) {
+            return new BaseResponse<>((exception.getStatus()));
+        }
     }
 
-    public KakaoProfile kakaologin( String code ) throws UnsupportedEncodingException, BaseException {
-        RestTemplate rt = new RestTemplate();
-
-        // HttpHeader 오브젝트 생성
-        HttpHeaders headers = new HttpHeaders();
-        headers.add("Content-type", "application/x-www-form-urlencoded;charset=utf-8");
-
-        // HttpBody 오브젝트 생성
-        MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
-        params.add("grant_type", "authorization_code");
-        params.add("client_id", "371e1933fdfb4d5cc659db8323d89ee6");
-        params.add("redirect_uri", "http://localhost:8080/users/kakao-login");
-        params.add("code", code);
-        //code를 어떻게 동적으로 받지?
-
-
-        // HttpHeader와 HttpBody를 하나의 오브젝트에 담기
-        HttpEntity<MultiValueMap<String, String>> kakaoTokenRequest =
-                new HttpEntity<>(params, headers);
-
-        // Http 요청하기 - Post방식으로 - 그리고 response 변수의 응답 받음.
-        ResponseEntity<String> response = rt.exchange(
-
-                "https://kauth.kakao.com/oauth/token",
-                HttpMethod.POST,
-                kakaoTokenRequest,
-                String.class
-        );
-
-        // Gson, Json Simple, ObjectMapper
-        ObjectMapper objectMapper = new ObjectMapper();
-        OAuthToken oauthToken = null;
-        try {
-            oauthToken = objectMapper.readValue(response.getBody(), OAuthToken.class);
-        } catch (JsonMappingException e) {
-            e.printStackTrace();
-        } catch (JsonProcessingException e) {
-            e.printStackTrace();
-        }
-
-        System.out.println("카카오 엑세스 토큰 : "+oauthToken.getAccess_token());
-
+    @ResponseBody
+    @PostMapping ("/kakao-Login")
+    public  BaseResponse<PostUserLoginRes> kakaologin( @RequestBody PostUserReq postUserReq) throws UnsupportedEncodingException, BaseException {
 
         RestTemplate rt2 = new RestTemplate();
 
         // HttpHeader 오브젝트 생성
         HttpHeaders headers2 = new HttpHeaders();
-        headers2.add("Authorization", "Bearer "+oauthToken.getAccess_token());
+        headers2.add("Authorization", "Bearer "+ postUserReq.getAccessToken());
         headers2.add("Content-type", "application/x-www-form-urlencoded;charset=utf-8");
-        System.out.println(oauthToken.getAccess_token());
-    //토큰에서 아이디를 빼줌
+
         // HttpHeader와 HttpBody를 하나의 오브젝트에 담기
         HttpEntity<MultiValueMap<String, String>> kakaoProfileRequest2 =
                 new HttpEntity<>(headers2);
@@ -118,15 +121,14 @@ public class Social_loginController {
                 kakaoProfileRequest2,
                 String.class
         );
-        System.out.println(response2.getBody());
-        //이걸 user로 받을까?
+
 
         ObjectMapper objectMapper2 = new ObjectMapper();
         KakaoProfile kakaoProfile = null;
         try {
-            System.out.println(response2.getBody());
+
             kakaoProfile = objectMapper2.readValue(response2.getBody(), KakaoProfile.class);
-            System.out.println(kakaoProfile.getId());
+
         } catch (JsonMappingException e) {
             e.printStackTrace();
         } catch (JsonProcessingException e) {
@@ -134,36 +136,21 @@ public class Social_loginController {
         }
 
         // User 오브젝트 : username, password, email - email넣어야됨
-        System.out.println("카카오 아이디(번호) : "+kakaoProfile.getId());
+       /* System.out.println("카카오 아이디(번호) : "+kakaoProfile.getId());
         System.out.println("카카오 이메일 : "+kakaoProfile.getKakao_account().getEmail());
 
-        System.out.println("카카오 아이디(번호) : "+kakaoProfile.getProperties().getNickname());
+        System.out.println("카카오 아이디(번호) : "+kakaoProfile.getProperties().getNickname());*/
         // System.out.println("카카오 아이디(번호) : "+kakaoProfile.getProperties().getProfile_image());
 
 
-        // 가입자 혹은 비가입자 체크 해서 처리
-
-        //id를 넣으면 idx를 return?
-        String a;
-        String userId=Integer.toString(kakaoProfile.getId());
-        System.out.println(kakaoProfile.getKakao_account().getGender());
-        if(kakaoProfile.getKakao_account().getGender().equals("female"))
-            a="F";
-        else
-            a="M";
-
-     /*   if(userProvider.checkuserId("kakao_"+userId) == 0) {
-            System.out.println("기존 회원이 아니기에 자동 회원가입을 진행합니다");
-            userService.kakaoCreateUser("kakao_"+userId,kakaoProfile.getKakao_account().getEmail(),kakaoProfile.getProperties().getNickname(),a,kakaoProfile.getKakao_account().getBirthday());
-
-        }
-        else
-        {
-            userProvider.kakaologIn("kakao_"+userId);
+        try{
+            PostUserLoginRes postUserLoginRes = socialloginService.kakaoLogin(kakaoProfile.getKakao_account().getEmail());
+            return new BaseResponse<>(postUserLoginRes);
+        } catch(BaseException exception){
+            return new BaseResponse<>((exception.getStatus()));
         }
 
-*/
-        return kakaoProfile;
+
 
     }
 
