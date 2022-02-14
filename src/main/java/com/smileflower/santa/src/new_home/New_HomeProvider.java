@@ -71,9 +71,12 @@ public class New_HomeProvider {
                 if (getFlagsMoreRes.get(i).getFlagImageUrl() != null)
                     getFlagsMoreRes.get(i).setFlagImageUrl(s3Service.getFileUrl(getFlagsMoreRes.get(i).getFlagImageUrl()));
                 if (getFlagsMoreRes.get(i).getUserImageUrl() != null)
+
                     getFlagsMoreRes.get(i).setUserImageUrl(s3Service.getFileUrl(getFlagsMoreRes.get(i).getUserImageUrl()));
-                if (getFlagsMoreRes.get(i).getGetCommentRes().size() != 0)
-                    getFlagsMoreRes.get(i).getGetCommentRes().get(0).setUserImageUrl(s3Service.getFileUrl(getFlagsMoreRes.get(i).getUserImageUrl()));
+                if (getFlagsMoreRes.get(i).getGetCommentRes().size() != 0) {
+                    if (getFlagsMoreRes.get(i).getGetCommentRes().get(0).getUserImageUrl() != null)
+                        getFlagsMoreRes.get(i).getGetCommentRes().get(0).setUserImageUrl(s3Service.getFileUrl(getFlagsMoreRes.get(i).getUserImageUrl()));
+                }
 
             }
             return getFlagsMoreRes;
