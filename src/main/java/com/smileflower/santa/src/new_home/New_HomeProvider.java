@@ -75,7 +75,7 @@ public class New_HomeProvider {
                     getFlagsMoreRes.get(i).setUserImageUrl(s3Service.getFileUrl(getFlagsMoreRes.get(i).getUserImageUrl()));
                 if (getFlagsMoreRes.get(i).getGetCommentRes().size() != 0) {
                     if (getFlagsMoreRes.get(i).getGetCommentRes().get(0).getUserImageUrl() != null)
-                        getFlagsMoreRes.get(i).getGetCommentRes().get(0).setUserImageUrl(s3Service.getFileUrl(getFlagsMoreRes.get(i).getUserImageUrl()));
+                        getFlagsMoreRes.get(i).getGetCommentRes().get(0).setUserImageUrl(s3Service.getFileUrl(getFlagsMoreRes.get(i).getGetCommentRes().get(0).getUserImageUrl()));
                 }
 
             }
