@@ -7,10 +7,7 @@ import com.smileflower.santa.utils.JwtService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -97,7 +94,7 @@ public class New_HomeController {
 
     @ResponseBody
     @GetMapping("/mountains")
-    public BaseResponse <List<GetMountainsRes>> getMountainsRes() throws BaseException {
+    public BaseResponse <List<GetMountainsRes>> getMountainsRes(@RequestParam int order) throws BaseException {
 
         try{
             if(jwtService.getJwt()==null){
@@ -106,7 +103,7 @@ public class New_HomeController {
 
             else{
                 int userIdx=jwtService.getUserIdx();
-                List<GetMountainsRes> getMountainsRes= newHomeProvider.getMountainsRes();
+                List<GetMountainsRes> getMountainsRes= newHomeProvider.getMountainsRes(order);
                 return new BaseResponse<>(getMountainsRes);
             }
 

@@ -79,7 +79,7 @@ public class New_ProfileController {
 
     @ResponseBody
     @GetMapping("/list")
-    public BaseResponse<GetListRes> geListRes() throws BaseException {
+    public BaseResponse<GetListRes> geListRes(@RequestParam int order) throws BaseException {
 
         try{
             if(jwtService.getJwt()==null){
@@ -88,7 +88,7 @@ public class New_ProfileController {
 
             else{
                 int userIdx=jwtService.getUserIdx();
-                GetListRes getListRes= newProfileProvider.getListRes(userIdx);
+                GetListRes getListRes= newProfileProvider.getListRes(userIdx,order);
                 return new BaseResponse<>(getListRes);
             }
 

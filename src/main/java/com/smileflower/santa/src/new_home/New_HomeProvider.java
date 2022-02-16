@@ -99,8 +99,8 @@ public class New_HomeProvider {
 
     }
 
-    public List<GetMountainsRes> getMountainsRes() throws BaseException {
-        List<GetMountainsRes> getMountainsRes = newHomeDao.getMountainsRes();
+    public List<GetMountainsRes> getMountainsRes(int order) throws BaseException {
+        List<GetMountainsRes> getMountainsRes = newHomeDao.getMountainsRes(order);
 
 
         if(getMountainsRes.size()==0)

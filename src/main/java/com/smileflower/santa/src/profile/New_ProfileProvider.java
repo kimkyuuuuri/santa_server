@@ -95,10 +95,10 @@ public class New_ProfileProvider {
     }
 
 
-    public GetListRes getListRes(int userIdx) {
+    public GetListRes getListRes(int userIdx, int order) {
 
         GetFlagCountRes getFlagCountRes =newProfileDao.getFlagCounts(userIdx);
-        List<GetMountainsRes> getMountainsRes=newProfileDao.getMountainsForListRes(userIdx);
+        List<GetMountainsRes> getMountainsRes=newProfileDao.getMountainsForListRes(userIdx,order);
 
 
        for(int i=0;i<getMountainsRes.size();i++){

@@ -254,7 +254,7 @@ public class New_HomeDao {
 
 
 
-    public List<GetMountainsRes> getMountainsRes() {
+    public List<GetMountainsRes> getMountainsRes(int order) {
         return this.jdbcTemplate.query("select mountain.mountainIdx as mountainIdx,mountain.imageUrl as mountainImageUrl, case when p.hot > 10 then 't' else 'f' end as isHot,\n" +
                         "       case when mountain.high<500 then 1\n" +
                         "                                   when mountain.high<800  then 2\n" +

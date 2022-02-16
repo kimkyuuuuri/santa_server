@@ -139,24 +139,104 @@ public class New_ProfileDao {
     }
 
 
-    public List<GetMountainsRes> getMountainsForListRes(int userIdx) {
-        String getMountainQuery = "select mountain.mountainIdx as mountainIdx,mountain.imageUrl as mountainImageUrl,\n" +
-                "       case when   (select count(picklistIdx) as hot from picklist  where status='t' and picklist.mountainIdx=mountain.mountainIdx) > 10 then 't' else 'f'\n" +
-                "end as isHot ,\n" +
-                "\n" +
-                "       case when mountain.high<500 then 1\n" +
-                "            when mountain.high<800  then 2\n" +
-                "            when mountain.high<1000 then 3\n" +
-                "            when mountain.high<1300 then 4\n" +
-                "            else 5 end as difficulty,\n" +
-                "       mountain.name as mountainName,  concat('(', mountain.high, 'm)') as high,\n" +
-                "       case when   (select exists(select picklistIdx  from picklist  where status='t' and picklist.mountainIdx=mountain.mountainIdx and picklist.userIdx=?)) =1 then 't' else 'f'\n" +
-                "           end as isSaved, MAX(f.createdAt) as orderColumn\n" +
-                "from mountain\n" +
-                "                                                                  left join flag f on mountain.mountainIdx = f.mountainIdx\n" +
-                "\n" +
-                "                                                                  where f.userIdx=? group by f.mountainIdx\n" +
-                "order by orderColumn desc;";
+    public List<GetMountainsRes> getMountainsForListRes(int userIdx,int order) {
+        String getMountainQuery="";
+       if(order==1) {
+           getMountainQuery = "select mountain.mountainIdx as mountainIdx,mountain.imageUrl as mountainImageUrl,\n" +
+                   "       case when   (select count(picklistIdx) as hot from picklist  where status='t' and picklist.mountainIdx=mountain.mountainIdx) > 10 then 't' else 'f'\n" +
+                   "end as isHot ,\n" +
+                   "\n" +
+                   "       case when mountain.high<500 then 1\n" +
+                   "            when mountain.high<800  then 2\n" +
+                   "            when mountain.high<1000 then 3\n" +
+                   "            when mountain.high<1300 then 4\n" +
+                   "            else 5 end as difficulty,\n" +
+                   "       mountain.name as mountainName,  concat('(', mountain.high, 'm)') as high,\n" +
+                   "       case when   (select exists(select picklistIdx  from picklist  where status='t' and picklist.mountainIdx=mountain.mountainIdx and picklist.userIdx=?)) =1 then 't' else 'f'\n" +
+                   "           end as isSaved, MAX(f.createdAt) as orderColumn\n" +
+                   "from mountain\n" +
+                   "                                                                  left join flag f on mountain.mountainIdx = f.mountainIdx\n" +
+                   "\n" +
+                   "                                                                  where f.userIdx=? group by f.mountainIdx\n" +
+                   "order by orderColumn desc;";
+       }
+       else if (order==2){
+           getMountainQuery="select mountain.mountainIdx as mountainIdx,mountain.imageUrl as mountainImageUrl,\n" +
+                   "       case when   (select count(picklistIdx) as hot from picklist  where status='t' and picklist.mountainIdx=mountain.mountainIdx) > 10 then 't' else 'f'\n" +
+                   "           end as isHot ,\n" +
+                   "\n" +
+                   "       case when mountain.high<500 then 1\n" +
+                   "            when mountain.high<800  then 2\n" +
+                   "            when mountain.high<1000 then 3\n" +
+                   "            when mountain.high<1300 then 4\n" +
+                   "            else 5 end as difficulty,\n" +
+                   "       mountain.name as mountainName,  concat('(', mountain.high, 'm)') as high,\n" +
+                   "       case when   (select exists(select picklistIdx  from picklist  where status='t' and picklist.mountainIdx=mountain.mountainIdx and picklist.userIdx=?)) =1 then 't' else 'f'\n" +
+                   "           end as isSaved, MAX(f.createdAt) as orderColumn\n" +
+                   "from mountain\n" +
+                   "         left join flag f on mountain.mountainIdx = f.mountainIdx\n" +
+                   "\n" +
+                   "where f.userIdx=? group by f.mountainIdx\n" +
+                   "order by orderColumn ;";
+       }
+       else if (order==3)
+       {
+           getMountainQuery="select mountain.mountainIdx as mountainIdx,mountain.imageUrl as mountainImageUrl,\n" +
+                   "       case when   (select count(picklistIdx) as hot from picklist  where status='t' and picklist.mountainIdx=mountain.mountainIdx) > 10 then 't' else 'f'\n" +
+                   "           end as isHot ,\n" +
+                   "\n" +
+                   "       case when mountain.high<500 then 1\n" +
+                   "            when mountain.high<800  then 2\n" +
+                   "            when mountain.high<1000 then 3\n" +
+                   "            when mountain.high<1300 then 4\n" +
+                   "            else 5 end as difficulty,\n" +
+                   "       mountain.name as mountainName,  concat('(', mountain.high, 'm)') as high,\n" +
+                   "       case when   (select exists(select picklistIdx  from picklist  where status='t' and picklist.mountainIdx=mountain.mountainIdx and picklist.userIdx=?)) =1 then 't' else 'f'\n" +
+                   "           end as isSaved, count(*) as orderColumn\n" +
+                   "from mountain\n" +
+                   "         left join flag f on mountain.mountainIdx = f.mountainIdx\n" +
+                   "\n" +
+                   "where f.userIdx=? group by f.mountainIdx\n" +
+                   " order by orderColumn desc;\n";
+       }
+       else if (order==4){
+           getMountainQuery="select mountain.mountainIdx as mountainIdx,mountain.imageUrl as mountainImageUrl,\n" +
+                   "       case when   (select count(picklistIdx) as hot from picklist  where status='t' and picklist.mountainIdx=mountain.mountainIdx) > 10 then 't' else 'f'\n" +
+                   "           end as isHot ,\n" +
+                   "\n" +
+                   "       case when mountain.high<500 then 1\n" +
+                   "            when mountain.high<800  then 2\n" +
+                   "            when mountain.high<1000 then 3\n" +
+                   "            when mountain.high<1300 then 4\n" +
+                   "            else 5 end as difficulty,\n" +
+                   "       mountain.name as mountainName,  concat('(', mountain.high, 'm)') as high,\n" +
+                   "       case when   (select exists(select picklistIdx  from picklist  where status='t' and picklist.mountainIdx=mountain.mountainIdx and picklist.userIdx=?)) =1 then 't' else 'f'\n" +
+                   "           end as isSaved, mountain.high as orderColumn\n" +
+                   "from mountain\n" +
+                   "         left join flag f on mountain.mountainIdx = f.mountainIdx\n" +
+                   "\n" +
+                   "where f.userIdx=? group by f.mountainIdx\n" +
+                   "order by orderColumn desc;";
+       }
+       else {
+           getMountainQuery ="select mountain.mountainIdx as mountainIdx,mountain.imageUrl as mountainImageUrl,\n" +
+                   "       case when   (select count(picklistIdx) as hot from picklist  where status='t' and picklist.mountainIdx=mountain.mountainIdx) > 10 then 't' else 'f'\n" +
+                   "           end as isHot ,\n" +
+                   "\n" +
+                   "       case when mountain.high<500 then 1\n" +
+                   "            when mountain.high<800  then 2\n" +
+                   "            when mountain.high<1000 then 3\n" +
+                   "            when mountain.high<1300 then 4\n" +
+                   "            else 5 end as difficulty,\n" +
+                   "       mountain.name as mountainName,  concat('(', mountain.high, 'm)') as high,\n" +
+                   "       case when   (select exists(select picklistIdx  from picklist  where status='t' and picklist.mountainIdx=mountain.mountainIdx and picklist.userIdx=?)) =1 then 't' else 'f'\n" +
+                   "           end as isSaved, mountain.high as orderColumn\n" +
+                   "from mountain\n" +
+                   "         left join flag f on mountain.mountainIdx = f.mountainIdx\n" +
+                   "\n" +
+                   "where f.userIdx=? group by f.mountainIdx\n" +
+                   "order by orderColumn ;";
+       }
         Object[] param = new Object[]{userIdx,userIdx};
         List<GetMountainsRes> getMountainsRes = this.jdbcTemplate.query(getMountainQuery,param,(rs,rowNum) -> new GetMountainsRes(
                 rs.getInt("mountainIdx"),
