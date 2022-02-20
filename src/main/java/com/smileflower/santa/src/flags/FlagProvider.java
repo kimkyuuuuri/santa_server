@@ -130,4 +130,24 @@ public class FlagProvider {
         return exist;
     }
 
+    public int checkMountainExist(long mountainIdx){
+        int exist = flagDao.checkMountainExist(mountainIdx);
+        return exist;
+    }
+
+    public GetCheckDoubleVisitedRes checkDoubleVisited(int mountainIdx, int userIdx) throws BaseException {
+        if (flagDao.checkMountainExist(mountainIdx)==0) {
+            throw new BaseException(POST_FLAGS_INVALID_MOUNTAIN);
+
+        }
+        if (flagDao.checkDoubleVisited(mountainIdx,userIdx)==1) {
+            throw new BaseException(POST_FLAGS_EXISTS_FLAG);
+
+        }
+        else {
+
+            return  new GetCheckDoubleVisitedRes(true);
+        }
+    }
+
 }

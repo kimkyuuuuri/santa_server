@@ -237,6 +237,7 @@ public class FlagController {
 
     }
 
+
     @DeleteMapping("/flags/{flagIdx}")
     public BaseResponse<DeleteFlagRes> deleteFlag(@PathVariable("flagIdx") Long flagIdx) {
         try{
@@ -248,6 +249,24 @@ public class FlagController {
                 int userIdx=jwtService.getUserIdx();
                  DeleteFlagRes deleteFlagRes =  flagService.deleteFlag(flagIdx,userIdx);
                 return new BaseResponse<>(deleteFlagRes);
+            }
+        } catch(BaseException exception){
+            return new BaseResponse<>((exception.getStatus()));
+        }
+    }
+
+
+    @GetMapping("/flags/{mountainIdx}/check-double")
+    public BaseResponse<GetCheckDoubleVisitedRes> checkDoubleVisited(@PathVariable("mountainIdx") int mountainIdx) {
+        try{
+            if(jwtService.getJwt()==null){
+                return new BaseResponse<>(EMPTY_JWT);
+            }
+
+            else{
+                int userIdx=jwtService.getUserIdx();
+                GetCheckDoubleVisitedRes getCheckDoubleVisitedRes =  flagProvider.checkDoubleVisited(mountainIdx,userIdx);
+                return new BaseResponse<>(getCheckDoubleVisitedRes);
             }
         } catch(BaseException exception){
             return new BaseResponse<>((exception.getStatus()));

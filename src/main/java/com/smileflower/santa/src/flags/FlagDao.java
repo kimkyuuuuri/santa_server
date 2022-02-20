@@ -308,4 +308,15 @@ public class FlagDao {
                 flagIdx);
     }
 
+    public int checkMountainExist(long mountainIdx){
+        return this.jdbcTemplate.queryForObject("select EXISTS(select mountainIdx from mountain where mountainIdx=? and status='t') as exist",
+                int.class,
+                mountainIdx);
+    }
+
+    public int checkDoubleVisited(int mountainIdx,int userIdx){
+        return this.jdbcTemplate.queryForObject("select EXISTS(select flagIdx from flag where  mountainIdx=? and userIdx=?) as exist",
+                int.class,
+                mountainIdx,userIdx);
+    }
 }

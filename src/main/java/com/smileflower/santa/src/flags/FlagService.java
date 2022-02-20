@@ -113,7 +113,8 @@ public class FlagService {
         boolean isDoubleVisited = flagDao.findTodayFlagByIdx(userIdx)!=0;
         boolean isFlag = flagDao.findIsFlagByLatAndLong(gpsInfoRequest.getLatitude(),gpsInfoRequest.getLongitude(),mountainIdx)==1;
        // if (isFlag == false)
-         //   throw new BaseException(INVALID_FLAG_LOCATION);
+         //   if (isFlag == false)
+        //         //   throw new BaseException(INVALID_FLAG_LOCATION)
         //if (isDoubleVisited == true)
          //throw new BaseException(POST_FLAGS_EXISTS_FLAG);
         //if(isFlag && !isDoubleVisited){
@@ -200,4 +201,6 @@ public class FlagService {
             return  new PostFlagSaveRes(flagSaveIdx,"좋아요 취소");
         }
     }
+
+
 }

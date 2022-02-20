@@ -59,7 +59,7 @@ public enum BaseResponseStatus {
     // post flag
     INVALID_FLAG_LOCATION(false,2060,"정복 가능한 위치가 아닙니다."),
     POST_FLAGS_EXISTS_FLAG(false,2061,"이미 오늘 정복한 산입니다."),
-
+    POST_FLAGS_INVALID_MOUNTAIN(false,2062,"존재하지 않는 산입니다."),
     //post comment
     POST_COMMENT_EMPTY_CONTENT(false, 2070, "댓글 내용을 입력해주세요."),
     POST_COMMENT_INVALID_CONTENT(false,2071,"댓글은 450 이내로 작성해주세요."),
