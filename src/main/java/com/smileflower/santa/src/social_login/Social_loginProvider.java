@@ -21,12 +21,12 @@ public class Social_loginProvider {
     private final Social_loginDao socialloginDao;
 
     final Logger logger = LoggerFactory.getLogger(this.getClass());
-    public int checkAccount(String email) throws BaseException {
-        if(socialloginDao.checkEmail(email)!=1){
+    public int checkKakaoAccount(int id) throws BaseException {
+        if(socialloginDao.checkKakaoId(id)!=1){
             throw new BaseException(POST_USERS_NONEXIST_ACCOUNT);
         }
 
-        int userIdx = socialloginDao.checkAccount(email); // 여기서 잘 못받아오면 에러나옴 그러므로 미리 위에서 체크하는 것임
+        int userIdx = socialloginDao.checkKakaoAccount(id); // 여기서 잘 못받아오면 에러나옴 그러므로 미리 위에서 체크하는 것임
 
         return userIdx;
 
@@ -47,8 +47,8 @@ public class Social_loginProvider {
     }
 
 
-    public int checkKakaoName(String name){
-        return socialloginDao.checkKakaoName(name);
+    public int checkKakaoId(int id){
+        return socialloginDao.checkKakaoId(id);
     }
 
 

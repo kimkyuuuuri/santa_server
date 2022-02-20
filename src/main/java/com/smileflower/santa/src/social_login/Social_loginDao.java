@@ -55,9 +55,9 @@ public class Social_loginDao {
             return true;
     }
 
-    public int createKakaoUser(String name,String Email){
+    public int createKakaoUser(String name,String Email,int id){
         this.jdbcTemplate.update("insert into user (createdAt,  emailId, name ,pw, kakao ) VALUES (NOW(),?,?,?,?)",
-                new Object[]{Email, name ,"kakao",'T'}
+                new Object[]{Email, name ,"kakao",id}
         );
         return this.jdbcTemplate.queryForObject("select last_insert_id()",int.class);
     }
@@ -68,10 +68,10 @@ public class Social_loginDao {
                 email);
 
     }
-    public int checkAccount(String email){
-        return this.jdbcTemplate.queryForObject("select  userIdx from user where emailId=?",
+    public int checkKakaoAccount(int id){
+        return this.jdbcTemplate.queryForObject("select  userIdx from user where kakao=?",
                 (rs, rowNum) -> rs.getInt("userIdx"),
-                email);
+                id);
     }
 
 
@@ -103,9 +103,14 @@ public class Social_loginDao {
     }
 
     public int checkKakaoName(String name){
-        return this.jdbcTemplate.queryForObject("select exists(select name from user where name = ? and kakao='T')",
+        return this.jdbcTemplate.queryForObject("select exists(select name from user where name = ? )",
                 int.class,
                 name);
+    }
+    public int checkKakaoId(int id){
+        return this.jdbcTemplate.queryForObject("select exists(select name from user where  kakao=?)",
+                int.class,
+                id);
     }
 
 

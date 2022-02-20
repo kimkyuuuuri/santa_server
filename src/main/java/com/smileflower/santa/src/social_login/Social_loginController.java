@@ -91,7 +91,7 @@ public class Social_loginController {
         System.out.println("카카오 아이디(번호) : "+kakaoProfile.getProperties().getNickname());
         // System.out.println("카카오 아이디(번호) : "+kakaoProfile.getProperties().getProfile_image());
 */
-            PostUserRes postUserRes = socialloginService.createKakaoUser(kakaoProfile.getKakao_account().getEmail(), kakaoProfile.getProperties().getNickname());
+            PostUserRes postUserRes = socialloginService.createKakaoUser(kakaoProfile.getKakao_account().getEmail(), kakaoProfile.getProperties().getNickname(),kakaoProfile.getId());
 
             return new BaseResponse<>(postUserRes);
         } catch (BaseException exception) {
@@ -144,13 +144,13 @@ public class Social_loginController {
 
 
         try{
-            if(socialloginProvider.checkKakaoName(kakaoProfile.getProperties().getNickname()+kakaoProfile.getId()) == 0) {
-                PostUserRes postUserRes = socialloginService.createKakaoUser( kakaoProfile.getProperties().getNickname()+kakaoProfile.getId(),"");
+            if(socialloginProvider.checkKakaoId(kakaoProfile.getId()) == 0) {
+                PostUserRes postUserRes = socialloginService.createKakaoUser( kakaoProfile.getProperties().getNickname()+kakaoProfile.getId(),"",kakaoProfile.getId());
 
 
             }
 
-                PostUserLoginRes postUserLoginRes = socialloginService.kakaoLogin(kakaoProfile.getProperties().getNickname()+kakaoProfile.getId());
+                PostUserLoginRes postUserLoginRes = socialloginService.kakaoLogin(kakaoProfile.getId());
              return new BaseResponse<>(postUserLoginRes);
         } catch(BaseException exception){
             return new BaseResponse<>((exception.getStatus()));

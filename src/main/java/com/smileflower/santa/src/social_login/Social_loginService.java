@@ -44,16 +44,16 @@ public class Social_loginService {
 
 
     @Transactional
-    public PostUserLoginRes kakaoLogin(String nickName) throws BaseException {
+    public PostUserLoginRes kakaoLogin(int id) throws BaseException {
         //System.out.println("테스트1:"+postUserLoginReq.getEmailId());
-        int userIdx = social_loginProvider.checkAccount(nickName);
+        int userIdx = social_loginProvider.checkKakaoAccount(id);
       //카카오 계정 체크해서 idx 리턴하는 함수 만들기
-        String name;
+        String name2;
         if (social_loginProvider.checkLogExist(userIdx) != 1) {  // 신규로 처음 로그인하는 사람을 위한
-            name = social_loginDao.recordLog(userIdx, "I");
+            name2 = social_loginDao.recordLog(userIdx, "I");
 
         } else {
-            name = social_loginDao.recordLog(userIdx, "I");
+            name2 = social_loginDao.recordLog(userIdx, "I");
 
         }
 
@@ -61,7 +61,7 @@ public class Social_loginService {
         String jwt = jwtService.createJwt(userIdx);
         int jwtIdx = social_loginDao.postJwt(jwt);
 
-        return new PostUserLoginRes(jwt, userIdx, name);
+        return new PostUserLoginRes(jwt, userIdx, name2);
     }
     public CheckUserRes checkUser(String id_token) throws BaseException {
         Claims claim = newAppleJwtUtils.getClaimsBy(id_token);
@@ -106,18 +106,12 @@ public class Social_loginService {
         return new AppleLoginRes(newAppleJwtUtils.getEmail(tokenResponse.getId_token()).getEmail(),appleLoginReq.getRefreshToken());
     }
     //POST
-    public PostUserRes createKakaoUser(String name,String Email) throws BaseException {
+    public PostUserRes createKakaoUser(String name,String Email,int id) throws BaseException {
         //중복
 
-            if (social_loginProvider.checkKakaoName(name) == 1) {
-                throw new BaseException(POST_USER_EXISTS_NAME);
-            }
-            if (social_loginProvider.checkEmailId(Email) == 1) {
-                throw new BaseException(POST_USERS_EXISTS_EMAIL);
-            }
 
 
-            int userIdx = social_loginDao.createKakaoUser(name,Email);
+            int userIdx = social_loginDao.createKakaoUser(name,Email,id);
 
             //jwt발급
             String jwt = jwtService.createJwt(userIdx);
