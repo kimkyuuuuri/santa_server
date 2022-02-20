@@ -44,9 +44,9 @@ public class Social_loginService {
 
 
     @Transactional
-    public PostUserLoginRes kakaoLogin(String Email) throws BaseException {
+    public PostUserLoginRes kakaoLogin(String nickName) throws BaseException {
         //System.out.println("테스트1:"+postUserLoginReq.getEmailId());
-        int userIdx = social_loginProvider.checkAccount(Email);
+        int userIdx = social_loginProvider.checkAccount(nickName);
       //카카오 계정 체크해서 idx 리턴하는 함수 만들기
         String name;
         if (social_loginProvider.checkLogExist(userIdx) != 1) {  // 신규로 처음 로그인하는 사람을 위한
@@ -73,8 +73,8 @@ public class Social_loginService {
 
     }
 
-    public int checkName(String name){
-        return social_loginDao.checkName(name);
+    public int checkKakaoName(String name){
+        return social_loginDao.checkKakaoName(name);
     }
 
 
@@ -109,7 +109,7 @@ public class Social_loginService {
     public PostUserRes createKakaoUser(String name,String Email) throws BaseException {
         //중복
 
-            if (social_loginProvider.checkName(name) == 1) {
+            if (social_loginProvider.checkKakaoName(name) == 1) {
                 throw new BaseException(POST_USER_EXISTS_NAME);
             }
             if (social_loginProvider.checkEmailId(Email) == 1) {

@@ -102,8 +102,8 @@ public class Social_loginDao {
         return this.jdbcTemplate.queryForObject("select last_insert_id()",int.class);
     }
 
-    public int checkName(String name){
-        return this.jdbcTemplate.queryForObject("select exists(select name from user where name = ?)",
+    public int checkKakaoName(String name){
+        return this.jdbcTemplate.queryForObject("select exists(select name from user where name = ? and kakao='T')",
                 int.class,
                 name);
     }

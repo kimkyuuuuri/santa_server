@@ -156,6 +156,11 @@ public class CommentDao {
         return this.jdbcTemplate.queryForObject("select last_insert_id()",int.class);
     }
 
+    public String selectUserImage(int userIdx){
+        return this.jdbcTemplate.queryForObject("select userImageUrl from user" +
+                "                where status='T' and userIdx=? ", String.class,userIdx);
+    }
+
     public int createPictureComment(PostCommentReq postCommentReq, Long pictureIdx, int userIdx){
         Object[] createPictureCommentParams = new Object[]{userIdx, pictureIdx, postCommentReq.getContents()};
 

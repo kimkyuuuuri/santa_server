@@ -144,8 +144,14 @@ public class Social_loginController {
 
 
         try{
-            PostUserLoginRes postUserLoginRes = socialloginService.kakaoLogin(kakaoProfile.getKakao_account().getEmail());
-            return new BaseResponse<>(postUserLoginRes);
+            if(socialloginProvider.checkKakaoName(kakaoProfile.getProperties().getNickname()+kakaoProfile.getId()) == 0) {
+                PostUserRes postUserRes = socialloginService.createKakaoUser( kakaoProfile.getProperties().getNickname()+kakaoProfile.getId(),"");
+
+
+            }
+
+                PostUserLoginRes postUserLoginRes = socialloginService.kakaoLogin(kakaoProfile.getProperties().getNickname()+kakaoProfile.getId());
+             return new BaseResponse<>(postUserLoginRes);
         } catch(BaseException exception){
             return new BaseResponse<>((exception.getStatus()));
         }

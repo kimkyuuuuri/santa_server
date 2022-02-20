@@ -19,6 +19,7 @@ public class GetCommentRes {
     private List<GetRecommentRes> getRecommentRes;
 
 
+
     public GetCommentRes(int userIdx, String userImageUrl, String userName, int commentIdx, String contents, String status, String createdAt, List<GetRecommentRes> getRecommentRes) {
         this.userIdx=userIdx;
         this.userImageUrl=userImageUrl;

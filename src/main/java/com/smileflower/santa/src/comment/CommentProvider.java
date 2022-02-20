@@ -70,6 +70,11 @@ public class CommentProvider {
     public int checkPictureCommentWhereUserExist(Long pictureIdx,int userIdx){
         return commentDao.checkPictureCommentWhereUserExist(pictureIdx,userIdx);
     }
+
+    public String getUserImage(int userIdx){
+        return commentDao.selectUserImage(userIdx);
+    }
+
     public List<GetCommentRes> getComment(Long idx,String type,int userIdx) throws BaseException {
         if(type.equals("flag")) {
             if (checkFlagExist(idx) == 0)

@@ -18,7 +18,7 @@ import static com.smileflower.santa.config.BaseResponseStatus.*;
 
 @RestController
 @RequestMapping("/app/comments")
-public class CommentController {
+public class    CommentController {
     final Logger logger = LoggerFactory.getLogger(this.getClass());
 
     @Autowired
@@ -56,6 +56,28 @@ public class CommentController {
                 return new BaseResponse<>((exception.getStatus()));
             }
         }
+
+    @ResponseBody
+    @GetMapping("/user-image")
+    public BaseResponse<GetUserImageRes> getUserImage() throws BaseException {
+        try {
+            if (jwtService.getJwt() == null) {
+                return new BaseResponse<>(EMPTY_JWT);
+            }
+
+
+            else if (commentProvider.checkJwt(jwtService.getJwt()) == 1) {
+                return new BaseResponse<>(INVALID_JWT);
+
+            }
+            int userIdx=jwtService.getUserIdx();
+             String userImage = commentProvider.getUserImage(userIdx);
+                GetUserImageRes getUserImageRes=new GetUserImageRes(userImage);
+            return new BaseResponse<>(getUserImageRes);
+        } catch (BaseException exception) {
+            return new BaseResponse<>((exception.getStatus()));
+        }
+    }
 
     @ResponseBody
     @PostMapping("/{idx}")

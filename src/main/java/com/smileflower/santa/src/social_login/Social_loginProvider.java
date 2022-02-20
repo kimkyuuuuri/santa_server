@@ -47,8 +47,8 @@ public class Social_loginProvider {
     }
 
 
-    public int checkName(String name){
-        return socialloginDao.checkName(name);
+    public int checkKakaoName(String name){
+        return socialloginDao.checkKakaoName(name);
     }
 
 
