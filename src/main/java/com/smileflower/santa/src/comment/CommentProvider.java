@@ -76,29 +76,45 @@ public class CommentProvider {
     }
 
     public List<GetCommentRes> getComment(Long idx,String type,int userIdx) throws BaseException {
+
         if(type.equals("flag")) {
+
             if (checkFlagExist(idx) == 0)
                 throw new BaseException(INVALID_POST);
 
             getCommentRes = commentDao.getFlagComment(idx);
+
         }
         else if (type.equals("picture"))
         {
             if (checkPictureExist(idx) == 0)
                 throw new BaseException(INVALID_POST);
             getCommentRes=commentDao.getPictureComment(idx);
+
         }
-        if (getCommentRes.size() == 0)
+        if ( getCommentRes==null)
             throw new BaseException(EMPTY_COMMENT);
 
         for (int i = 0; i < getCommentRes.size(); i++) {
             if (getCommentRes.get(i).getUserIdx()==userIdx)
             {getCommentRes.get(i).setIsUsersComment("t");}
+            else if (type.equals("flag") && getFlagUserIdx(idx)==userIdx)
+            {getCommentRes.get(i).setIsUsersComment("t");}
+            else if (type.equals("picture") && getPictureUserIdx(idx)==userIdx)
+            {getCommentRes.get(i).setIsUsersComment("t");}
+
             if (getCommentRes.get(i).getUserImageUrl() != null)
                 getCommentRes.get(i).setUserImageUrl(s3Service.getFileUrl(getCommentRes.get(i).getUserImageUrl()));
             for (int j = 0; j < getCommentRes.get(i).getGetRecommentRes().size(); j++) {
                 if(getCommentRes.get(i).getGetRecommentRes().get(j).getUserIdx()==userIdx)
-                { getCommentRes.get(i).getGetRecommentRes().get(j).setIsUsersComment("t");  }
+                { getCommentRes.get(i).getGetRecommentRes().get(j).setIsUsersComment("t");}
+
+                if(type.equals("flag") && getFlagUserIdx(idx)==userIdx)
+                { getCommentRes.get(i).getGetRecommentRes().get(j).setIsUsersComment("t");}
+
+                if(type.equals("picture") && getPictureUserIdx(idx)==userIdx)
+                { getCommentRes.get(i).getGetRecommentRes().get(j).setIsUsersComment("t");}
+
                 if (getCommentRes.get(i).getGetRecommentRes().get(j).getUserImageUrl() != null)
                     getCommentRes.get(i).getGetRecommentRes().get(j).setUserImageUrl(s3Service.getFileUrl(getCommentRes.get(i).getGetRecommentRes().get(j).getUserImageUrl()));
 
@@ -114,4 +130,13 @@ public class CommentProvider {
     public int checkPictureExist(Long pictureIdx) {
         return commentDao.checkPictureExist(pictureIdx);
     }
+
+    public int getFlagUserIdx(Long flagIdx){
+        return commentDao.selectFlagUserIdx(flagIdx);
+    }
+
+    public int getPictureUserIdx(Long pictureIdx){
+        return commentDao.selectPictureUserIdx(pictureIdx);
+    }
+
 }

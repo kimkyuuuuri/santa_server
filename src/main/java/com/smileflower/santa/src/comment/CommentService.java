@@ -31,6 +31,7 @@ public class CommentService {
     }
 
     public PostCommentRes createComment(PostCommentReq postCommentReq, Long idx, int userIdx, String type) throws BaseException {
+
         int commentIdx=0;
         if(type.equals("flag")) {
             if (commentProvider.checkFlagExist(idx) == 0)
@@ -38,6 +39,7 @@ public class CommentService {
             commentIdx = commentDao.createFlagComment(postCommentReq, idx, userIdx);
         }
         if(type.equals("picture")) {
+
             if (commentProvider.checkPictureExist(idx) == 0)
                 throw new BaseException(INVALID_POST);
             commentIdx = commentDao.createPictureComment(postCommentReq, idx, userIdx);

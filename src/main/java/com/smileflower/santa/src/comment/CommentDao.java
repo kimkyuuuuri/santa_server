@@ -161,6 +161,18 @@ public class CommentDao {
                 "                where status='T' and userIdx=? ", String.class,userIdx);
     }
 
+    // 그 게시글의 작성자가 누구인지 출력해야함.
+
+    public int selectFlagUserIdx(Long flagIdx){
+        return this.jdbcTemplate.queryForObject("select userIdx from flag" +
+                "                where  flagIdx=? ", Integer.class,flagIdx);
+    }
+
+    public int selectPictureUserIdx(Long pictureIdx){
+        return this.jdbcTemplate.queryForObject("select userIdx from picture" +
+                "                where  pictureIdx=? ", Integer.class,pictureIdx);
+    }
+    //
     public int createPictureComment(PostCommentReq postCommentReq, Long pictureIdx, int userIdx){
         Object[] createPictureCommentParams = new Object[]{userIdx, pictureIdx, postCommentReq.getContents()};
 

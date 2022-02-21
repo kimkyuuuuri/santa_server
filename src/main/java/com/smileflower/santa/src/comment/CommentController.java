@@ -49,6 +49,7 @@ public class    CommentController {
 
             }
             int userIdx=jwtService.getUserIdx();
+
                     List<GetCommentRes> getCommentRes = commentProvider.getComment(Idx,type,userIdx);
 
                 return new BaseResponse<>(getCommentRes);
