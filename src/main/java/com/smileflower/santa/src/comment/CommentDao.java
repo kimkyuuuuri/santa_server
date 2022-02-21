@@ -82,7 +82,7 @@ public class CommentDao {
                                         "               concat(timestampdiff(week, flagrecomment.createdAt, current_timestamp()), '주 전') end  as  createdAt\n" +
                                         "    from flagrecomment\n" +
                                         "inner join user u on flagrecomment.userIdx = u.userIdx\n" +
-                                        "where flagrecomment.flagcommentIdx=? and flagrecomment.status='t' "  ,
+                                        "where flagrecomment.flagcommentIdx=?  "  ,
                                 (rk, rowNum2) -> new GetRecommentRes(
                                         rk.getInt("userIdx"),
                                         rk.getString("userImageUrl"),
@@ -133,7 +133,7 @@ public class CommentDao {
                                         "               concat(timestampdiff(week, picturerecomment.createdAt, current_timestamp()), '주 전') end  as  createdAt\n" +
                                         "    from picturerecomment\n" +
                                         "inner join user u on picturerecomment.userIdx = u.userIdx\n" +
-                                        "where picturerecomment.picturecommentIdx=? and picturerecomment.status='t' "  ,
+                                        "where picturerecomment.picturecommentIdx=? "  ,
                                 (rk, rowNum2) -> new GetRecommentRes(
                                         rk.getInt("userIdx"),
                                         rk.getString("userImageUrl"),
