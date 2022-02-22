@@ -10,6 +10,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import javax.sql.DataSource;
@@ -130,4 +131,13 @@ public class UserProvider {
 
 
 
+    @Scheduled(cron = "0 0 0 * * *")	// 두달 후 테이블에 userIdx 0으로 바꾸기
+    public void updateUserIdx() throws Exception {
+
+        List<GetUserIdxRes> getUserIdxRes=userDao.getTwoMonthAgoDeletedUser();
+        for (int i=0;i<getUserIdxRes.size();i++){
+            userDao.updateUserIdx(getUserIdxRes.get(i).getUserIdx());
+        }
+
+    }
 }

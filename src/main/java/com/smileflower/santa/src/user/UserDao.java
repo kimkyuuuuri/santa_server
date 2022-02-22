@@ -204,4 +204,44 @@ public class UserDao {
         this.jdbcTemplate.update("UPDATE user SET status = 'F' WHERE userIdx = ?",
                 userIdx);
     }
+
+    public List<GetUserIdxRes> getTwoMonthAgoDeletedUser(){
+        return this.jdbcTemplate.query("select userIdx from user where status='F' and  timestampdiff(day,updatedAt,NOW())=62",
+                (rs, rowNum) -> new GetUserIdxRes(
+
+                        rs.getInt("userIdx")
+                ));
+
+    }
+    //모든 테이블에 있는 userIdx 0으로 바꾸기
+    public void updateUserIdx(int userIdx){
+
+        this.jdbcTemplate.update("UPDATE flag SET userIdx = 0 WHERE userIdx = ?",
+                userIdx);
+        this.jdbcTemplate.update("UPDATE flagcomment SET userIdx = 0 WHERE userIdx = ?",
+                userIdx);
+        this.jdbcTemplate.update("UPDATE flagrecomment SET userIdx = 0 WHERE userIdx = ?",
+                userIdx);
+        this.jdbcTemplate.update("UPDATE flagsave SET userIdx = 0 WHERE userIdx = ?",
+                userIdx);
+        this.jdbcTemplate.update("UPDATE picklist SET userIdx = 0 WHERE userIdx = ?",
+                userIdx);
+        this.jdbcTemplate.update("UPDATE picture SET userIdx = 0 WHERE userIdx = ?",
+                userIdx);
+        this.jdbcTemplate.update("UPDATE picturecomment SET userIdx = 0 WHERE userIdx = ?",
+                userIdx);
+        this.jdbcTemplate.update("UPDATE picturerecomment SET userIdx = 0 WHERE userIdx = ?",
+                userIdx);
+        this.jdbcTemplate.update("UPDATE picturereport SET userIdx = 0 WHERE userIdx = ?",
+                userIdx);
+        this.jdbcTemplate.update("UPDATE picturesave SET userIdx = 0 WHERE userIdx = ?",
+                userIdx);
+        this.jdbcTemplate.update("UPDATE report SET userIdx = 0 WHERE userIdx = ?",
+                userIdx);
+        this.jdbcTemplate.update("UPDATE loghistory SET userIdx = 0 WHERE userIdx = ?",
+                userIdx);
+
+        this.jdbcTemplate.update("UPDATE searchlog SET userIdx = 0 WHERE userIdx = ?",
+                userIdx);
+    }
 }

@@ -8,6 +8,7 @@ import com.smileflower.santa.config.BaseResponse;
 import com.smileflower.santa.src.user.model.*;
 import com.smileflower.santa.utils.JwtService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.web.bind.annotation.*;
 
 
@@ -228,5 +229,6 @@ public class UserController {
             return new BaseResponse<>((exception.getStatus()));
         }
     }
+
 
 }
