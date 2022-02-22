@@ -131,13 +131,5 @@ public class UserProvider {
 
 
 
-    @Scheduled(cron = "0 0 0 * * *")	// 두달 후 테이블에 userIdx 0으로 바꾸기
-    public void updateUserIdx() throws Exception {
 
-        List<GetUserIdxRes> getUserIdxRes=userDao.getTwoMonthAgoDeletedUser();
-        for (int i=0;i<getUserIdxRes.size();i++){
-            userDao.updateUserIdx(getUserIdxRes.get(i).getUserIdx());
-        }
-
-    }
 }

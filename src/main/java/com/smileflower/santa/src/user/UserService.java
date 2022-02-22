@@ -196,7 +196,24 @@ public class UserService {
 
     }
 
+    @Scheduled(cron = "0 0 0 * * *")	// 두달 후 테이블에 userIdx 0으로 바꾸기
+    public void updateUserIdx() throws Exception {
 
+        List<GetUserIdxRes> getUserIdxRes=userDao.getTwoMonthAgoDeletedUser();
+        for (int i=0;i<getUserIdxRes.size();i++){
+            userDao.updateUserIdx(getUserIdxRes.get(i).getUserIdx());
+        }
+
+    }
+
+    @Scheduled(cron = "0 0 0 * * *")	// 6개월 후 삭제하기
+    public void deleteUserIdx() throws Exception {
+        List<GetUserIdxRes> getUserIdxRes=userDao.getSixMonthAgoDeletedUser();
+        for (int i=0;i<getUserIdxRes.size();i++){
+            userDao.deleteUser(getUserIdxRes.get(i).getUserIdx());
+        }
+
+    }
 }
 
 

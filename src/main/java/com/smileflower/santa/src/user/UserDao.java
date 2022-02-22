@@ -57,12 +57,10 @@ public class UserDao {
 
     public int deleteUser(int userIdx) {
         String userQuery = "delete from user where userIdx = ?";
-        String pictureQuery="delete from picture where userIdx=?";
-        String flagQuery="delete from flag where userIdx=?";
+
 
         Object[] params = new Object[]{userIdx};
-        this.jdbcTemplate.update(pictureQuery,params);
-        this.jdbcTemplate.update(flagQuery,params);
+
         int changedCnt = this.jdbcTemplate.update(userQuery,params);
         return changedCnt;
     }
@@ -206,13 +204,23 @@ public class UserDao {
     }
 
     public List<GetUserIdxRes> getTwoMonthAgoDeletedUser(){
-        return this.jdbcTemplate.query("select userIdx from user where status='F' and  timestampdiff(day,updatedAt,NOW())=62",
+        return this.jdbcTemplate.query("select userIdx from user where status='F' and  timestampdiff(day,updatedAt,NOW())=60",
                 (rs, rowNum) -> new GetUserIdxRes(
 
                         rs.getInt("userIdx")
                 ));
 
     }
+
+    public List<GetUserIdxRes> getSixMonthAgoDeletedUser(){
+        return this.jdbcTemplate.query("select userIdx from user where status='F' and  timestampdiff(day,updatedAt,NOW())=180",
+                (rs, rowNum) -> new GetUserIdxRes(
+
+                        rs.getInt("userIdx")
+                ));
+
+    }
+
     //모든 테이블에 있는 userIdx 0으로 바꾸기
     public void updateUserIdx(int userIdx){
 
@@ -244,4 +252,6 @@ public class UserDao {
         this.jdbcTemplate.update("UPDATE searchlog SET userIdx = 0 WHERE userIdx = ?",
                 userIdx);
     }
+
+
 }
