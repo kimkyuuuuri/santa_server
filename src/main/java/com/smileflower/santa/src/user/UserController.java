@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 import static com.smileflower.santa.config.BaseResponseStatus.*;
 import static com.smileflower.santa.utils.ValidationRegex.*;
 
+
 @RestController
 @RequestMapping("/app/users")
 public class UserController {
@@ -187,6 +188,27 @@ public class UserController {
             DeleteUserRes deleteUserRes = userService.deleteUser(userIdx);
 
             return new BaseResponse<>(deleteUserRes);
+        } catch (BaseException exception) {
+            return new BaseResponse<>((exception.getStatus()));
+        }
+    }
+
+
+    @ResponseBody
+    @PatchMapping("/{userIdx}/status")
+    public BaseResponse<String> patchUserStatus(@PathVariable("userIdx") int userIdx) {
+
+        try {
+            int userIdxByJwt = jwtService.getUserIdx();
+
+            if (userIdx != userIdxByJwt) {
+
+                return new BaseResponse<>(INVALID_USER_JWT);
+            }
+
+             userService.patchUserStatus(userIdx);
+            return new BaseResponse<>("삭제에 성공했습니다.");
+
         } catch (BaseException exception) {
             return new BaseResponse<>((exception.getStatus()));
         }

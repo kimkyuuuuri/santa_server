@@ -91,9 +91,11 @@ dependencies {
 	compile("org.springframework.boot:spring-boot-starter-mail")
 	compile('org.springframework.cloud:spring-cloud-starter-aws:2.0.1.RELEASE')
 
+	implementation group: 'io.springfox', name: 'springfox-boot-starter', version: '3.0.0'
 
 
 }
+
 
 test {
 	useJUnitPlatform()

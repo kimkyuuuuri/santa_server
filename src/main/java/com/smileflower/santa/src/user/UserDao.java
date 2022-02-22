@@ -200,5 +200,8 @@ public class UserDao {
                 name,userIdx);
     }
 
-
+    public void patchUserStatus(int userIdx){
+        this.jdbcTemplate.update("UPDATE user SET status = 'F' WHERE userIdx = ?",
+                userIdx);
+    }
 }

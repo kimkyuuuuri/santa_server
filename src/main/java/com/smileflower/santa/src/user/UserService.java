@@ -186,6 +186,13 @@ public class UserService {
         }
         userDao.modifyNickname(userIdx,name);
     }
+
+    public void patchUserStatus(int userIdx) throws BaseException{
+        if (userProvider.checkUserIdx(userIdx)!=1) {
+            throw new BaseException(INVALID_USER);
+        }
+        userDao.patchUserStatus(userIdx);
+    }
 }
 
 
