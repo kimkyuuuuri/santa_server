@@ -175,6 +175,31 @@ public class UserController {
 
 
     @ResponseBody
+    @GetMapping("/new-auto-login")
+    public BaseResponse<GetAutoLoginRes> newAutologin() throws BaseException{
+        try{
+            if(jwtService.getJwt()==null){
+                return new BaseResponse<>(EMPTY_JWT);
+            }
+            else if(userProvider.checkJwt(jwtService.getJwt())==1){
+                return new BaseResponse<>(INVALID_JWT);
+
+            }
+
+            else{
+                String jwt=jwtService.getJwt();
+                int userIdx=jwtService.getUserIdx();
+                GetAutoLoginRes getAutoLoginRes=new GetAutoLoginRes(userIdx);
+                return new BaseResponse<>(getAutoLoginRes);
+            }
+
+        }catch(BaseException exception){
+            return new BaseResponse<>((exception.getStatus()));
+        }
+
+    }
+
+    @ResponseBody
     @DeleteMapping("/{userIdx}")
     public BaseResponse<DeleteUserRes> deleteUser(@PathVariable("userIdx") int userIdx) {
 
