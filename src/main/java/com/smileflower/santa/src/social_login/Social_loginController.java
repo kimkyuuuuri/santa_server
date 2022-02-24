@@ -39,11 +39,7 @@ public class Social_loginController {
     private final Social_loginProvider socialloginProvider;
     final Logger logger = LoggerFactory.getLogger(this.getClass());
 
-    @ResponseBody
-    @GetMapping ("/kakao-login")
-    public String kakaoLogin() throws BaseException {
-      return "hi";
-    }
+
 
     @ResponseBody
     @PostMapping ("/kakao-createUser")
@@ -100,7 +96,7 @@ public class Social_loginController {
     }
 
     @ResponseBody
-    @PostMapping ("/kakao-Login")
+    @PostMapping ("/kakao-login")
     public  BaseResponse<PostUserLoginRes> kakaologin( @RequestBody PostUserReq postUserReq) throws UnsupportedEncodingException, BaseException {
 
         RestTemplate rt2 = new RestTemplate();

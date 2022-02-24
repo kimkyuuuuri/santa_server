@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" lang="en">
+<style>
+    *{
+        font-size: 16px;
+        align-content: center;
+    }
+    @font-face {
+        src : url("Cocogoose Pro-trial.ttf");
+        font-family: "Cocogoose"
+    }
+    @font-face {
+        src : url("AppleSDGothicNeo.ttc");
+        font-family: "AppleSDGothicNeo"
+    }
+    .main-img{
+        width:50.75rem;
+        height:15.938rem;
+        border-radius: 26px;
+        background-color:#444;
+        text-align: center;
+        margin:0 auto;
+        color:#fff;
+        text-align: center;
+        background-image: url('mail-title.png');
+        background-size: 100%;
+    }
+    .logo{
+        position:absolute;
+        top:3.514rem;
+        left:50%;
+        transform:translate(-50%,0);
+        width:2.804rem;
+
+    }
+    .main-img .title1{
+        width: 27.188rem;
+        height: 2.25rem;
+        font-family: Cocogoose;
+        font-size: 1.625rem;
+        line-height: 1.54;
+        position:relative;
+        top:6.563rem;
+    }
+    .main-img .title2{
+        width: 24.063rem;
+        height: 1.688rem;
+        font-family: AppleSDGothicNeo;
+        font-size: 1.375rem;
+        font-weight: bold;
+        line-height: 2.23;
+        position:relative;
+        top:6.375rem;
+    }
+
+    .contents-box{
+        margin:0 auto;
+        margin-top:0.75rem;
+        width: 50.688rem;
+        height: 23.188rem;
+        border-radius: 26px;
+        border: solid 1px #c9d4e2;
+    }
+    .contents{
+        padding-left:4.5rem;
+        padding-top:3.563rem;
+    }
+    .contents-title1 {
+        font-family: Cocogoose;
+        font-size: 1.75rem;
+        font-weight: normal;
+        font-stretch: normal;
+        font-style: normal;
+        line-height: 1.57;
+        letter-spacing: -1.4px;
+        text-align: left;
+        color: #44b4aa;
+    }
+    .contents-title2 {
+        width: 12.25rem;
+        height: 2.688rem;
+        margin: 0.063rem 13.813rem 1.625rem 0;
+        font-family: AppleSDGothicNeo;
+        font-size: 2.25rem;
+        font-weight: bold;
+        font-stretch: normal;
+        font-style: normal;
+        line-height: 1.19;
+        letter-spacing: normal;
+        text-align: left;
+        color: #1c3240;
+    }
+    .contents-text{
+        width: 26.063rem;
+        height: 2.938rem;
+        margin: 1.625rem 0 2.688rem;
+        font-family: AppleSDGothicNeo;
+        font-size: 1.125rem;
+        font-weight: 600;
+        font-stretch: normal;
+        font-style: normal;
+        line-height: 1.44;
+        letter-spacing: normal;
+        text-align: left;
+        color: #7c909b;
+        position:relative;
+        top:1.625rem;
+    }
+    .contents-number{
+        width: 9.938rem;
+        height: 3.125rem;
+        border-radius: 29px;
+        background-color: #44b4aa;
+        position:relative;
+        top:2.688rem;
+        text-align: center;
+    }
+    .contents-number span{
+        width: 4.875rem;
+        height: 2.688rem;
+        font-family: AppleSDGothicNeo;
+        font-size: 2.25rem;
+        font-weight: bold;
+        font-stretch: normal;
+        font-style: normal;
+        line-height: 3.4rem;
+        letter-spacing: normal;
+        text-align: left;
+        color: #fff;
+    }
+</style>
+<body>
+<div class="main-img">
+    <img class="logo" src="logo.png">
+    <span class="title1">For a Better Hike With SANTA!</span> <br/>
+    <span class="title2">산타와 함께 더욱 즐거운 산행을 경험하세요:)</span>
+</div>
+<div class="contents-box">
+    <div class='contents'>
+        <span class="contents-title1">SANTA</span> <br/>
+        <span class="contents-title2">인증번호 안내</span> <br/>
+        <span class="contents-text">
+                    안녕하세요. 산타입니다. 산타에 가입해 주셔서 감사합니다:) <br/>
+                    본인확인을 위해 아래 인증번호를 입력해주세요.
+                </span>
+        <div class="contents-number">
+            <span th:text="${code}">1234</span>
+        </div>
+    </div>
+</div>
+</body>
+</html>
