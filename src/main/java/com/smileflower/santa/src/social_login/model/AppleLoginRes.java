@@ -10,6 +10,7 @@ import lombok.Setter;
 public class AppleLoginRes {
     private String emailId;
     private String refresh_token;
+    private String jwt;
 
 
 

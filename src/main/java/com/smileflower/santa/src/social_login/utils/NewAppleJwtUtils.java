@@ -116,6 +116,11 @@ public class NewAppleJwtUtils {
         return email;
     }
 
+    public String getId(String identityToken){
+        return ((String)getClaimsBy(identityToken).get("userIdentifier"));
+    }
+
+
     public String makeClientSecret() throws IOException {
         Date expirationDate = Date.from(LocalDateTime.now().plusDays(30).atZone(ZoneId.systemDefault()).toInstant());
         

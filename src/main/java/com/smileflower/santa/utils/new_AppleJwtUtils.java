@@ -119,6 +119,20 @@ public class new_AppleJwtUtils {
         return email;
     }
 
+
+    public String getId(String identityToken){
+        return (String)getClaimsBy(identityToken).get("useridentifier");
+    }
+
+    public String getIdByRefreshToken(String refreshToken){
+        String id="";
+        try {
+            id = (String)getClaimsBy(getTokenByRefreshToken(makeClientSecret(), refreshToken).getId_token()).get("useridentifier");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return id;
+    }
     public String makeClientSecret() throws IOException {
         Date expirationDate = Date.from(LocalDateTime.now().plusDays(30).atZone(ZoneId.systemDefault()).toInstant());
         

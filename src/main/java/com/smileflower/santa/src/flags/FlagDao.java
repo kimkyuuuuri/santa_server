@@ -281,14 +281,19 @@ public class FlagDao {
 
 
     public int postFlagSaveRes(int userIdx,int flagIdx){
-        return this.jdbcTemplate.update("insert into flagsave (userIdx,flagIdx) VALUES (? , ?)",
+        this.jdbcTemplate.update("insert into flagsave (userIdx,flagIdx) VALUES (? , ?)",
 
                 userIdx,flagIdx);
+
+        String lastInsertIdQuery = "select last_insert_id()";
+        return this.jdbcTemplate.queryForObject(lastInsertIdQuery, int.class);
     }
     public int patchFlagSaveRes(int userIdx,int flagIdx){
-        return this.jdbcTemplate.update("update flagsave set status='f' where userIdx=? and flagIdx=? order by createdAt desc limit 1",
+        this.jdbcTemplate.update("update flagsave set status='f' where userIdx=? and flagIdx=? order by createdAt desc limit 1",
 
                 userIdx,flagIdx);
+        String lastInsertIdQuery = "select last_insert_id()";
+        return this.jdbcTemplate.queryForObject(lastInsertIdQuery, int.class);
     }
 
     public int checkSaveExist(int userIdx,int flagIdx){

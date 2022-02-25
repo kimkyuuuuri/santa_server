@@ -1,6 +1,9 @@
 package com.smileflower.santa.src.social_login.model;
 
 import lombok.Data;
+import lombok.Getter;
+
+@Getter
 
 @Data
 public class KakaoProfile {
@@ -40,5 +43,6 @@ public class KakaoProfile {
             public Boolean is_default_image;
 
         }
+
     }
 }

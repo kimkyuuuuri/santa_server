@@ -44,7 +44,7 @@ public class Social_loginService {
 
 
     @Transactional
-    public PostUserLoginRes kakaoLogin(int id) throws BaseException {
+    public PostUserLoginRes kakaoLogin(String id) throws BaseException {
         //System.out.println("테스트1:"+postUserLoginReq.getEmailId());
         int userIdx = social_loginProvider.checkKakaoAccount(id);
       //카카오 계정 체크해서 idx 리턴하는 함수 만들기
@@ -85,7 +85,7 @@ public class Social_loginService {
 
     public ApplePostUserRes createUser(ApplePostUserReq applePostUserReq) throws BaseException {
         if(social_loginDao.findByEmail(applePostUserReq.getUserEmail()))
-            social_loginDao.insertUser(new AppleUser(applePostUserReq.getUserEmail(),applePostUserReq.getName()));
+            social_loginDao.insertUser(new AppleUser(applePostUserReq.getUserEmail(),applePostUserReq.getName()+applePostUserReq.getUserIdentifier(), applePostUserReq.getUserIdentifier()));
 
         AppleToken.Response appleLoginRes = new AppleToken.Response();
         try {
@@ -98,15 +98,19 @@ public class Social_loginService {
 
     public AppleLoginRes loginUser(AppleLoginReq appleLoginReq) throws BaseException {
         AppleToken.Response tokenResponse = new AppleToken.Response();
+        String jwt="";
         try {
             tokenResponse = newAppleJwtUtils.getTokenByRefreshToken(newAppleJwtUtils.makeClientSecret(), appleLoginReq.getRefreshToken());
+            int userIdx = social_loginProvider.checkAppleAccount(newAppleJwtUtils.getId(tokenResponse.getId_token()));
+            jwt = jwtService.createJwt(userIdx);
         } catch (IOException e) {
             e.printStackTrace();
         }
-        return new AppleLoginRes(newAppleJwtUtils.getEmail(tokenResponse.getId_token()).getEmail(),appleLoginReq.getRefreshToken());
+
+        return new AppleLoginRes(newAppleJwtUtils.getEmail(tokenResponse.getId_token()).getEmail(),appleLoginReq.getRefreshToken(),jwt);
     }
     //POST
-    public PostUserRes createKakaoUser(String name,String Email,int id) throws BaseException {
+    public PostUserRes createKakaoUser(String name,String Email,String id) throws BaseException {
         //중복
 
 

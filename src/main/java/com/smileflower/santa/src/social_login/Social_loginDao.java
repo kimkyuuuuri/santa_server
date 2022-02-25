@@ -21,14 +21,13 @@ public class Social_loginDao {
         this.jdbcTemplate = new JdbcTemplate(dataSource);
     }
 
-    public AppleUser insertUser(AppleUser user) {
+    public int insertUser(AppleUser user) {
         String query = "insert into user (emailId, pw, kakao, apple, userImageUrl, name) VALUES (?,?,?,?,?,?)";
-        Object[] params = new Object[]{user.getEmailId().getEmail(),user.getPasswd(),user.getIsKakao(),
-                user.getIsApple(),user.getUserImageUrl(),user.getName()};
+        Object[] params = new Object[]{"","","",user.getUserIdentifier(),user.getUserImageUrl(),user.getName()};
+
         this.jdbcTemplate.update(query, params);
 
-        String lastInserIdQuery = "select last_insert_id()";
-        return user;
+        return this.jdbcTemplate.queryForObject("select last_insert_id()",int.class);
     }
 
 
@@ -55,7 +54,7 @@ public class Social_loginDao {
             return true;
     }
 
-    public int createKakaoUser(String name,String Email,int id){
+    public int createKakaoUser(String name,String Email,String id){
         this.jdbcTemplate.update("insert into user (createdAt,  emailId, name ,pw, kakao ) VALUES (NOW(),?,?,?,?)",
                 new Object[]{Email, name ,"kakao",id}
         );
@@ -68,12 +67,17 @@ public class Social_loginDao {
                 email);
 
     }
-    public int checkKakaoAccount(int id){
+    public int checkKakaoAccount(String id){
         return this.jdbcTemplate.queryForObject("select  userIdx from user where kakao=?",
                 (rs, rowNum) -> rs.getInt("userIdx"),
                 id);
     }
 
+    public int checkAppleAccount(String id){
+        return this.jdbcTemplate.queryForObject("select  userIdx from user where apple=?",
+                (rs, rowNum) -> rs.getInt("userIdx"),
+                id);
+    }
 
 
     public int checkUserIdx(int userIdx){
@@ -107,13 +111,17 @@ public class Social_loginDao {
                 int.class,
                 name);
     }
-    public int checkKakaoId(int id){
+    public int checkKakaoId(String id){
         return this.jdbcTemplate.queryForObject("select exists(select name from user where  kakao=?)",
                 int.class,
                 id);
     }
 
-
+    public int checkAppleId(String id){
+        return this.jdbcTemplate.queryForObject("select exists(select name from user where  kakao=?)",
+                int.class,
+                id);
+    }
     public String checkLog(int userIdx){
         return this.jdbcTemplate.queryForObject("select status from loghistory\n" +
                         "where loghistoryIdx=(select max(loghistoryIdx) from (select loghistoryIdx from loghistory where userIdx=?) a)",

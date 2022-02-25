@@ -23,14 +23,18 @@ public class PictureDao {
                 userIdx,pictureIdx);
     }
     public int postPictureSaveRes(int userIdx,int pictureIdx){
-        return this.jdbcTemplate.update("insert into picturesave (userIdx,pictureIdx) VALUES (? , ?)",
+        this.jdbcTemplate.update("insert into picturesave (userIdx,pictureIdx) VALUES (? , ?)",
 
                 userIdx,pictureIdx);
+        String lastInsertIdQuery = "select last_insert_id()";
+        return this.jdbcTemplate.queryForObject(lastInsertIdQuery, int.class);
     }
     public int patchPictureSaveRes(int userIdx,int pictureIdx){
-        return this.jdbcTemplate.update("update picturesave set status='f' where userIdx=? and pictureIdx=? order by createdAt desc limit 1",
+        this.jdbcTemplate.update("update picturesave set status='f' where userIdx=? and pictureIdx=? order by createdAt desc limit 1",
 
                 userIdx,pictureIdx);
+        String lastInsertIdQuery = "select last_insert_id()";
+        return this.jdbcTemplate.queryForObject(lastInsertIdQuery, int.class);
     }
 
     public int checkJwt(String jwt){
