@@ -268,6 +268,26 @@ public class FlagDao {
         return changedCnt==1 ? true : false;
     }
 
+    public boolean deleteFlagComment(Long flagIdx) {
+        String query = "delete from flagcomment where flagIdx = ?";
+        Object[] params = new Object[]{flagIdx};
+        int changedCnt = this.jdbcTemplate.update(query,params);
+        return changedCnt==1 ? true : false;
+    }
+
+    public boolean deleteFlagSave(Long flagIdx) {
+        String query = "delete from flagsave where flagIdx = ?";
+        Object[] params = new Object[]{flagIdx};
+        int changedCnt = this.jdbcTemplate.update(query,params);
+        return changedCnt==1 ? true : false;
+    }
+    public boolean deleteFlagReport(Long flagIdx) {
+        String query = "delete from report where flagIdx = ?";
+        Object[] params = new Object[]{flagIdx};
+        int changedCnt = this.jdbcTemplate.update(query,params);
+        return changedCnt==1 ? true : false;
+    }
+
     public int findIsFlagByLatAndLong(double latitude, double longitude, Long mountainIdx) {
         return this.jdbcTemplate.queryForObject("SELECT DATA.distance < 20 as isFlag\n" +
                         "FROM (\n" +

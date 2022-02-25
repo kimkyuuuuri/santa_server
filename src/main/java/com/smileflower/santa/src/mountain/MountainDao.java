@@ -149,7 +149,7 @@ public class MountainDao {
                         "                                                from flag f\n" +
                         "                                                             inner join mountain m on f.mountainIdx = m.mountainIdx\n" +
                         "                                                               inner join user u on f.userIdx = u.userIdx\n" +
-                        "                                                      where f.mountainIdx = ?\n" +
+                        "                                                      where f.mountainIdx = ? and u.status='t'\n" +
                         "\n" +
                         "                                                     group by f.userIdx\n" +
                         "                                                     order by ranking) a inner join (select userIdx,(case\n" +
@@ -190,7 +190,7 @@ public class MountainDao {
                         "                                                from flag f\n" +
                         "                                                             inner join mountain m on f.mountainIdx = m.mountainIdx\n" +
                         "                                                               inner join user u on f.userIdx = u.userIdx\n" +
-                        "                                                      where f.mountainIdx = ?\n" +
+                        "                                                      where f.mountainIdx = ? and u.status='t'\n" +
                         "\n" +
                         "                                                     group by f.userIdx\n" +
                         "                                                     order by ranking) a inner join (select userIdx,(case\n" +
@@ -272,7 +272,7 @@ public class MountainDao {
                 "                from flag f\n" +
                 "                         inner join mountain m on f.mountainIdx = m.mountainIdx\n" +
                 "                         inner join user u on f.userIdx = u.userIdx\n" +
-                "                where f.mountainIdx = ?\n" +
+                "                where f.mountainIdx = ? and u.status='t'\n" +
                 "                group by f.userIdx\n" +
                 "                order by ranking)a where userIdx=?)",int.class,mountainIdx,userIdx);
     }

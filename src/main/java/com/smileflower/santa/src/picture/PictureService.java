@@ -60,6 +60,12 @@ public class PictureService{
             throw new BaseException(INVALID_POST);
         else if (pictureProvider.checkPictureWhereUserExist(pictureIdx,userIdx) == 0)
             throw new BaseException(INVALID_POST_USER);
+
+        pictureDao.deletePictureComment(pictureIdx);
+        // flagDao.deleteFlagReComment(flagIdx);
+        pictureDao.deletePictureSave(pictureIdx);
+
+        pictureDao.deletePictureReport(pictureIdx);
         return new DeletePictureRes(pictureDao.deletePicture(pictureIdx));
 
     }

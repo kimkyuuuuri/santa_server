@@ -180,6 +180,11 @@ public class FlagService {
             throw new BaseException(INVALID_POST);
         else if (flagProvider.checkFlagWhereUserExist(flagIdx,userIdx) == 0)
             throw new BaseException(INVALID_POST_USER);
+        flagDao.deleteFlagComment(flagIdx);
+       // flagDao.deleteFlagReComment(flagIdx);
+        flagDao.deleteFlagSave(flagIdx);
+
+        flagDao.deleteFlagReport(flagIdx);
         return new DeleteFlagRes(flagDao.deleteFlag(flagIdx));
 
     }

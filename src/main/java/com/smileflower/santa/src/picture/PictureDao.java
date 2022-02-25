@@ -74,4 +74,27 @@ public class PictureDao {
     public int getReportCount(Long pictureIdx) {
         return this.jdbcTemplate.queryForObject("SELECT COUNT(*) FROM picturereport WHERE pictureIdx = ?",new Object[]{pictureIdx}, int.class);
     }
+
+
+
+    public boolean deletePictureComment(Long pictureIdx) {
+        String query = "delete from picturecomment where pictureIdx = ?";
+        Object[] params = new Object[]{pictureIdx};
+        int changedCnt = this.jdbcTemplate.update(query,params);
+        return changedCnt==1 ? true : false;
+    }
+
+    public boolean deletePictureSave(Long pictureIdx) {
+        String query = "delete from picturesave where pictureIdx = ?";
+        Object[] params = new Object[]{pictureIdx};
+        int changedCnt = this.jdbcTemplate.update(query,params);
+        return changedCnt==1 ? true : false;
+    }
+    public boolean deletePictureReport(Long pictureIdx) {
+        String query = "delete from picturereport where pictureIdx = ?";
+        Object[] params = new Object[]{pictureIdx};
+        int changedCnt = this.jdbcTemplate.update(query,params);
+        return changedCnt==1 ? true : false;
+    }
+
 }
