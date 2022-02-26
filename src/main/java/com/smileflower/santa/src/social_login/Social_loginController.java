@@ -2,6 +2,9 @@ package com.smileflower.santa.src.social_login;
 
 
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.core.JsonParser;
+import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.smileflower.santa.config.BaseException;
 import com.smileflower.santa.config.BaseResponse;
 
@@ -25,7 +28,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 
 import java.io.UnsupportedEncodingException;
-
 
 
 @RequiredArgsConstructor
@@ -113,7 +115,7 @@ public class Social_loginController {
         // HttpHeader와 HttpBody를 하나의 오브젝트에 담기
         HttpEntity<MultiValueMap<String, String>> kakaoProfileRequest2 =
                 new HttpEntity<>(headers2);
-
+        System.out.println(kakaoProfileRequest2);
         // Http 요청하기 - Post방식으로 - 그리고 response 변수의 응답 받음.
         ResponseEntity<String> response2 = rt2.exchange(
                 "https://kapi.kakao.com/v2/user/me",
@@ -123,8 +125,11 @@ public class Social_loginController {
         );
 
 
+     System.out.println(response2.getBody());
         ObjectMapper objectMapper2 = new ObjectMapper();
         KakaoProfile kakaoProfile = null;
+        objectMapper2.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+
         try {
 
             kakaoProfile = objectMapper2.readValue(response2.getBody(), KakaoProfile.class);
@@ -142,10 +147,9 @@ public class Social_loginController {
         System.out.println("카카오 아이디(번호) : "+kakaoProfile.getProperties().getNickname());*/
         // System.out.println("카카오 아이디(번호) : "+kakaoProfile.getProperties().getProfile_image());
 
-        System.out.println(kakaoProfile);
         try{
             if(socialloginProvider.checkKakaoId(Integer.toString(kakaoProfile.getId())) == 0) {
-                PostUserRes postUserRes = socialloginService.createKakaoUser( kakaoProfile.getProperties().getNickname()+kakaoId,"",Integer.toString(kakaoProfile.getId()));
+                PostUserRes postUserRes = socialloginService.createKakaoUser( "kakao"+kakaoProfile.getProperties().getNickname()+kakaoId,"",Integer.toString(kakaoProfile.getId()));
                 kakaoId+=1;
 
             }

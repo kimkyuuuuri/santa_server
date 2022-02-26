@@ -85,7 +85,7 @@ public class Social_loginService {
 
     public ApplePostUserRes createUser(ApplePostUserReq applePostUserReq,int appleId) throws BaseException {
 
-            social_loginDao.insertUser( applePostUserReq.getUserIdentifier(),applePostUserReq.getName()+appleId);
+            social_loginDao.insertUser( applePostUserReq.getUserIdentifier(),"apple"+applePostUserReq.getName()+appleId);
 
         AppleToken.Response appleLoginRes = new AppleToken.Response();
 
