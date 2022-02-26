@@ -102,9 +102,9 @@ public class Social_loginController {
     @ResponseBody
     @PostMapping ("/kakao-login")
     public  BaseResponse<PostUserLoginRes> kakaologin( @RequestBody PostUserReq postUserReq) throws UnsupportedEncodingException, BaseException {
-        System.out.println(postUserReq);
+
         RestTemplate rt2 = new RestTemplate();
-        System.out.println(postUserReq.getAccessToken());
+
         // HttpHeader 오브젝트 생성
         HttpHeaders headers2 = new HttpHeaders();
         headers2.add("Authorization", "Bearer "+ postUserReq.getAccessToken());
@@ -113,7 +113,7 @@ public class Social_loginController {
         // HttpHeader와 HttpBody를 하나의 오브젝트에 담기
         HttpEntity<MultiValueMap<String, String>> kakaoProfileRequest2 =
                 new HttpEntity<>(headers2);
-        System.out.println(postUserReq.getAccessToken());
+
         // Http 요청하기 - Post방식으로 - 그리고 response 변수의 응답 받음.
         ResponseEntity<String> response2 = rt2.exchange(
                 "https://kapi.kakao.com/v2/user/me",
@@ -122,7 +122,7 @@ public class Social_loginController {
                 String.class
         );
 
-        System.out.println(postUserReq.getAccessToken());
+
         ObjectMapper objectMapper2 = new ObjectMapper();
         KakaoProfile kakaoProfile = null;
         try {

@@ -95,10 +95,10 @@ public class Social_loginService {
     public AppleLoginRes loginUser(ApplePostUserReq applePostUserReq) throws BaseException {
 
 
-        String jwt="";
+
 
             int userIdx = social_loginProvider.checkAppleAccount(applePostUserReq.getUserIdentifier());
-            jwt = jwtService.createJwt(userIdx);
+        String jwt = jwtService.createJwt(userIdx);
 
         return new AppleLoginRes(userIdx,jwt);
     }
