@@ -288,5 +288,14 @@ public class New_HomeDao {
                 ));
 
     }
+    public String getUserStatus(int userIdx){
+        return this.jdbcTemplate.queryForObject("select status from user where userIdx=?",
+                String.class,
+                userIdx);
+    }
 
+    public void setUserStatus(int userIdx){
+        this.jdbcTemplate.update("UPDATE user SET status = 'T' WHERE userIdx = ?",
+                userIdx);
+    }
 }

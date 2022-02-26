@@ -122,6 +122,7 @@ public class Social_loginDao {
                 int.class,
                 id);
     }
+
     public String checkLog(int userIdx){
         return this.jdbcTemplate.queryForObject("select status from loghistory\n" +
                         "where loghistoryIdx=(select max(loghistoryIdx) from (select loghistoryIdx from loghistory where userIdx=?) a)",

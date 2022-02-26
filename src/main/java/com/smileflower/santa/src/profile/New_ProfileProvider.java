@@ -60,7 +60,12 @@ public class New_ProfileProvider {
         }
         Collections.sort(getPostsRes);
 
-        GetProfileRes getProfileRes = new GetProfileRes(userIdx,getUserRes.getUserName(),level,flagsResponseCnt,flagsResponseCnt+getPicturesRes.size(),s3Service.getFileUrl(getUserRes.getUserImageUrl()),getPostsRes);
+       String userImg=null;
+        if(getUserRes.getUserImageUrl()!=null) {
+            userImg=s3Service.getFileUrl(getUserRes.getUserImageUrl());
+        }
+
+            GetProfileRes getProfileRes = new GetProfileRes(userIdx,getUserRes.getUserName(),level,flagsResponseCnt,flagsResponseCnt+getPicturesRes.size(),userImg,getPostsRes);
 
         return getProfileRes;
 

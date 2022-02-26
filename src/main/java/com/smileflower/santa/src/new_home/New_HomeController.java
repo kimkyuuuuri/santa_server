@@ -42,7 +42,9 @@ public class New_HomeController {
             }
 
             else{
+
                 int userIdx=jwtService.getUserIdx();
+
                 GetHomeRes getHomeRes= newHomeProvider.getHome(userIdx);
                 return new BaseResponse<>(getHomeRes);
             }

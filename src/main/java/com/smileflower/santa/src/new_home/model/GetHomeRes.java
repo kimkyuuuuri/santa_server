@@ -17,6 +17,7 @@ public class GetHomeRes {
 
     public GetHomeRes(String notice, String isFirst, List<GetFlagsRes> getFlagResList, List<GetUsersRes> getUsersResList, List<GetMountainsRes> getMountainsResList) {
         this.notice=notice;
+        this.isFirst=isFirst;
         this.getFlagResList=getFlagResList;
         this.getUsersResList=getUsersResList;
         this.getMountainsResList=getMountainsResList;

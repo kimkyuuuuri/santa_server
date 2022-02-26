@@ -36,7 +36,9 @@ public class New_HomeProvider {
 
     public GetHomeRes getHome(int userIdx) throws BaseException {
 
+
         GetHomeRes getHomeRes = newHomeDao.getHomeRes(userIdx);
+
 
         for (int i = 0; i < getHomeRes.getGetFlagResList().size(); i++) {
             if (getHomeRes.getGetFlagResList().get(i).getFlagImageUrl() != null)
@@ -55,6 +57,10 @@ public class New_HomeProvider {
                 getHomeRes.getGetMountainsResList().get(i).setMountainImageUrl(s3Service.getFileUrl(getHomeRes.getGetMountainsResList().get(i).getMountainImageUrl()));
             if (getHomeRes.getGetMountainsResList().get(i).getUserImageUrl() != null)
                 getHomeRes.getGetMountainsResList().get(i).setUserImageUrl(s3Service.getFileUrl(getHomeRes.getGetMountainsResList().get(i).getUserImageUrl()));
+        }
+        if(getUserStatus(userIdx).equals("F")){
+
+            setUserStatus(userIdx);
         }
         return getHomeRes;
 
@@ -116,6 +122,15 @@ public class New_HomeProvider {
         return getMountainsRes;
 
 
+
+    }
+
+    public String getUserStatus(int userIdx){
+        String userStatus = newHomeDao.getUserStatus(userIdx);
+        return userStatus;
+    }
+    public void setUserStatus(int userIdx){
+         newHomeDao.setUserStatus(userIdx);
 
     }
 }
