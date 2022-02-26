@@ -97,10 +97,12 @@ public class Social_loginService {
     }
 
     public AppleLoginRes loginUser(AppleLoginReq appleLoginReq) throws BaseException {
+
         AppleToken.Response tokenResponse = new AppleToken.Response();
         String jwt="";
         try {
             tokenResponse = newAppleJwtUtils.getTokenByRefreshToken(newAppleJwtUtils.makeClientSecret(), appleLoginReq.getRefreshToken());
+            System.out.println(tokenResponse);
             int userIdx = social_loginProvider.checkAppleAccount(newAppleJwtUtils.getId(tokenResponse.getId_token()));
             jwt = jwtService.createJwt(userIdx);
         } catch (IOException e) {

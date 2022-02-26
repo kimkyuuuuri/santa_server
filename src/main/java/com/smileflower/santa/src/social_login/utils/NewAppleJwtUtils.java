@@ -103,6 +103,9 @@ public class NewAppleJwtUtils {
     }
 
     public Email getEmail(String identityToken){
+        System.out.println(getClaimsBy(identityToken));
+        System.out.println(identityToken);
+        System.out.println("안녕하세요 테스트중!");
         return new Email((String)getClaimsBy(identityToken).get("email"));
     }
 
