@@ -118,7 +118,7 @@ public class Social_loginDao {
     }
 
     public int checkAppleId(String id){
-        return this.jdbcTemplate.queryForObject("select exists(select name from user where  kakao=?)",
+        return this.jdbcTemplate.queryForObject("select exists(select name from user where  apple=?)",
                 int.class,
                 id);
     }
