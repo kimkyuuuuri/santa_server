@@ -31,10 +31,12 @@ public class New_HomeDao {
     }
 
     public GetHomeRes getHomeRes(int userIdx) {
-        String getNoticeQuery = "select  case when exists(select noticeIdx from notice where userIdx=? and status='t') =1 then 't' else 'f' end as notice ";
+        String getNoticeQuery = "select  case when exists(select noticeIdx from notice where userIdx=? and status='t') =1 then 't' else 'f' end as notice," +
+                "case when user.status='f' then 't' else 'f' end as isFirst from user where userIdx=?" ;
         return this.jdbcTemplate.queryForObject(getNoticeQuery,
                 (rs, rowNum) -> new GetHomeRes(
                 rs.getString("notice"),
+                rs.getString("isFirst"),
                 getFlagsResList=this.jdbcTemplate.query("select user.userIdx, userImageUrl, (select\n" +
                         "                                                                          case\n" +
                         "                                                                              when  count(*) > 0 and  count(*) < 2 then 'Lv.1'\n" +
@@ -130,7 +132,7 @@ public class New_HomeDao {
                                 rk.getString("high"),
                                 rk.getInt("userIdx"),
                                 rk.getString("userImageUrl")
-                        ))),userIdx);
+                        ))),userIdx,userIdx);
 
     }
 
