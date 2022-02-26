@@ -43,7 +43,7 @@ public class New_HomeProvider {
                 getHomeRes.getGetFlagResList().get(i).setFlagImageUrl(s3Service.getFileUrl(getHomeRes.getGetFlagResList().get(i).getFlagImageUrl()));
 
             if (getHomeRes.getGetFlagResList().get(i).getUserImageUrl() != null)
-                getHomeRes.getGetFlagResList().get(i).setUserImageUrl(s3Service.getFileUrl(getHomeRes.getGetUsersResList().get(i).getUserImageUrl()));
+                getHomeRes.getGetFlagResList().get(i).setUserImageUrl(s3Service.getFileUrl(getHomeRes.getGetFlagResList().get(i).getUserImageUrl()));
         }
         for (int i = 0; i < getHomeRes.getGetUsersResList().size(); i++) {
             if (getHomeRes.getGetUsersResList().get(i).getUserImageUrl() != null)

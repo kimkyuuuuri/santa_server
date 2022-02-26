@@ -47,6 +47,8 @@ public class Social_loginController {
 
         try {
 
+
+
             RestTemplate rt2 = new RestTemplate();
 
             HttpHeaders headers2 = new HttpHeaders();
@@ -138,7 +140,7 @@ public class Social_loginController {
         System.out.println("카카오 아이디(번호) : "+kakaoProfile.getProperties().getNickname());*/
         // System.out.println("카카오 아이디(번호) : "+kakaoProfile.getProperties().getProfile_image());
 
-
+        System.out.println(kakaoProfile);
         try{
             if(socialloginProvider.checkKakaoId(Integer.toString(kakaoProfile.getId())) == 0) {
                 PostUserRes postUserRes = socialloginService.createKakaoUser( kakaoProfile.getProperties().getNickname()+kakaoProfile.getId(),"",Integer.toString(kakaoProfile.getId()));

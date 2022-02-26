@@ -35,7 +35,7 @@ public class New_HomeDao {
         return this.jdbcTemplate.queryForObject(getNoticeQuery,
                 (rs, rowNum) -> new GetHomeRes(
                 rs.getString("notice"),
-                getFlagsResList=this.jdbcTemplate.query("select user.userIdx,user.userImageUrl, (select\n" +
+                getFlagsResList=this.jdbcTemplate.query("select user.userIdx, userImageUrl, (select\n" +
                         "                                                                          case\n" +
                         "                                                                              when  count(*) > 0 and  count(*) < 2 then 'Lv.1'\n" +
                         "                                                                              when count(*)>= 2 and  count(*) < 4 then 'Lv.2'\n" +
