@@ -183,7 +183,7 @@ public class Social_loginController {
     System.out.println(applePostUserReq.getUserIdentifier());
         try{
             if(socialloginProvider.checkKakaoId(applePostUserReq.getUserIdentifier()) == 0) {
-                        System.out.println("");
+                        System.out.println(appleId);
                 ApplePostUserRes applePostUserRes=socialloginService.createUser(applePostUserReq,appleId);
                 appleId+=1;
 
