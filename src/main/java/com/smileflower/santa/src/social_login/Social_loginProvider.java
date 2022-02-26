@@ -38,7 +38,7 @@ public class Social_loginProvider {
             throw new BaseException(POST_USERS_NONEXIST_ACCOUNT);
         }
 
-        int userIdx = socialloginDao.checkKakaoAccount(id); // 여기서 잘 못받아오면 에러나옴 그러므로 미리 위에서 체크하는 것임
+        int userIdx = socialloginDao.checkAppleAccount(id); // 여기서 잘 못받아오면 에러나옴 그러므로 미리 위에서 체크하는 것임
 
         return userIdx;
 
@@ -65,7 +65,7 @@ public class Social_loginProvider {
 
 
     public int checkAppleId(String id){
-        return socialloginDao.checkKakaoId(id);
+        return socialloginDao.checkAppleId(id);
     }
 
 
