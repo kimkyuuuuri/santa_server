@@ -102,6 +102,7 @@ public class Social_loginService {
 
         return new AppleLoginRes(userIdx,jwt);
     }
+
     //POST
     public PostUserRes createKakaoUser(String name,String Email,String id) throws BaseException {
         //중복

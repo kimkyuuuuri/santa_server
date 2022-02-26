@@ -64,6 +64,12 @@ public class Social_loginProvider {
     }
 
 
+    public int checkAppleId(String id){
+        return socialloginDao.checkKakaoId(id);
+    }
+
+
+
 
     public int checkEmailId(String email){
         return socialloginDao.checkEmail(email);
