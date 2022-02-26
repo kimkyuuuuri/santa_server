@@ -180,10 +180,10 @@ public class Social_loginController {
     @PostMapping(value = "/new-apple/login")
     @ResponseBody
     public BaseResponse<AppleLoginRes> appleLogin(@RequestBody ApplePostUserReq applePostUserReq) {
-
+    System.out.println(applePostUserReq.getUserIdentifier());
         try{
             if(socialloginProvider.checkKakaoId(applePostUserReq.getUserIdentifier()) == 0) {
-
+                        System.out.println("");
                 ApplePostUserRes applePostUserRes=socialloginService.createUser(applePostUserReq,appleId);
                 appleId+=1;
 
