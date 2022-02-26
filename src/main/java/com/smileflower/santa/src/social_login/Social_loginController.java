@@ -102,7 +102,7 @@ public class Social_loginController {
     @ResponseBody
     @PostMapping ("/kakao-login")
     public  BaseResponse<PostUserLoginRes> kakaologin( @RequestBody PostUserReq postUserReq) throws UnsupportedEncodingException, BaseException {
-
+        System.out.println(postUserReq);
         RestTemplate rt2 = new RestTemplate();
         System.out.println(postUserReq.getAccessToken());
         // HttpHeader 오브젝트 생성
