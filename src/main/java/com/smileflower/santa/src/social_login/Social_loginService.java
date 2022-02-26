@@ -88,11 +88,7 @@ public class Social_loginService {
             social_loginDao.insertUser(new AppleUser(applePostUserReq.getUserEmail(),applePostUserReq.getName()+appleId, applePostUserReq.getUserIdentifier()));
 
         AppleToken.Response appleLoginRes = new AppleToken.Response();
-        try {
-            appleLoginRes = newAppleJwtUtils.getTokenByCode(newAppleJwtUtils.makeClientSecret(), applePostUserReq.getAuthorizationCode());
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+
         return new ApplePostUserRes(appleLoginRes.getRefresh_token(),applePostUserReq.getUserEmail().getEmail(),applePostUserReq.getName());
     }
 
