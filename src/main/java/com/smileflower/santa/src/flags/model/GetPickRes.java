@@ -13,4 +13,6 @@ public class GetPickRes {
     private String mountainImg;
     private int difficulty;
     private String high;
+    private String hot;
+    private String competing;
 }

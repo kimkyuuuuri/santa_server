@@ -169,25 +169,35 @@ public class FlagDao {
 
     public List<GetPickRes> getPick(int userIdx) {
         return this.jdbcTemplate.query("select m.mountainIdx,\n" +
-                        "                       m.name as mountainName,\n" +
-                        "                       m.imageUrl as mountainImg,\n" +
-                        "                       concat('(',m.high,'m)') as high,\n" +
-                        "                       case when m.high<500 then 1\n" +
-                        "                                           when m.high<800  then 2\n" +
-                        "                                           when m.high<1000 then 3\n" +
-                        "                                           when m.high<1300 then 4\n" +
-                        "                                           else 5 end as difficulty\n" +
-                        "                from picklist\n" +
-                        "                         inner join mountain m on picklist.mountainIdx = m.mountainIdx\n" +
-                        "                where picklist.userIdx = ?\n" +
-                        "                  and picklist.status = 'T';",
+                        "                                         m.name as mountainName,\n" +
+                        "                                              m.imageUrl as mountainImg,\n" +
+                        "                                               concat('(',m.high,'m)') as high,\n" +
+                        "                                               case when m.high<500 then 1\n" +
+                        "                                                                   when m.high<800  then 2\n" +
+                        "                                                                   when m.high<1000 then 3\n" +
+                        "                                                                   when m.high<1300 then 4\n" +
+                        "                                                                   else 5 end as difficulty,\n" +
+                        "\n" +
+                        "                         case when a.hot > 10 then 'T' else 'F' end as hot,\n" +
+                        "                                             ( select ( case when EXISTS(select flagIdx from flag where flag.mountainIdx=m.mountainIdx and flag.status='t')\n" +
+                        "                                                                      then 'T' else 'F' end ) )as competing\n" +
+                        "                            from picklist\n" +
+                        "                                                 inner join mountain m on picklist.mountainIdx = m.mountainIdx\n" +
+                        "                        left join (select mountainIdx, count(picklistIdx) as hot from picklist group by mountainIdx) a\n" +
+                        "                                                                   on a.mountainIdx = m.mountainIdx\n" +
+                        "                                                                     left join (select mountainIdx,status from picklist where userIdx =?) b on b.mountainIdx=m.mountainIdx\n" +
+                        "                                        where picklist.userIdx = ?\n" +
+                        "                                          and picklist.status = 'T'  group by picklist.mountainIdx",
                 (rs, rowNum) -> new GetPickRes(
                         rs.getInt("mountainIdx"),
                         rs.getString("mountainName"),
                         rs.getString("mountainImg"),
                         rs.getInt("difficulty"),
-                        rs.getString("high")),
-                userIdx);
+                        rs.getString("high"),
+                        rs.getString("hot"),
+                        rs.getString("competing")
+                ),
+                userIdx,userIdx);
     }
     public Long report(Long flagIdx, int userIdx) {
         String query = "insert into report (userIdx, flagIdx) VALUES (?,?)";

@@ -83,9 +83,9 @@ public class Social_loginService {
         return social_loginDao.checkEmail(email);
     }
 
-    public ApplePostUserRes createUser(ApplePostUserReq applePostUserReq) throws BaseException {
+    public ApplePostUserRes createUser(ApplePostUserReq applePostUserReq,int appleId) throws BaseException {
         if(social_loginDao.findByEmail(applePostUserReq.getUserEmail()))
-            social_loginDao.insertUser(new AppleUser(applePostUserReq.getUserEmail(),applePostUserReq.getName()+applePostUserReq.getUserIdentifier(), applePostUserReq.getUserIdentifier()));
+            social_loginDao.insertUser(new AppleUser(applePostUserReq.getUserEmail(),applePostUserReq.getName()+appleId, applePostUserReq.getUserIdentifier()));
 
         AppleToken.Response appleLoginRes = new AppleToken.Response();
         try {
@@ -96,20 +96,15 @@ public class Social_loginService {
         return new ApplePostUserRes(appleLoginRes.getRefresh_token(),applePostUserReq.getUserEmail().getEmail(),applePostUserReq.getName());
     }
 
-    public AppleLoginRes loginUser(AppleLoginReq appleLoginReq) throws BaseException {
+    public AppleLoginRes loginUser(ApplePostUserReq applePostUserReq) throws BaseException {
 
-        AppleToken.Response tokenResponse = new AppleToken.Response();
+
         String jwt="";
-        try {
-            tokenResponse = newAppleJwtUtils.getTokenByRefreshToken(newAppleJwtUtils.makeClientSecret(), appleLoginReq.getRefreshToken());
-            System.out.println(tokenResponse);
-            int userIdx = social_loginProvider.checkAppleAccount(newAppleJwtUtils.getId(tokenResponse.getId_token()));
-            jwt = jwtService.createJwt(userIdx);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
 
-        return new AppleLoginRes(newAppleJwtUtils.getEmail(tokenResponse.getId_token()).getEmail(),appleLoginReq.getRefreshToken(),jwt);
+            int userIdx = social_loginProvider.checkAppleAccount(applePostUserReq.getUserIdentifier());
+            jwt = jwtService.createJwt(userIdx);
+
+        return new AppleLoginRes(userIdx,jwt);
     }
     //POST
     public PostUserRes createKakaoUser(String name,String Email,String id) throws BaseException {

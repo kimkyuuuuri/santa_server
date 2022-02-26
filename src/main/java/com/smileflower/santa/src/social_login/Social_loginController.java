@@ -37,6 +37,8 @@ public class Social_loginController {
     private final Social_loginService socialloginService;
     @Autowired
     private final Social_loginProvider socialloginProvider;
+    private int kakaoId=0;
+    private int appleId=0;
     final Logger logger = LoggerFactory.getLogger(this.getClass());
 
 
@@ -143,8 +145,8 @@ public class Social_loginController {
         System.out.println(kakaoProfile);
         try{
             if(socialloginProvider.checkKakaoId(Integer.toString(kakaoProfile.getId())) == 0) {
-                PostUserRes postUserRes = socialloginService.createKakaoUser( kakaoProfile.getProperties().getNickname()+kakaoProfile.getId(),"",Integer.toString(kakaoProfile.getId()));
-
+                PostUserRes postUserRes = socialloginService.createKakaoUser( kakaoProfile.getProperties().getNickname()+kakaoId,"",Integer.toString(kakaoProfile.getId()));
+                kakaoId+=1;
 
             }
 
@@ -177,11 +179,17 @@ public class Social_loginController {
      */
     @PostMapping(value = "/new-apple/login")
     @ResponseBody
-    public BaseResponse<AppleLoginRes> appleLogin(@RequestBody AppleLoginReq appleLoginReq) {
+    public BaseResponse<AppleLoginRes> appleLogin(@RequestBody ApplePostUserReq applePostUserReq) {
 
         try{
+            if(socialloginProvider.checkKakaoId(applePostUserReq.getUserIdentifier()) == 0) {
 
-            AppleLoginRes appleLoginRes=socialloginService.loginUser(appleLoginReq);
+                ApplePostUserRes applePostUserRes=socialloginService.createUser(applePostUserReq,appleId);
+                appleId+=1;
+
+
+            }
+            AppleLoginRes appleLoginRes=socialloginService.loginUser(applePostUserReq);
                 return new BaseResponse<>(appleLoginRes);
 
         } catch(BaseException exception){
@@ -194,18 +202,7 @@ public class Social_loginController {
      *
      * @return AppleLoginResponse
      */
-    @PostMapping(value = "/new-apple")
-    @ResponseBody
-    public BaseResponse<ApplePostUserRes> applePostUserRes (@RequestBody ApplePostUserReq applePostUserReq) {
 
-        try{
-
-            ApplePostUserRes applePostUserRes=socialloginService.createUser(applePostUserReq);
-            return new BaseResponse<>(applePostUserRes);
-
-        } catch(BaseException exception){
-            return new BaseResponse<>((exception.getStatus()));
-        }
     }
 //    /**
 //     * Logout with Apple
@@ -223,4 +220,3 @@ public class Social_loginController {
 //    }
 
 
-}

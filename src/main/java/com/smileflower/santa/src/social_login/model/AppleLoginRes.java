@@ -8,8 +8,7 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 public class AppleLoginRes {
-    private String emailId;
-    private String refresh_token;
+    private int userIdx;
     private String jwt;
 
 
