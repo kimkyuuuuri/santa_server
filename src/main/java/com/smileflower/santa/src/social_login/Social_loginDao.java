@@ -23,7 +23,7 @@ public class Social_loginDao {
 
     public int insertUser(AppleUser user) {
         String query = "insert into user (emailId, pw, kakao, apple, userImageUrl, name) VALUES (?,?,?,?,?,?)";
-        Object[] params = new Object[]{"","","",user.getUserIdentifier(),user.getUserImageUrl(),user.getName()};
+        Object[] params = new Object[]{"","","",user.getUserIdentifier(),user.getUserImageUrl(),null};
 
         this.jdbcTemplate.update(query, params);
 
