@@ -6,6 +6,14 @@ import lombok.Setter;
 @Setter
 public class AppleToken {
 
+    public AppleToken(String code, String client_secret) {
+        Request request = new Request();
+        request.code = code;
+
+        request.client_secret = client_secret;
+
+    }
+
     public static class Request {
         private String code;
         private String client_id;

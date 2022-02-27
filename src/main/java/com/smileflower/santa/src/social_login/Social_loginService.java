@@ -83,14 +83,6 @@ public class Social_loginService {
         return social_loginDao.checkEmail(email);
     }
 
-    public ApplePostUserRes createUser(ApplePostUserReq applePostUserReq,int appleId) throws BaseException {
-
-            social_loginDao.insertUser( applePostUserReq.getUserIdentifier(),"apple"+applePostUserReq.getName()+appleId);
-
-        AppleToken.Response appleLoginRes = new AppleToken.Response();
-
-        return new ApplePostUserRes(appleLoginRes.getRefresh_token(),applePostUserReq.getUserEmail().getEmail(),applePostUserReq.getName());
-    }
 
     public AppleLoginRes loginUser(ApplePostUserReq applePostUserReq) throws BaseException {
 
@@ -131,4 +123,14 @@ public class Social_loginService {
         return null;
     }
 
+
+
+    public ApplePostUserRes createUser(ApplePostUserReq applePostUserReq,int appleId) throws BaseException {
+
+        social_loginDao.insertUser( applePostUserReq.getUserIdentifier(),"apple"+applePostUserReq.getName()+appleId);
+
+        AppleToken.Response appleLoginRes = new AppleToken.Response();
+
+        return new ApplePostUserRes(appleLoginRes.getRefresh_token(),applePostUserReq.getUserEmail().getEmail(),applePostUserReq.getName());
+    }
 }

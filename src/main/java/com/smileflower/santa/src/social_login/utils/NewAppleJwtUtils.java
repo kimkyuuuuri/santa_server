@@ -1,9 +1,16 @@
 package com.smileflower.santa.src.social_login.utils;
+import com.nimbusds.jose.JWSVerifier;
+import com.nimbusds.jose.crypto.RSASSAVerifier;
+import com.nimbusds.jose.jwk.JWK;
+import com.nimbusds.jose.jwk.RSAKey;
+import com.nimbusds.jwt.ReadOnlyJWTClaimsSet;
+import com.nimbusds.jwt.SignedJWT;
 import com.smileflower.santa.src.social_login.model.*;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import io.jsonwebtoken.*;
+import org.apache.http.client.utils.HttpClientUtils;
 import org.bouncycastle.asn1.pkcs.PrivateKeyInfo;
 import org.bouncycastle.openssl.PEMParser;
 import org.bouncycastle.openssl.jcajce.JcaPEMKeyConverter;
@@ -22,12 +29,15 @@ import java.security.KeyFactory;
 import java.security.NoSuchAlgorithmException;
 import java.security.PrivateKey;
 import java.security.PublicKey;
+import java.security.interfaces.RSAPublicKey;
 import java.security.spec.InvalidKeySpecException;
 import java.security.spec.RSAPublicKeySpec;
+import java.text.ParseException;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.Base64;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Map;
 
 @Component
@@ -103,25 +113,10 @@ public class NewAppleJwtUtils {
     }
 
     public Email getEmail(String identityToken){
-        System.out.println(getClaimsBy(identityToken));
-        System.out.println(identityToken);
-        System.out.println("안녕하세요 테스트중!");
+
         return new Email((String)getClaimsBy(identityToken).get("email"));
     }
 
-    public Email getEmailByRefreshToken(String refreshToken){
-        Email email = null;
-        try {
-            email =  new Email((String)getClaimsBy(getTokenByRefreshToken(makeClientSecret(), refreshToken).getId_token()).get("email"));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return email;
-    }
-
-    public String getId(String identityToken){
-        return ((String)getClaimsBy(identityToken).get("userIdentifier"));
-    }
 
 
     public String makeClientSecret() throws IOException {
@@ -149,15 +144,5 @@ public class NewAppleJwtUtils {
         return converter.getPrivateKey(object);
     }
 
-    public AppleToken.Response getTokenByCode(String client_secret, String code) throws IOException {
-        AppleToken.Request request = AppleToken.Request.of(code,CLIENT_ID, client_secret,"authorization_code",null);
-
-        AppleToken.Response response = newAppleClient.getToken(request);
-        return response;
-    }
-    public AppleToken.Response getTokenByRefreshToken(String client_secret, String refresh_token) throws IOException {
-        AppleToken.Request request = AppleToken.Request.of(null,CLIENT_ID,client_secret,"refresh_token",refresh_token);
-        AppleToken.Response response = newAppleClient.getToken(request);
-        return response;
-    }
 }
+

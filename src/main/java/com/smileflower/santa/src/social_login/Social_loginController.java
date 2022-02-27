@@ -27,6 +27,7 @@ import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 
+import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 
 
@@ -141,38 +142,25 @@ public class Social_loginController {
         }
     }
 
-   /* @PostMapping(value = "/new-apple/loginCallBackApple")
+    @PostMapping(value = "/new-apple/loginCallBackApple")
     @ResponseBody
-    public BaseResponse<AppleLoginRes> androidAppleLogin(@RequestBody String apple_data) {
-
-        try{
-
-          //  return new BaseResponse<>(appleLoginRes);
-
-        } catch(BaseException exception){
-            return new BaseResponse<>((exception.getStatus()));
-        }
-    }
-*/
-    @PostMapping(value = "/new-apple/android-login")
-    @ResponseBody
-    public BaseResponse<AppleLoginRes> androidAppleLogin(@RequestBody ApplePostUserReq applePostUserReq) {
-
-        try{
-            if(socialloginProvider.checkAppleId(applePostUserReq.getUserIdentifier()) != 1) {
-
-                ApplePostUserRes applePostUserRes=socialloginService.createUser(applePostUserReq,appleId);
-                appleId+=1;
+    public BaseResponse<AppleToken> androidAppleLogin(@RequestBody ServicesResponse serviceResponse) throws BaseException {
 
 
+            if (serviceResponse == null) {
+                return null;
             }
-            AppleLoginRes appleLoginRes=socialloginService.loginUser(applePostUserReq);
-            return new BaseResponse<>(appleLoginRes);
-
+        try {
+    String code = serviceResponse.getCode();
+    String client_secret = socialloginService.getAppleClientSecret(serviceResponse.getId_token());
+           return new BaseResponse<>(new AppleToken(code,client_secret));
         } catch(BaseException exception){
             return new BaseResponse<>((exception.getStatus()));
         }
+
+
     }
+
     /**
      * Sign up with Apple
      *
