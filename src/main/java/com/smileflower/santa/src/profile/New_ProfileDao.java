@@ -2,6 +2,7 @@ package com.smileflower.santa.src.profile;
 
 
 
+import com.smileflower.santa.src.flags.model.GetFlagCommentIdxRes;
 import com.smileflower.santa.src.profile.model.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -73,6 +74,7 @@ public class New_ProfileDao {
         ));
 
     }
+
 
     public GetUserLoginInfoRes getUserLoginInfoRes(int userIdx) {
         String query = "\n" +

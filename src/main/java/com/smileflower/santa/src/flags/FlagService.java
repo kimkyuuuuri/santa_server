@@ -24,6 +24,7 @@ import javax.sql.DataSource;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.List;
 import java.util.UUID;
 
 import static com.smileflower.santa.config.BaseResponseStatus.*;
@@ -178,12 +179,15 @@ public class FlagService {
     public DeleteFlagRes deleteFlag(Long flagIdx,int userIdx) throws BaseException {
         if (flagProvider.checkFlagExist(flagIdx) == 0)
             throw new BaseException(INVALID_POST);
-        else if (flagProvider.checkFlagWhereUserExist(flagIdx,userIdx) == 0)
-            throw new BaseException(INVALID_POST_USER);
-        flagDao.deleteFlagComment(flagIdx);
-       // flagDao.deleteFlagReComment(flagIdx);
-        flagDao.deleteFlagSave(flagIdx);
+       // else if (flagProvider.checkFlagWhereUserExist(flagIdx,userIdx) == 0)
+         //   throw new BaseException(INVALID_POST_USER);
+        List<GetFlagCommentIdxRes> getFlagCommentIdxRes=flagDao.getFlagCommentIdxRes(flagIdx);
+        for(int i=0;i<getFlagCommentIdxRes.size();i++){
+            flagDao.deleteFlagRecomment(getFlagCommentIdxRes.get(i).getFlagcommentIdx());
+        }
 
+        flagDao.deleteFlagSave(flagIdx);
+        flagDao.deleteFlagComment(flagIdx);
         flagDao.deleteFlagReport(flagIdx);
         return new DeleteFlagRes(flagDao.deleteFlag(flagIdx));
 

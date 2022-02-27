@@ -211,6 +211,14 @@ public class FlagDao {
         return this.jdbcTemplate.queryForObject("SELECT COUNT(*) FROM report WHERE flagIdx = ?",new Object[]{flagIdx}, int.class);
     }
 
+    public List<GetFlagCommentIdxRes> getFlagCommentIdxRes(Long flagIdx) {
+        String query = "select flagcommentIdx from flagcomment where flagIdx =?";
+        Object[] param = new Object[]{flagIdx};
+        return this.jdbcTemplate.query(query,param,(rs, rowNum) -> new GetFlagCommentIdxRes(
+                rs.getInt("flagcommentIdx")
+        ));
+
+    }
 
     public int updateImageUrlByIdx(int userIdx, Long mountainIdx, String filename, Double altitude) {
         String query = "insert into flag (userIdx, mountainIdx,pictureUrl,height) VALUES (?,?,?,?)";
@@ -284,7 +292,12 @@ public class FlagDao {
         int changedCnt = this.jdbcTemplate.update(query,params);
         return changedCnt==1 ? true : false;
     }
-
+    public boolean deleteFlagRecomment(int flagCommentIdx) {
+        String query = "delete from flagrecomment where flagcommentIdx = ?";
+        Object[] params = new Object[]{flagCommentIdx};
+        int changedCnt = this.jdbcTemplate.update(query,params);
+        return changedCnt==1 ? true : false;
+    }
     public boolean deleteFlagSave(Long flagIdx) {
         String query = "delete from flagsave where flagIdx = ?";
         Object[] params = new Object[]{flagIdx};

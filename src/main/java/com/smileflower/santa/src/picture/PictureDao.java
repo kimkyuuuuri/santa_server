@@ -1,10 +1,13 @@
 package com.smileflower.santa.src.picture;
 
+import com.smileflower.santa.src.flags.model.GetFlagCommentIdxRes;
+import com.smileflower.santa.src.picture.model.GetPictureCommentIdxRes;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
 import javax.sql.DataSource;
+import java.util.List;
 
 
 @Repository
@@ -28,6 +31,21 @@ public class PictureDao {
                 userIdx,pictureIdx);
         String lastInsertIdQuery = "select last_insert_id()";
         return this.jdbcTemplate.queryForObject(lastInsertIdQuery, int.class);
+    }
+    public boolean deletePictureRecomment(int pictureCommentIdx) {
+        String query = "delete from picturerecomment where picturecommentIdx = ?";
+        Object[] params = new Object[]{pictureCommentIdx};
+        int changedCnt = this.jdbcTemplate.update(query,params);
+        return changedCnt==1 ? true : false;
+    }
+
+    public List<GetPictureCommentIdxRes> getPictureCommentIdxRes(Long pictureIdx) {
+        String query = "select picturecommentIdx from picturecomment where pictureIdx =?";
+        Object[] param = new Object[]{pictureIdx};
+        return this.jdbcTemplate.query(query,param,(rs, rowNum) -> new GetPictureCommentIdxRes(
+                rs.getInt("picturecommentIdx")
+        ));
+
     }
     public int patchPictureSaveRes(int userIdx,int pictureIdx){
         this.jdbcTemplate.update("update picturesave set status='f' where userIdx=? and pictureIdx=? order by createdAt desc limit 1",

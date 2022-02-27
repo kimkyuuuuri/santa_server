@@ -4,6 +4,7 @@ package com.smileflower.santa.src.picture;
 import com.smileflower.santa.config.BaseException;
 import com.smileflower.santa.config.BaseResponse;
 import com.smileflower.santa.src.flags.model.DeleteFlagRes;
+import com.smileflower.santa.src.flags.model.GetFlagCommentIdxRes;
 import com.smileflower.santa.src.flags.model.PostFlagReportRes;
 import com.smileflower.santa.src.picture.model.*;
 import com.smileflower.santa.src.user.model.PatchUserLogoutRes;
@@ -14,6 +15,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 import static com.smileflower.santa.config.BaseResponseStatus.*;
 
@@ -60,7 +63,10 @@ public class PictureService{
             throw new BaseException(INVALID_POST);
         else if (pictureProvider.checkPictureWhereUserExist(pictureIdx,userIdx) == 0)
             throw new BaseException(INVALID_POST_USER);
-
+        List<GetPictureCommentIdxRes> getPictureCommentIdxRes=pictureDao.getPictureCommentIdxRes(pictureIdx);
+        for(int i=0;i<getPictureCommentIdxRes.size();i++){
+            pictureDao.deletePictureRecomment(getPictureCommentIdxRes.get(i).getPicturecommentIdx());
+        }
         pictureDao.deletePictureComment(pictureIdx);
         // flagDao.deleteFlagReComment(flagIdx);
         pictureDao.deletePictureSave(pictureIdx);
