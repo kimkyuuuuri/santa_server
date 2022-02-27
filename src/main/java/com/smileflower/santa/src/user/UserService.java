@@ -127,7 +127,7 @@ public class UserService {
         //jwt발급
         String jwt = jwtService.createJwt(userIdx);
         int jwtIdx = userDao.postJwt(jwt);
-
+        userDao.updateUserToken(userIdx,postUserLoginReq.getPushToken());
         return new PostUserLoginRes(jwt, userIdx, name);
     }
 
@@ -193,6 +193,14 @@ public class UserService {
             throw new BaseException(INVALID_USER);
         }
         userDao.patchUserStatus(userIdx);
+
+    }
+
+    public void patchUserPushToken(int userIdx,String pushToken) throws BaseException{
+        if (userProvider.checkUserIdx(userIdx)!=1) {
+            throw new BaseException(INVALID_USER);
+        }
+        userDao.updateUserToken(userIdx,pushToken);
 
     }
 

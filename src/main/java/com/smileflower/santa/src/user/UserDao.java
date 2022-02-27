@@ -253,5 +253,11 @@ public class UserDao {
                 userIdx);
     }
 
+    public void updateUserToken(int userIdx,String token) {
+
+        this.jdbcTemplate.update("UPDATE user SET pushToken = ? WHERE userIdx = ?",
+                token,userIdx);
+    }
+
 
 }

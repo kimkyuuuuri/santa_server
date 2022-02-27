@@ -28,9 +28,14 @@ dependencyManagement {
 dependencies {
 	implementation 'org.jetbrains:annotations:19.0.0'
 
+	implementation 'com.squareup.okhttp3:okhttp:3.14.6'
+	compile group: 'com.google.firebase', name: 'firebase-admin', version: '6.10.0'
+
+	implementation 'com.lyncode.builder:builder-commons:1.0.0'
 
 	// Spring Boot Starter
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+
 
 	// Lombok
 	implementation 'org.projectlombok:lombok'
