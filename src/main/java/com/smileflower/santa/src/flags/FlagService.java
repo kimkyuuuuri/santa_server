@@ -3,17 +3,15 @@ package com.smileflower.santa.src.flags;
 
 import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.smileflower.santa.config.BaseException;
-import com.smileflower.santa.config.secret.Secret;
 import com.smileflower.santa.flag.model.GpsInfoRequest;
 import com.smileflower.santa.src.flags.model.*;
 
-import com.smileflower.santa.src.picture.model.PostPictureSaveRes;
+import com.smileflower.santa.utils.FcmPush;
 import com.smileflower.santa.utils.JwtService;
 import com.smileflower.santa.utils.S3Service;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import com.fasterxml.jackson.databind.ser.Serializers;
 import org.springframework.stereotype.Service;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.transaction.annotation.Transactional;
@@ -40,18 +38,20 @@ public class FlagService {
     private final JwtService jwtService;
     private JdbcTemplate jdbcTemplate;
     private final S3Service s3Service;
+    private final FcmPush fcmPush;
     @Autowired
     public void setDataSource(DataSource dataSource) {
         this.jdbcTemplate = new JdbcTemplate(dataSource);
     }
 
     @Autowired
-    public FlagService(FlagDao flagDao, FlagProvider flagProvider, JwtService jwtService,S3Service s3Service) {
+    public FlagService(FlagDao flagDao, FlagProvider flagProvider, JwtService jwtService, S3Service s3Service, FcmPush fcmPush) {
         this.flagDao = flagDao;
         this.flagProvider = flagProvider;
         this.jwtService = jwtService;
         this.s3Service=s3Service;
 
+        this.fcmPush = fcmPush;
     }
 
     public PostFlagPictureRes createFlag(PostFlagPictureReq postFlagPictureReq, int mountainIdx, int userIdx) throws BaseException {
@@ -200,6 +200,12 @@ public class FlagService {
         if (flagProvider.checkSaveExist(userIdx,flagIdx)!=1) {
 
             int flagSaveIdx =flagDao.postFlagSaveRes(userIdx, flagIdx);
+            String pushToken= flagProvider.getFlagPushToken(flagIdx);
+            int userIdxbyFlagIdx=flagProvider.getUserIdxByFlag(flagIdx);
+            if(userIdxbyFlagIdx!=userIdx){
+                fcmPush.push(pushToken,"회원님의 게시물에 댓글이 달렸습니다.");
+
+            }
 
             return  new PostFlagSaveRes(flagSaveIdx,"좋아요 완료");
         }

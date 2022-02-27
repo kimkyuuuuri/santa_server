@@ -71,7 +71,6 @@ public class Social_loginController {
         );
 
 
-     System.out.println(response2.getBody());
         ObjectMapper objectMapper2 = new ObjectMapper();
         KakaoProfile kakaoProfile = null;
         objectMapper2.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
@@ -95,7 +94,7 @@ public class Social_loginController {
 
             }
 
-                PostUserLoginRes postUserLoginRes = socialloginService.kakaoLogin(Integer.toString(kakaoProfile.getId()));
+                PostUserLoginRes postUserLoginRes = socialloginService.kakaoLogin(Integer.toString(kakaoProfile.getId()),postUserReq.getPushToken());
              return new BaseResponse<>(postUserLoginRes);
         } catch(BaseException exception){
             return new BaseResponse<>((exception.getStatus()));
@@ -135,6 +134,7 @@ public class Social_loginController {
 
             }
             AppleLoginRes appleLoginRes=socialloginService.loginUser(applePostUserReq);
+
                 return new BaseResponse<>(appleLoginRes);
 
         } catch(BaseException exception){

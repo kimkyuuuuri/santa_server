@@ -146,6 +146,14 @@ public class Social_loginDao {
     }
 
 
+    public void updateUserToken(int userIdx,String token) {
+
+        this.jdbcTemplate.update("UPDATE user SET pushToken = ? WHERE userIdx = ?",
+                token,userIdx);
+    }
+
+
+
     public String getStatusByToken(String refreshToken) {
         return null;
     }

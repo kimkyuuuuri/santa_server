@@ -3,6 +3,7 @@ package com.smileflower.santa.src.comment;
 
 import com.smileflower.santa.config.BaseException;
 import com.smileflower.santa.src.comment.model.*;
+import com.smileflower.santa.utils.FcmPush;
 import com.smileflower.santa.utils.JwtService;
 import com.smileflower.santa.utils.S3Service;
 import org.slf4j.Logger;
@@ -19,15 +20,17 @@ public class CommentService {
     private final CommentDao commentDao;
     private final JwtService jwtService;
     private final S3Service s3Service;
+    private final FcmPush fcmPush;
 
     private JdbcTemplate jdbcTemplate;
     final Logger logger = LoggerFactory.getLogger(this.getClass());
 
-    public CommentService(CommentDao commentDao, JwtService jwtService, S3Service s3Service, CommentProvider commentProvider) throws BaseException {
+    public CommentService(CommentDao commentDao, JwtService jwtService, S3Service s3Service, CommentProvider commentProvider, FcmPush fcmPush) throws BaseException {
         this.commentProvider = commentProvider;
         this.commentDao = commentDao;
         this.jwtService = jwtService;
         this.s3Service = s3Service;
+        this.fcmPush = fcmPush;
     }
 
     public PostCommentRes createComment(PostCommentReq postCommentReq, Long idx, int userIdx, String type) throws BaseException {
@@ -37,6 +40,12 @@ public class CommentService {
             if (commentProvider.checkFlagExist(idx) == 0)
                 throw new BaseException(INVALID_POST);
             commentIdx = commentDao.createFlagComment(postCommentReq, idx, userIdx);
+            String pushToken= commentProvider.getFlagPushToken(idx);
+            int userIdxbyFlagIdx=commentProvider.getUserIdxByFlag(idx);
+            if(userIdxbyFlagIdx!=userIdx){
+              fcmPush.push(pushToken,"회원님의 게시물에 댓글이 달렸습니다.");
+
+            }
         }
         if(type.equals("picture")) {
 
@@ -45,6 +54,13 @@ public class CommentService {
             commentIdx = commentDao.createPictureComment(postCommentReq, idx, userIdx);
         }
 
+        String pushToken= commentProvider.getPicturePushToken(idx);
+        int userIdxbyPictureIdx=commentProvider.getUserIdxByPicture(idx);
+        if(userIdxbyPictureIdx!=userIdx){
+
+            fcmPush.push(pushToken,"회원님의 게시물에 댓글이 달렸습니다.");
+
+        }
             return new PostCommentRes(commentIdx);
 
     }
@@ -56,6 +72,22 @@ public class CommentService {
                 throw new BaseException(INVALID_COMMENT);
             //else if (commentProvider.checkFlagCommentWhereUserExist(commentIdx, userIdx) == 0)
               //  throw new BaseException(INVALID_COMMENT_USER);
+            String flagCommentPushToken= commentProvider.getFlagCommentPushToken(commentIdx);
+            int userIdxbyFlagCommentIdx=commentProvider.getUserIdxByFlagComment(commentIdx);
+
+            if(userIdxbyFlagCommentIdx!=userIdx){
+
+                fcmPush.push(flagCommentPushToken,"회원님의 댓글에 재댓글이 달렸습니다.");
+
+            }
+            String flagPushToken= commentProvider.getUserFlagPushTokenByRecomment(commentIdx);
+            int userIdxbyFlagIdx=commentProvider.getUserIdxByFlagCommentByRecomment(commentIdx);
+            if(userIdxbyFlagIdx!=userIdx){
+
+                fcmPush.push(flagPushToken,"회원님의 게시물에 댓글이 달렸습니다.");
+
+            }
+
             recommentIdx = commentDao.createFlagRecomment(postRecommentReq, commentIdx, userIdx);
         }
         if(type.equals("picture")) {
@@ -63,6 +95,20 @@ public class CommentService {
                 throw new BaseException(INVALID_POST);
          //   else if (commentProvider.checkPictureCommentWhereUserExist(commentIdx, userIdx) == 0)
                // throw new BaseException(INVALID_COMMENT_USER);
+            String pictureCommentPushToken= commentProvider.getPictureCommentPushToken(commentIdx);
+            int userIdxbyPictureCommentIdx=commentProvider.getUserIdxByPictureComment(commentIdx);
+            if(userIdxbyPictureCommentIdx!=userIdx){
+
+                fcmPush.push(pictureCommentPushToken,"회원님의 댓글에 재댓글이 달렸습니다.");
+
+            }
+
+            String picturePushToken= commentProvider.getUserPicturePushTokenByRecomment(commentIdx);
+            int userIdxbyPictureIdx=commentProvider.getUserIdxByPictureCommentByRecomment(commentIdx);
+            if(userIdxbyPictureIdx!=userIdx){
+                fcmPush.push(picturePushToken,"회원님의 게시물에 댓글이 달렸습니다.");
+
+            }
             recommentIdx = commentDao.createPictureRecomment(postRecommentReq, commentIdx, userIdx);
         }
 

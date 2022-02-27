@@ -9,5 +9,6 @@ import lombok.Setter;
 @AllArgsConstructor
 public class PostUserReq {
     private String accessToken;
+    private String pushToken;
     public PostUserReq(){}
 }

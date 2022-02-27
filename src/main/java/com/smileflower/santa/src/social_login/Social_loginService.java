@@ -44,7 +44,7 @@ public class Social_loginService {
 
 
     @Transactional
-    public PostUserLoginRes kakaoLogin(String id) throws BaseException {
+    public PostUserLoginRes kakaoLogin(String id,String pushToken) throws BaseException {
         //System.out.println("테스트1:"+postUserLoginReq.getEmailId());
         int userIdx = social_loginProvider.checkKakaoAccount(id);
       //카카오 계정 체크해서 idx 리턴하는 함수 만들기
@@ -59,6 +59,7 @@ public class Social_loginService {
 
         //jwt발급
         String jwt = jwtService.createJwt(userIdx);
+        patchUserPushToken(userIdx,pushToken);
         int jwtIdx = social_loginDao.postJwt(jwt);
 
         return new PostUserLoginRes(jwt, userIdx, name2);
@@ -90,6 +91,7 @@ public class Social_loginService {
 
 
             int userIdx = social_loginProvider.checkAppleAccount(applePostUserReq.getUserIdentifier());
+       patchUserPushToken(userIdx,applePostUserReq.getPushToken());
         String jwt = jwtService.createJwt(userIdx);
 
         return new AppleLoginRes(userIdx,jwt);
@@ -122,7 +124,11 @@ public class Social_loginService {
         }
         return null;
     }
+    public void patchUserPushToken(int userIdx,String pushToken) throws BaseException{
 
+        social_loginDao.updateUserToken(userIdx,pushToken);
+
+    }
 
 
     public ApplePostUserRes createUser(ApplePostUserReq applePostUserReq,int appleId) throws BaseException {

@@ -270,4 +270,74 @@ public class CommentDao {
         return this.jdbcTemplate.queryForObject("select Exists(select pictureCommentIdx from picturecomment\n" +
                 "                where status='t' and pictureCommentIdx=? and userIdx=?) as pictureExist", int.class,pictureCommentIdx,userIdx);
     }
+
+    public String getUserFlagPushToken(Long flagIdx){
+        return this.jdbcTemplate.queryForObject("select pushToken from user\n" +
+                "join flag f on user.userIdx = f.userIdx\n" +
+                "where f.flagIdx=?", String.class,flagIdx);
+    }
+    public int getUserIdxByFlag(Long flagIdx){
+        return this.jdbcTemplate.queryForObject("select user.userIdx from user\n" +
+                "join flag f on user.userIdx = f.userIdx\n" +
+                "where f.flagIdx=?", int.class,flagIdx);
+    }
+
+    public String getUserPicturePushToken(Long pictureIdx){
+        return this.jdbcTemplate.queryForObject("select pushToken from user\n" +
+                "join picture p on user.userIdx = p.userIdx\n" +
+                "where p.pictureIdx=?", String.class,pictureIdx);
+    }
+
+    public int getUserIdxByPicture(Long pictureIdx){
+        return this.jdbcTemplate.queryForObject("select user.userIdx from user\n" +
+                "join picture p on user.userIdx = p.userIdx\n" +
+                "where p.pictureIdx=?", int.class,pictureIdx);
+    }
+
+    public String getUserFlagCommentPushToken(Long flagCommentIdx){
+        return this.jdbcTemplate.queryForObject("select pushToken from user\n" +
+                "join flagcomment f on user.userIdx = f.userIdx\n" +
+                "where f.flagcommentIdx=?", String.class,flagCommentIdx);
+    }
+    public int getUserIdxByFlagComment(Long flagCommentIdx){
+        return this.jdbcTemplate.queryForObject("select user.userIdx from user\n" +
+                "join flagcomment f on user.userIdx = f.userIdx\n" +
+                "where f.flagcommentIdx=?", int.class,flagCommentIdx);
+    }
+
+
+    public String getUserPictureCommentPushToken(Long pictureCommentIdx){
+        return this.jdbcTemplate.queryForObject("select pushToken from user\n" +
+                "join picturecomment p on user.userIdx = p.userIdx\n" +
+                "where p.picturecommentIdx=?", String.class,pictureCommentIdx);
+    }
+    public int getUserIdxByPictureComment(Long pictureCommentIdx){
+        return this.jdbcTemplate.queryForObject("select user.userIdx from user\n" +
+                "join picturecomment p on user.userIdx = p.userIdx\n" +
+                "where p.picturecommentIdx=?", int.class,pictureCommentIdx);
+    }
+
+    public String getUserFlagPushTokenByRecomment(Long flagCommentIdx){
+        return this.jdbcTemplate.queryForObject("select pushToken from user\n" +
+                "join flagcomment f on user.userIdx = f.userIdx\n" +
+                "where f.flagcommentIdx=?", String.class,flagCommentIdx);
+    }
+    public int getUserIdxByFlagCommentByRecomment(Long flagCommentIdx){
+        return this.jdbcTemplate.queryForObject("select user.userIdx from user\n" +
+                " join flag f on user.userIdx = f.userIdx\n" +
+                "join flagcomment f2 on f.flagIdx = f2.flagIdx\n" +
+                "where f2.flagcommentIdx=?", int.class,flagCommentIdx);
+    }
+    public String getUserPicturePushTokenByRecomment(Long pictureCommentIdx){
+        return this.jdbcTemplate.queryForObject("select user.userIdx from user" +
+                "       join picture p on user.userIdx = p.userIdx" +
+                "       join picturecomment p2 on p.pictureIdx = p2.pictureIdx" +
+                "       where p2.picturecommentIdx=?", String.class,pictureCommentIdx);
+    }
+    public int getUserIdxByPictureCommentByRecomment(Long pictureCommentIdx){
+        return this.jdbcTemplate.queryForObject("select user.userIdx from user\n" +
+                " join picture p on user.userIdx = p.userIdx\n" +
+                "join picturecomment p2 on p.pictureIdx = p2.pictureIdx\n" +
+                "where p2.picturecommentIdx=?", int.class,pictureCommentIdx);
+    }
 }

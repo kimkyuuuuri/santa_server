@@ -115,4 +115,16 @@ public class PictureDao {
         return changedCnt==1 ? true : false;
     }
 
+    public String getUserPicturePushToken(int pictureIdx){
+        return this.jdbcTemplate.queryForObject("select pushToken from user\n" +
+                "join picture p on user.userIdx = p.userIdx\n" +
+                "where p.pictureIdx=?", String.class,pictureIdx);
+    }
+
+    public int getUserIdxByPicture(int pictureIdx){
+        return this.jdbcTemplate.queryForObject("select user.userIdx from user\n" +
+                "join picture p on user.userIdx = p.userIdx\n" +
+                "where p.pictureIdx=?", int.class,pictureIdx);
+    }
+
 }

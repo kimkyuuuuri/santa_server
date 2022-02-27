@@ -2,12 +2,8 @@ package com.smileflower.santa.src.picture;
 
 
 import com.smileflower.santa.config.BaseException;
-import com.smileflower.santa.config.BaseResponse;
-import com.smileflower.santa.src.flags.model.DeleteFlagRes;
-import com.smileflower.santa.src.flags.model.GetFlagCommentIdxRes;
-import com.smileflower.santa.src.flags.model.PostFlagReportRes;
 import com.smileflower.santa.src.picture.model.*;
-import com.smileflower.santa.src.user.model.PatchUserLogoutRes;
+import com.smileflower.santa.utils.FcmPush;
 import com.smileflower.santa.utils.JwtService;
 import com.smileflower.santa.utils.S3Service;
 import org.slf4j.Logger;
@@ -27,15 +23,17 @@ public class PictureService{
     private final PictureDao pictureDao;
     private final JwtService jwtService;
     private final S3Service s3Service;
+    private final FcmPush fcmPush;
 
     private JdbcTemplate jdbcTemplate;
     final Logger logger = LoggerFactory.getLogger(this.getClass());
 
-    public PictureService(PictureDao pictureDao, JwtService jwtService, S3Service s3Service,PictureProvider pictureProvider) {
+    public PictureService(PictureDao pictureDao, JwtService jwtService, S3Service s3Service, PictureProvider pictureProvider, FcmPush fcmPush) {
         this.pictureProvider=pictureProvider;
         this.pictureDao = pictureDao;
         this.jwtService = jwtService;
         this.s3Service = s3Service;
+        this.fcmPush = fcmPush;
     }
 
 
@@ -47,7 +45,13 @@ public class PictureService{
         if (pictureProvider.checkSaveExist(userIdx,pictureIdx)!=1) {
 
              int pictureSaveIdx =pictureDao.postPictureSaveRes(userIdx, pictureIdx);
+            String pushToken= pictureProvider.getPicturePushToken(pictureIdx);
+            int userIdxbyPictureIdx=pictureProvider.getUserIdxByPicture(pictureIdx);
+            if(userIdxbyPictureIdx!=userIdx){
 
+                fcmPush.push(pushToken,"회원님의 게시물에 댓글이 달렸습니다.");
+
+            }
             return  new PostPictureSaveRes(pictureSaveIdx,"좋아요 완료");
         }
         else {

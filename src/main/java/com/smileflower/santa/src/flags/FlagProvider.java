@@ -149,5 +149,13 @@ public class FlagProvider {
             return  new GetCheckDoubleVisitedRes(true);
         }
     }
+    public String getFlagPushToken(int flagIdx){
+        return flagDao.getUserFlagPushToken(flagIdx);
+    }
+
+    public int getUserIdxByFlag(int flagIdx){
+        return flagDao.getUserIdxByFlag(flagIdx);
+    }
+
 
 }

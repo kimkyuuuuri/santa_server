@@ -43,5 +43,13 @@ public class PictureProvider {
     public int checkPictureReportExist(Long flagIdx, int userIdx){
         return pictureDao.checkPictureReportExist(flagIdx,userIdx);
     }
+    public String getPicturePushToken(int pictureIdx){
+        return pictureDao.getUserPicturePushToken(pictureIdx);
+    }
+
+    public int getUserIdxByPicture(int pictureIdx){
+        return pictureDao.getUserIdxByPicture(pictureIdx);
+    }
+
 
 }

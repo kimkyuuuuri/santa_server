@@ -139,4 +139,50 @@ public class CommentProvider {
         return commentDao.selectPictureUserIdx(pictureIdx);
     }
 
+    public String getFlagPushToken(Long flagIdx){
+        return commentDao.getUserFlagPushToken(flagIdx);
+    }
+
+    public int getUserIdxByFlag(Long flagIdx){
+        return commentDao.getUserIdxByFlag(flagIdx);
+    }
+
+    public String getPicturePushToken(Long pictureIdx){
+        return commentDao.getUserPicturePushToken(pictureIdx);
+    }
+
+    public int getUserIdxByPicture(Long pictureIdx){
+        return commentDao.getUserIdxByPicture(pictureIdx);
+    }
+
+    public String getFlagCommentPushToken(Long flagIdx){
+        return commentDao.getUserFlagCommentPushToken(flagIdx);
+    }
+
+    public int getUserIdxByFlagComment(Long flagCommentIdx){
+        return commentDao.getUserIdxByFlagComment(flagCommentIdx);
+    }
+
+    public String getPictureCommentPushToken(Long pictureIdx){
+        return commentDao.getUserPictureCommentPushToken(pictureIdx);
+    }
+
+    public int getUserIdxByPictureComment(Long pictureCommentIdx){
+        return commentDao.getUserIdxByPictureComment(pictureCommentIdx);
+    }
+    public String getUserFlagPushTokenByRecomment(Long pictureIdx){
+        return commentDao.getUserFlagPushTokenByRecomment(pictureIdx);
+    }
+
+    public int getUserIdxByFlagCommentByRecomment(Long pictureCommentIdx){
+        return commentDao.getUserIdxByFlagCommentByRecomment(pictureCommentIdx);
+    }
+
+    public String getUserPicturePushTokenByRecomment(Long pictureIdx){
+        return commentDao.getUserPicturePushTokenByRecomment(pictureIdx);
+    }
+
+    public int getUserIdxByPictureCommentByRecomment(Long pictureCommentIdx){
+        return commentDao.getUserIdxByPictureCommentByRecomment(pictureCommentIdx);
+    }
 }

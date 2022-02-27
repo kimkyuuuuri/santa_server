@@ -367,4 +367,17 @@ public class FlagDao {
                 int.class,
                 mountainIdx,userIdx);
     }
+
+    public String getUserFlagPushToken(int flagIdx){
+        return this.jdbcTemplate.queryForObject("select pushToken from user\n" +
+                "join flag f on user.userIdx = f.userIdx\n" +
+                "where f.flagIdx=?", String.class,flagIdx);
+    }
+    public int getUserIdxByFlag(int flagIdx){
+        return this.jdbcTemplate.queryForObject("select user.userIdx from user\n" +
+                "join flag f on user.userIdx = f.userIdx\n" +
+                "where f.flagIdx=?", int.class,flagIdx);
+    }
+
+
 }
