@@ -74,6 +74,17 @@ public class New_ProfileDao {
 
     }
 
+    public GetUserLoginInfoRes getUserLoginInfoRes(int userIdx) {
+        String query = "\n" +
+                "    select case when pw='kakao'  then  'kakao' when  pw='apple' then 'appe' else emailId end as userLoginInfo\n" +
+                "    from user where userIdx =?";
+        Object[] param = new Object[]{userIdx};
+        return this.jdbcTemplate.queryForObject(query,param,(rs, rowNum) -> new GetUserLoginInfoRes(
+                rs.getString("userLoginInfo")
+        ));
+
+    }
+
     public GetFlagCountRes getFlagCounts(int userIdx) {
         String query = "SELECT count(case when b.count>0 and b.count<4 then 1 end) as firstFlag, count(case when b.count>3 and b.count<7 then 1 end) as secondFlag\n" +
                 ", count(case when b.count>6  then 1 end) as thirdFlag\n" +

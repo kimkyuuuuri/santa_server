@@ -22,8 +22,8 @@ public class Social_loginDao {
     }
 
     public int insertUser(String identifier,String name) {
-        String query = "insert into user (emailId, pw, kakao, apple,  name,pw) VALUES (?,?,?,?,?,?)";
-        Object[] params = new Object[]{"","","",identifier,name,"apple"};
+        String query = "insert into user (emailId,  kakao, apple,  name,pw) VALUES (?,?,?,?,?)";
+        Object[] params = new Object[]{null,null,identifier,name,"apple"};
 
         this.jdbcTemplate.update(query, params);
 
@@ -56,7 +56,7 @@ public class Social_loginDao {
 
     public int createKakaoUser(String name,String Email,String id){
         this.jdbcTemplate.update("insert into user (createdAt,  emailId, name ,pw, kakao ) VALUES (NOW(),?,?,?,?)",
-                new Object[]{Email, name ,"kakao",id}
+                new Object[]{null, name ,"kakao",id}
         );
         return this.jdbcTemplate.queryForObject("select last_insert_id()",int.class);
     }

@@ -192,4 +192,25 @@ public class New_ProfileController {
             return new BaseResponse<>((exception.getStatus()));
         }
     }
+
+    @ResponseBody
+    @GetMapping("/login-info")
+    public BaseResponse<GetUserLoginInfoRes> getUserLoginInfo() throws BaseException {
+
+        try{
+            if(jwtService.getJwt()==null){
+                return new BaseResponse<>(EMPTY_JWT);
+            }
+
+            else{
+                int userIdx=jwtService.getUserIdx();
+                GetUserLoginInfoRes getUserLoginInfoRes= newProfileProvider.getUserLoginInfo(userIdx);
+                return new BaseResponse<>(getUserLoginInfoRes);
+            }
+
+        }catch(BaseException exception){
+            return new BaseResponse<>((exception.getStatus()));
+        }
+    }
+
 }

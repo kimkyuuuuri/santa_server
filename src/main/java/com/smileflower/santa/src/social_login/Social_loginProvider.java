@@ -3,6 +3,7 @@ package com.smileflower.santa.src.social_login;
 
 import com.smileflower.santa.config.BaseException;
 import com.smileflower.santa.config.secret.Secret;
+import com.smileflower.santa.src.user.model.GetAutoRes;
 import com.smileflower.santa.src.user.model.PostUserLoginPWRes;
 import com.smileflower.santa.utils.AES128;
 import lombok.RequiredArgsConstructor;
@@ -74,5 +75,8 @@ public class Social_loginProvider {
         int exist = socialloginDao.checkJwt(jwt);
         return exist;
     }
+
+
+
 
 }

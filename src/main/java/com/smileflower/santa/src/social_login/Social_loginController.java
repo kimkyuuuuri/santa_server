@@ -45,61 +45,6 @@ public class Social_loginController {
 
 
 
-    @ResponseBody
-    @PostMapping ("/kakao-createUser")
-    public BaseResponse<PostUserRes> kakaoCreateUser(@RequestBody PostUserReq postUserReq) throws BaseException {
-
-        try {
-
-
-
-            RestTemplate rt2 = new RestTemplate();
-
-            HttpHeaders headers2 = new HttpHeaders();
-            headers2.add("Authorization", "Bearer " + postUserReq.getAccessToken());
-            headers2.add("Content-type", "application/x-www-form-urlencoded;charset=utf-8");
-
-            // HttpHeader와 HttpBody를 하나의 오브젝트에 담기
-            HttpEntity<MultiValueMap<String, String>> kakaoProfileRequest2 =
-                    new HttpEntity<>(headers2);
-
-            // Http 요청하기 - Post방식으로 - 그리고 response 변수의 응답 받음.
-            ResponseEntity<String> response2 = rt2.exchange(
-                    "https://kapi.kakao.com/v2/user/me",
-                    HttpMethod.POST,
-                    kakaoProfileRequest2,
-                    String.class
-            );
-
-
-            ObjectMapper objectMapper = new ObjectMapper();
-            KakaoProfile kakaoProfile = null;
-            try {
-
-                kakaoProfile = objectMapper.readValue(response2.getBody(), KakaoProfile.class);
-
-            } catch (JsonMappingException e) {
-                e.printStackTrace();
-            } catch (JsonProcessingException e) {
-                e.printStackTrace();
-            }
-
-            String userId = Integer.toString(kakaoProfile.getId());
-
-            // User 오브젝트 : username, password, email - email넣어야됨
-      /*  System.out.println("카카오 아이디(번호) : "+kakaoProfile.getId());
-        System.out.println("카카오 이메일 : "+kakaoProfile.getKakao_account().getEmail());
-
-        System.out.println("카카오 아이디(번호) : "+kakaoProfile.getProperties().getNickname());
-        // System.out.println("카카오 아이디(번호) : "+kakaoProfile.getProperties().getProfile_image());
-*/
-            PostUserRes postUserRes = socialloginService.createKakaoUser(kakaoProfile.getKakao_account().getEmail(), kakaoProfile.getProperties().getNickname(),Integer.toString(kakaoProfile.getId()));
-
-            return new BaseResponse<>(postUserRes);
-        } catch (BaseException exception) {
-            return new BaseResponse<>((exception.getStatus()));
-        }
-    }
 
     @ResponseBody
     @PostMapping ("/kakao-login")
@@ -140,12 +85,7 @@ public class Social_loginController {
             e.printStackTrace();
         }
 
-        // User 오브젝트 : username, password, email - email넣어야됨
-       /* System.out.println("카카오 아이디(번호) : "+kakaoProfile.getId());
-        System.out.println("카카오 이메일 : "+kakaoProfile.getKakao_account().getEmail());
 
-        System.out.println("카카오 아이디(번호) : "+kakaoProfile.getProperties().getNickname());*/
-        // System.out.println("카카오 아이디(번호) : "+kakaoProfile.getProperties().getProfile_image());
 
         try{
             if(socialloginProvider.checkKakaoId(Integer.toString(kakaoProfile.getId())) == 0) {
@@ -195,6 +135,39 @@ public class Social_loginController {
             }
             AppleLoginRes appleLoginRes=socialloginService.loginUser(applePostUserReq);
                 return new BaseResponse<>(appleLoginRes);
+
+        } catch(BaseException exception){
+            return new BaseResponse<>((exception.getStatus()));
+        }
+    }
+
+   /* @PostMapping(value = "/new-apple/loginCallBackApple")
+    @ResponseBody
+    public BaseResponse<AppleLoginRes> androidAppleLogin(@RequestBody String apple_data) {
+
+        try{
+
+          //  return new BaseResponse<>(appleLoginRes);
+
+        } catch(BaseException exception){
+            return new BaseResponse<>((exception.getStatus()));
+        }
+    }
+*/
+    @PostMapping(value = "/new-apple/android-login")
+    @ResponseBody
+    public BaseResponse<AppleLoginRes> androidAppleLogin(@RequestBody ApplePostUserReq applePostUserReq) {
+
+        try{
+            if(socialloginProvider.checkAppleId(applePostUserReq.getUserIdentifier()) != 1) {
+
+                ApplePostUserRes applePostUserRes=socialloginService.createUser(applePostUserReq,appleId);
+                appleId+=1;
+
+
+            }
+            AppleLoginRes appleLoginRes=socialloginService.loginUser(applePostUserReq);
+            return new BaseResponse<>(appleLoginRes);
 
         } catch(BaseException exception){
             return new BaseResponse<>((exception.getStatus()));

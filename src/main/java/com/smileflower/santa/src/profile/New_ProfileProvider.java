@@ -4,6 +4,7 @@ import com.smileflower.santa.config.BaseException;
 
 import com.smileflower.santa.config.BaseResponseStatus;
 import com.smileflower.santa.src.profile.model.*;
+import com.smileflower.santa.src.user.model.GetAutoRes;
 import com.smileflower.santa.utils.JwtService;
 import com.smileflower.santa.utils.S3Service;
 import org.slf4j.Logger;
@@ -145,5 +146,10 @@ public class New_ProfileProvider {
     public int getFlagCount(int userIdx){
         int flagCount = newProfileDao.getFlagCount(userIdx);
         return flagCount;
+    }
+
+    public GetUserLoginInfoRes getUserLoginInfo(int userIdx) throws BaseException {
+        GetUserLoginInfoRes getUserLoginInfoRes = newProfileDao.getUserLoginInfoRes(userIdx);
+        return getUserLoginInfoRes;
     }
 }
