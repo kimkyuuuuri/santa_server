@@ -32,6 +32,7 @@ public class FcmPush {
                     .add("notification", "")
                     .add("data", data)
                     .build();
+            System.out.println(apiKey);
 
             Request request = new Request.Builder()
                     .url("https://fcm.googleapis.com/fcm/send")
