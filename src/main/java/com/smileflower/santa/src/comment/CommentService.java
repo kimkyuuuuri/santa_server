@@ -52,15 +52,16 @@ public class CommentService {
             if (commentProvider.checkPictureExist(idx) == 0)
                 throw new BaseException(INVALID_POST);
             commentIdx = commentDao.createPictureComment(postCommentReq, idx, userIdx);
+            String pushToken= commentProvider.getPicturePushToken(idx);
+            int userIdxbyPictureIdx=commentProvider.getUserIdxByPicture(idx);
+            if(userIdxbyPictureIdx!=userIdx){
+
+                fcmPush.push(pushToken,"회원님의 게시물에 댓글이 달렸습니다.");
+
+            }
         }
 
-        String pushToken= commentProvider.getPicturePushToken(idx);
-        int userIdxbyPictureIdx=commentProvider.getUserIdxByPicture(idx);
-        if(userIdxbyPictureIdx!=userIdx){
 
-            fcmPush.push(pushToken,"회원님의 게시물에 댓글이 달렸습니다.");
-
-        }
             return new PostCommentRes(commentIdx);
 
     }

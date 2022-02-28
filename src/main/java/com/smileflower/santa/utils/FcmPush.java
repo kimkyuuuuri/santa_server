@@ -20,8 +20,8 @@ import java.io.IOException;
 public class FcmPush {
 
 
-    private static final String apiKey="";
-    private static final String senderId="";
+    private static final String apiKey="AAAA2LFAFIk:APA91bHDz5DZ9_iqCYfA5Iom-QXPb9mJuBdlP_2EMzwaSNf-Vg2qCg30bvXieipFyFXMh-mq9u6o758TfaFgTo9o9YMQUds5PT_WSEbyOjp-YyN-fOa6XtXChIl86zNH5LbwuMPvm1LJ";
+    private static final String senderId="930686702729";
 
     public void push(String  token,String data) {
         if (token != null) {
