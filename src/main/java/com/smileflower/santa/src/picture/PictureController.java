@@ -1,5 +1,6 @@
 package com.smileflower.santa.src.picture;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.smileflower.santa.config.BaseException;
 import com.smileflower.santa.config.BaseResponse;
 import com.smileflower.santa.src.flags.model.DeleteFlagRes;
@@ -12,6 +13,8 @@ import org.slf4j.LoggerFactory;
 import com.smileflower.santa.utils.JwtService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+
+import java.io.IOException;
 
 import static com.smileflower.santa.config.BaseResponseStatus.*;
 
@@ -52,8 +55,11 @@ public class PictureController {
                 return new BaseResponse<>(postPictureSaveRes);
             } catch (BaseException exception) {
                 return new BaseResponse<>((exception.getStatus()));
-            }
+            } catch (IOException e) {
+            e.printStackTrace();
+            return new BaseResponse<>();
         }
+    }
 
     @ResponseBody
     @PostMapping("/{pictureIdx}/report")

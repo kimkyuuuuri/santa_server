@@ -1,14 +1,25 @@
 package com.smileflower.santa.utils;
 
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.auth.oauth2.GoogleCredentials;
+import com.google.common.net.HttpHeaders;
+import com.google.firebase.FirebaseApp;
+import com.google.firebase.FirebaseOptions;
+import com.google.gson.JsonParseException;
 import lombok.*;
 import okhttp3.*;
+import org.springframework.core.io.ClassPathResource;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Component;
 
 
-
-
+import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.InputStream;
+import java.util.List;
 
 
 
@@ -18,22 +29,32 @@ import java.io.IOException;
 @Component
 public class FcmPush {
 
-
+private ObjectMapper objectMapper=new ObjectMapper();
     private static final String apiKey="AAAA2LFAFIk:APA91bHDz5DZ9_iqCYfA5Iom-QXPb9mJuBdlP_2EMzwaSNf-Vg2qCg30bvXieipFyFXMh-mq9u6o758TfaFgTo9o9YMQUds5PT_WSEbyOjp-YyN-fOa6XtXChIl86zNH5LbwuMPvm1LJ";
     private static final String senderId="930686702729";
 
-    public void push(String  token,String data) {
+    public void push(String  token,String data2) throws IOException {
         if (token != null) {
             OkHttpClient client = new OkHttpClient.Builder().build();
-            okhttp3.RequestBody body = new FormBody.Builder()
+            RequestBody body = new FormBody.Builder()
                     .add("to", "e5oSXNBZCk2oiW9Q9fa1KC:APA91bHZZAJjrTA-tV00h2Ewp-llv27qZbDha3qH-_h22D3yLsxIC_LODg7CqkGn3zMPUmHi9jPMCuG6Bw8qftT_w-O0QWUFY1-dzdQAQbgRxTmcLwSw9jmnhkeM-W8uJcfGBjgYxn1i")
                     .add("project_id", senderId)
-                    .add("notification", "")
-                    .add("data", data)
+                    .add("notification", "").add("title","test").add("body","test")
+
+                   // .add("data", data2).add("noti","df")
+                    .add("content-available","1")
+                    .add("priority","high")
                     .build();
 
 
-            Request request = new Request.Builder()
+            sendMessageTo(
+                    "e5oSXNBZCk2oiW9Q9fa1KC:APA91bHZZAJjrTA-tV00h2Ewp-llv27qZbDha3qH-_h22D3yLsxIC_LODg7CqkGn3zMPUmHi9jPMCuG6Bw8qftT_w-O0QWUFY1-dzdQAQbgRxTmcLwSw9jmnhkeM-W8uJcfGBjgYxn1i",
+                    "test",
+                    "Testing");
+           ResponseEntity.ok().build();
+
+
+               Request request = new Request.Builder()
                     .url("https://fcm.googleapis.com/fcm/send")
                     .addHeader("Authorization", "key=" + apiKey)
                     .post(body)
@@ -58,5 +79,54 @@ public class FcmPush {
                 }
             });
         }
+
+
+    }
+
+    private String makeMessage(String targetToken, String title, String body) throws JsonParseException, JsonProcessingException {
+       PushModel fcmMessage = PushModel.builder()
+                .message(PushModel.Message.builder()
+                        .token(targetToken)
+                        .notification(PushModel.Notification.builder()
+                                .title(title)
+                                .body(body)
+                                .image(null)
+                                .build()
+                        ).build()).validateOnly(false).build();
+
+        return objectMapper.writeValueAsString(fcmMessage);
+    }
+
+    public void sendMessageTo(String targetToken, String title, String body) throws IOException {
+        String message = makeMessage(targetToken, title, body);
+
+        OkHttpClient client = new OkHttpClient();
+        RequestBody requestBody = RequestBody.create(MediaType.get("application/json; charset=utf-8"),
+                message);
+        Request request = new Request.Builder()
+                .url("https://fcm.googleapis.com/v1/projects/santa-dev-7262a/messages:send")
+                .post(requestBody)
+                .addHeader(HttpHeaders.AUTHORIZATION, "Bearer " + getAccessToken())
+                .addHeader(HttpHeaders.CONTENT_TYPE, "application/json; UTF-8")
+                .build();
+
+        Response response = client.newCall(request).execute();
+        System.out.println(response.code() + "\n" + response.body().string() + "\n SUCCESS");
+
+
+    }
+
+    private String getAccessToken() throws IOException {
+
+        String firebaseConfigPath = "/firebase/firebase_service_key.json";
+
+        GoogleCredentials googleCredentials = GoogleCredentials
+                .fromStream(new ClassPathResource(firebaseConfigPath).getInputStream())
+                .createScoped(List.of("https://www.googleapis.com/auth/cloud-platform"));
+
+        googleCredentials.refreshIfExpired();
+        return googleCredentials.getAccessToken().getTokenValue();
     }
 }
+
+

@@ -1,5 +1,6 @@
 package com.smileflower.santa.src.comment;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.smileflower.santa.config.BaseException;
 import com.smileflower.santa.config.BaseResponse;
 
@@ -11,6 +12,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.IOException;
 import java.util.List;
 
 import static com.smileflower.santa.config.BaseResponseStatus.*;
@@ -101,6 +103,12 @@ public class    CommentController {
 
         }catch(BaseException exception){
             return new BaseResponse<>((exception.getStatus()));
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+            return new BaseResponse<>();
+        } catch (IOException e) {
+            e.printStackTrace();
+            return new BaseResponse<>();
         }
 
     }
@@ -127,6 +135,12 @@ public class    CommentController {
 
         }catch(BaseException exception){
             return new BaseResponse<>((exception.getStatus()));
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+            return new BaseResponse<>();
+        } catch (IOException e) {
+            e.printStackTrace();
+            return new BaseResponse<>();
         }
 
     }

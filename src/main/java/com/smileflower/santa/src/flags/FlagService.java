@@ -2,6 +2,7 @@ package com.smileflower.santa.src.flags;
 
 
 import com.amazonaws.services.s3.model.ObjectMetadata;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.smileflower.santa.config.BaseException;
 import com.smileflower.santa.flag.model.GpsInfoRequest;
 import com.smileflower.santa.src.flags.model.*;
@@ -193,7 +194,7 @@ public class FlagService {
 
     }
 
-    public PostFlagSaveRes postFlagSaveRes(int userIdx, int flagIdx) throws BaseException {
+    public PostFlagSaveRes postFlagSaveRes(int userIdx, int flagIdx) throws BaseException, IOException {
         if (flagProvider.checkFlagExist(flagIdx)!=1) {
             throw new BaseException(INVALID_POST);
         }

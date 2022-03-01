@@ -19,7 +19,6 @@ import javax.transaction.Transactional;
 import java.util.List;
 
 import static com.smileflower.santa.config.BaseResponseStatus.*;
-import static sun.jvm.hotspot.runtime.BasicObjectLock.size;
 
 // Service Create, Update, Delete 의 로직 처리
 @Service

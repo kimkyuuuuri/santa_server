@@ -1,6 +1,7 @@
 package com.smileflower.santa.src.picture;
 
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.smileflower.santa.config.BaseException;
 import com.smileflower.santa.src.picture.model.*;
 import com.smileflower.santa.utils.FcmPush;
@@ -12,6 +13,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.io.IOException;
 import java.util.List;
 
 import static com.smileflower.santa.config.BaseResponseStatus.*;
@@ -37,7 +39,7 @@ public class PictureService{
     }
 
 
-    public PostPictureSaveRes postPictureSaveRes(int userIdx,int pictureIdx) throws BaseException {
+    public PostPictureSaveRes postPictureSaveRes(int userIdx,int pictureIdx) throws BaseException, IOException {
 
         if (pictureProvider.checkPictureExist(pictureIdx)!=1) {
             throw new BaseException(INVALID_POST);

@@ -1,5 +1,6 @@
 package com.smileflower.santa.src.flags;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ser.Serializers;
 import com.smileflower.santa.exception.ApiResult;
 import com.smileflower.santa.flag.model.GpsInfoRequest;
@@ -16,6 +17,7 @@ import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.List;
 
 
@@ -42,27 +44,31 @@ public class FlagController {
     }
 
 
-
     @ResponseBody
     @PostMapping("/flags/{flagIdx}/save")
     public BaseResponse<PostFlagSaveRes> save(@PathVariable("flagIdx") int flagIdx) throws BaseException {
         try {
             if (jwtService.getJwt() == null) {
                 return new BaseResponse<>(EMPTY_JWT);
-            }
-
-            else if (flagProvider.checkJwt(jwtService.getJwt()) == 1) {
+            } else if (flagProvider.checkJwt(jwtService.getJwt()) == 1) {
                 return new BaseResponse<>(INVALID_JWT);
 
             }
-
-
             PostFlagSaveRes postFlagSaveRes = flagService.postFlagSaveRes(jwtService.getUserIdx(), flagIdx);
             return new BaseResponse<>(postFlagSaveRes);
         } catch (BaseException exception) {
             return new BaseResponse<>((exception.getStatus()));
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+            return new BaseResponse<>();
+        } catch (IOException e) {
+            e.printStackTrace();
+            return new BaseResponse<>();
         }
     }
+
+
+
 
     @ResponseBody
     @GetMapping("/flags")

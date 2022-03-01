@@ -1,6 +1,7 @@
 package com.smileflower.santa.src.comment;
 
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.smileflower.santa.config.BaseException;
 import com.smileflower.santa.src.comment.model.*;
 import com.smileflower.santa.utils.FcmPush;
@@ -10,6 +11,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
+
+import java.io.IOException;
 
 import static com.smileflower.santa.config.BaseResponseStatus.*;
 
@@ -33,7 +36,7 @@ public class CommentService {
         this.fcmPush = fcmPush;
     }
 
-    public PostCommentRes createComment(PostCommentReq postCommentReq, Long idx, int userIdx, String type) throws BaseException {
+    public PostCommentRes createComment(PostCommentReq postCommentReq, Long idx, int userIdx, String type) throws BaseException, IOException {
 
         int commentIdx=0;
         if(type.equals("flag")) {
@@ -68,7 +71,7 @@ public class CommentService {
 
     }
 
-    public PostRecommentRes createRecomment(PostRecommentReq postRecommentReq, long commentIdx, int userIdx, String type) throws BaseException {
+    public PostRecommentRes createRecomment(PostRecommentReq postRecommentReq, long commentIdx, int userIdx, String type) throws BaseException, IOException {
        int recommentIdx=0;
         if(type.equals("flag")) {
             if (commentProvider.checkFlagCommentExist(commentIdx) == 0)
