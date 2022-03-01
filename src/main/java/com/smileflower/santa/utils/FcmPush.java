@@ -4,8 +4,7 @@ package com.smileflower.santa.utils;
 import lombok.*;
 import okhttp3.*;
 import org.springframework.stereotype.Component;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.ResponseBody;
+
 
 
 
@@ -27,12 +26,12 @@ public class FcmPush {
         if (token != null) {
             OkHttpClient client = new OkHttpClient.Builder().build();
             okhttp3.RequestBody body = new FormBody.Builder()
-                    .add("to", token)
-                    .add("projeect_id", senderId)
+                    .add("to", "e5oSXNBZCk2oiW9Q9fa1KC:APA91bHZZAJjrTA-tV00h2Ewp-llv27qZbDha3qH-_h22D3yLsxIC_LODg7CqkGn3zMPUmHi9jPMCuG6Bw8qftT_w-O0QWUFY1-dzdQAQbgRxTmcLwSw9jmnhkeM-W8uJcfGBjgYxn1i")
+                    .add("project_id", senderId)
                     .add("notification", "")
                     .add("data", data)
                     .build();
-            System.out.println(apiKey);
+
 
             Request request = new Request.Builder()
                     .url("https://fcm.googleapis.com/fcm/send")
@@ -45,16 +44,17 @@ public class FcmPush {
 
                 public void onFailure(Call call, IOException e) {
 
-                    // System.out.println(e.getMessage() + "\n ERROR");
+                     System.out.println(e.getMessage() + "\n ERROR");
                 }
 
 
                 public void onResponse(Call call, Response response) throws IOException {
-                    // if (response.isSuccessful()) {
-                    //   System.out.println(response.code() + "\n" + response.body().string() + "\n SUCCESS");
-                    //} else {
-                    //  System.out.println(response.body());
-                    //}
+                     if (response.isSuccessful()) {
+
+                      System.out.println(response.code() + "\n" + response.body().string() + "\n SUCCESS");
+                    } else {
+                      System.out.println(response.body());
+                    }
                 }
             });
         }
