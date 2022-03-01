@@ -71,10 +71,20 @@ public class New_ProfileProvider {
         return getProfileRes;
 
     }
-    public GetMyPostsRes getMyPostsRes(int userIdx)  throws BaseException{
+    public GetMyPostsRes getMyPostsRes(int userIdx,int userIdxByJwt)  throws BaseException{
+        String isMyPost="T";
+
         if(userExist(userIdx)==0) {
             throw new BaseException(BaseResponseStatus.INVALID_USER);
         }
+        if(userExist(userIdxByJwt)==0) {
+            throw new BaseException(BaseResponseStatus.INVALID_USER);
+        }
+        if(userIdx!=userIdxByJwt)
+        {
+            isMyPost="F";
+        }
+
         List<GetPostsRes> getPostsRes = new ArrayList<>();
         List<GetFlagRes> getFlagRes = newProfileDao.getFlagRes(userIdx);
         List<GetPicturesRes> getPicturesRes =newProfileDao.getPicturesRes(userIdx);
@@ -87,7 +97,7 @@ public class New_ProfileProvider {
         }
         Collections.sort(getPostsRes);
 
-        return new GetMyPostsRes(userIdx,getUserRes.getUserName(),getPostsRes);
+        return new GetMyPostsRes(isMyPost,userIdx,getUserRes.getUserName(),getPostsRes);
 
     }
 

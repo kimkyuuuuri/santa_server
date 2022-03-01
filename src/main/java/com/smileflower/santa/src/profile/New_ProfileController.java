@@ -108,7 +108,8 @@ public class New_ProfileController {
 
             else{
                 int userIdxByJwt=jwtService.getUserIdx();
-                GetMyPostsRes getMyPostsRes= newProfileProvider.getMyPostsRes(userIdx);
+
+                GetMyPostsRes getMyPostsRes= newProfileProvider.getMyPostsRes(userIdx,userIdxByJwt);
                 return new BaseResponse<>(getMyPostsRes);
             }
 

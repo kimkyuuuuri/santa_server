@@ -42,7 +42,9 @@ public class CommentService {
             commentIdx = commentDao.createFlagComment(postCommentReq, idx, userIdx);
             String pushToken= commentProvider.getFlagPushToken(idx);
             int userIdxbyFlagIdx=commentProvider.getUserIdxByFlag(idx);
+
             if(userIdxbyFlagIdx!=userIdx){
+              
               fcmPush.push(pushToken,"회원님의 게시물에 댓글이 달렸습니다.");
 
             }
