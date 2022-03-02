@@ -1,12 +1,13 @@
 package com.smileflower.santa.src.new_home.model;
 
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 
 @Getter
 @Setter
-
+@AllArgsConstructor
 public class GetMountainsRes {
     private int mountainIdx;
     private String mountainImageUrl;
@@ -16,16 +17,8 @@ public class GetMountainsRes {
     private String high;
     private int userIdx;
     private String userImageUrl;
+    private int intTypeHigh;
 
 
-    public GetMountainsRes(int mountainIdx, String mountainImageUrl, String isHot, int difficulty, String mountainName, String high, int userIdx, String userImageUrl) {
-    this.mountainIdx=mountainIdx;
-    this.mountainImageUrl=mountainImageUrl;
-    this.isHot=isHot;
-    this.difficulty=difficulty;
-    this.mountainName=mountainName;
-    this.high=high;
-    this.userIdx=userIdx;
-    this.userImageUrl=userImageUrl;
-       }
+
 }

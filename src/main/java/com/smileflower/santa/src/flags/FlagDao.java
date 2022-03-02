@@ -180,7 +180,7 @@ public class FlagDao {
                         "\n" +
                         "                         case when a.hot > 10 then 'T' else 'F' end as hot,\n" +
                         "                                             ( select ( case when EXISTS(select flagIdx from flag where flag.mountainIdx=m.mountainIdx and flag.status='t')\n" +
-                        "                                                                      then 'T' else 'F' end ) )as competing\n" +
+                        "                                                                      then 'T' else 'F' end ) )as competing,m.high as intTypeHigh\n" +
                         "                            from picklist\n" +
                         "                                                 inner join mountain m on picklist.mountainIdx = m.mountainIdx\n" +
                         "                        left join (select mountainIdx, count(picklistIdx) as hot from picklist group by mountainIdx) a\n" +
@@ -195,7 +195,8 @@ public class FlagDao {
                         rs.getInt("difficulty"),
                         rs.getString("high"),
                         rs.getString("hot"),
-                        rs.getString("competing")
+                        rs.getString("competing"),
+                        rs.getInt("intTypeHigh")
                 ),
                 userIdx,userIdx);
     }

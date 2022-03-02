@@ -15,4 +15,5 @@ public class GetPickRes {
     private String high;
     private String hot;
     private String competing;
+    private int intTypeHot;
 }

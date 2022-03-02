@@ -16,4 +16,5 @@ public class GetMountainRes {
     private String hot;
     private String pick;
     private String competing;
+    private int intTypeHigh;
 }

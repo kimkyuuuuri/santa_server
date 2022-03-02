@@ -35,7 +35,7 @@ public class MountainDao {
                         "                                       case when a.hot > 10 then 'T' else 'F' end as hot,\n" +
                         "                                       case when b.status = 'T' then 'T' else 'F' end as pick\n" +
                         "                                          , ( select ( case when EXISTS(select flagIdx from flag where flag.mountainIdx=m.mountainIdx and flag.status='t')\n" +
-                        "                                                       then 'T' else 'F' end ) )as competing" +
+                        "                                                       then 'T' else 'F' end ) )as competing, m.high as intTypeHigh" +
                         "                                from mountain m\n" +
                         "                                         left join difficulty d on m.mountainIdx = d.mountainIdx\n" +
                         "                                         left join (select mountainIdx, count(picklistIdx) as hot from picklist group by mountainIdx) a\n" +
@@ -51,7 +51,8 @@ public class MountainDao {
                         rs.getString("high"),
                         rs.getString("hot"),
                         rs.getString("pick"),
-                        rs.getString("competing")),
+                        rs.getString("competing"),
+                        rs.getInt("intTypeHigh")),
                 userIdx);
     }
 
@@ -70,7 +71,7 @@ public class MountainDao {
                         "                                       case when a.hot > 10 then 'T' else 'F' end as hot,\n" +
                         "                                       case when b.status = 'T' then 'T' else 'F' end as pick" +
                         "                                 , ( select ( case when EXISTS(select flagIdx from flag where flag.mountainIdx=m.mountainIdx and flag.status='t')\n" +
-                        "                                   then 'T' else 'F' end ) )as competing" +
+                        "                                   then 'T' else 'F' end ) )as competing,m.high as intTypeHigh" +
 
                         "                                from mountain m\n " +
                         "                                         left join difficulty d on m.mountainIdx = d.mountainIdx\n" +
@@ -87,7 +88,8 @@ public class MountainDao {
                         rs.getString("high"),
                         rs.getString("hot"),
                         rs.getString("pick"),
-                        rs.getString("competing")
+                        rs.getString("competing"),
+                        rs.getInt("intTypeHigh")
                 ),
                 userIdx,(index-1)*20);
     }

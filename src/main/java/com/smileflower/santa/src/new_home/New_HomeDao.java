@@ -112,7 +112,7 @@ public class New_HomeDao {
                                 "                                   when mountain.high<1300 then 4\n" +
                                 "                                   else 5 end as difficulty\n" +
                                 "       ,mountain.name as mountainName,  concat('(', mountain.high, 'm)') as high,\n" +
-                                "      u.userIdx,u.userImageUrl\n" +
+                                "      u.userIdx,u.userImageUrl,mountain.high as intTypeHigh\n" +
                                 "                         from mountain\n" +
                                 "                                  left join (select mountainIdx, userIdx,createdAt ,totalHeight ,count(*) as flagCount from flag  where status='t'  group by mountainIdx\n" +
                                 "                                             ) f  on f.mountainIdx = mountain.mountainIdx\n" +
@@ -131,7 +131,8 @@ public class New_HomeDao {
                                 rk.getString("mountainName"),
                                 rk.getString("high"),
                                 rk.getInt("userIdx"),
-                                rk.getString("userImageUrl")
+                                rk.getString("userImageUrl"),
+                                rk.getInt("intTypeHigh")
                         ))),userIdx,userIdx);
 
     }
@@ -265,7 +266,7 @@ public class New_HomeDao {
                         "                                   when mountain.high<1300 then 4\n" +
                         "                                   else 5 end as difficulty\n" +
                         "       ,mountain.name as mountainName,  concat('(', mountain.high, 'm)') as high,\n" +
-                        "      u.userIdx,u.userImageUrl\n" +
+                        "      u.userIdx,u.userImageUrl,mountain.high as intTypeHigh\n" +
                         "                         from mountain\n" +
                         "                                  left join (select mountainIdx, userIdx,createdAt ,totalHeight ,count(*) as flagCount from flag  where status='t'  group by mountainIdx\n" +
                         "                                             ) f  on f.mountainIdx = mountain.mountainIdx\n" +
@@ -284,7 +285,8 @@ public class New_HomeDao {
                         rk.getString("mountainName"),
                         rk.getString("high"),
                         rk.getInt("userIdx"),
-                        rk.getString("userImageUrl")
+                        rk.getString("userImageUrl"),
+                        rk.getInt("intTypeHigh")
                 ));
 
     }
