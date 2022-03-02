@@ -191,6 +191,24 @@ public class CommentDao {
         return this.jdbcTemplate.queryForObject("select last_insert_id()",int.class);
     }
 
+
+    public int createFlagCommentNotification(int userIdx, Long flagIdx){
+        Object[] createFlagCommentNotificationParams = new Object[]{userIdx, flagIdx,'T'};
+
+        this.jdbcTemplate.update("insert into notification (userIdx,flagIdx,isComment) VALUES (? ,?,?)",
+
+                createFlagCommentNotificationParams);
+        return this.jdbcTemplate.queryForObject("select last_insert_id()",int.class);
+    }
+
+    public int createPictureCommentNotification(int userIdx, Long pictureIdx){
+        Object[] createPictureCommentNotificationParams = new Object[]{userIdx, pictureIdx,'T'};
+
+        this.jdbcTemplate.update("insert into notification (userIdx,pictureIdx,isComment) VALUES (? ,?,?)",
+
+                createPictureCommentNotificationParams);
+        return this.jdbcTemplate.queryForObject("select last_insert_id()",int.class);
+    }
     public int createPictureRecomment(PostRecommentReq postReCommentReq, Long pictureCommentIdx, int userIdx){
         Object[] createPictureRecommentParams = new Object[]{userIdx, pictureCommentIdx, postReCommentReq.getContents()};
 
