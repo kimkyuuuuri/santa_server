@@ -298,4 +298,35 @@ public class New_HomeDao {
         this.jdbcTemplate.update("UPDATE user SET status = 'T' WHERE userIdx = ?",
                 userIdx);
     }
+    public void updateNotificationStatus(int notificationIdx){
+        this.jdbcTemplate.update("UPDATE notification SET status = 'T' WHERE notificationIdx = ?",
+                notificationIdx);
+    }
+
+    public List<GetNotificationRes> getNotificationRes(int userIdx) {
+        return this.jdbcTemplate.query("select notificationIdx,flagIdx,pictureIdx, case when isComment='T' then 'comment' when isRecomment='T' then 'recomment'\n" +
+                        "when isSave='t' then 'save' end as type ,\n" +
+                        "       status,\n" +
+                        "       case when timestampdiff(minute , createdAt, current_timestamp()) < 60\n" +
+                        "    then '방금 전'\n" +
+                        "    when timestampdiff(hour , createdAt, current_timestamp()) < 24\n" +
+                        "    then concat(timestampdiff(hour, createdAt, current_timestamp()), '시간 전')\n" +
+                        "    when  timestampdiff(hour, createdAt, current_timestamp()) < 168\n" +
+                        "    then concat(timestampdiff(day , createdAt, current_timestamp()), '일 전')\n" +
+                        "\n" +
+                        "    ELSE\n" +
+                        "    concat(timestampdiff(week, createdAt, current_timestamp()), '주 전') end  as  createdAt from notification\n" +
+                        " where userIdx=?\n",
+                (rk,rownum) -> new GetNotificationRes(
+                rk.getInt("notificationIdx"),
+                 rk.getInt("flagIdx"),
+                rk.getInt("pictureIdx"),
+                rk.getString("type"),
+                rk.getString("status"),
+                rk.getString("createdAt")
+
+
+                ),userIdx);
+
+    }
 }

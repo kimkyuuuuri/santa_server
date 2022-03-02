@@ -133,4 +133,17 @@ public class New_HomeProvider {
          newHomeDao.setUserStatus(userIdx);
 
     }
+
+    public void modifyNotificationStatus(int notificationIdx){
+        newHomeDao.updateNotificationStatus(notificationIdx);
+
+    }
+
+    public List<GetNotificationRes> getNotification(int userIdx) throws BaseException {
+        List<GetNotificationRes> getNotificationRes = newHomeDao.getNotificationRes(userIdx);
+
+
+        return getNotificationRes;
+
+    }
 }

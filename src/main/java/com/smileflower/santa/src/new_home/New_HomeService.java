@@ -32,4 +32,9 @@ public class New_HomeService {
         this.jwtService = jwtService;
 
     }
+    public void modifyNotificationStatus(int notificationIdx){
+        newHomeDao.updateNotificationStatus(notificationIdx);
+
+    }
+
 }

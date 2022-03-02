@@ -114,4 +114,42 @@ public class New_HomeController {
         }
     }
 
+    @ResponseBody
+    @GetMapping("/notification")
+    public BaseResponse<List<GetNotificationRes>> getNotification() throws BaseException {
+
+        try{
+            if(jwtService.getJwt()==null){
+                return new BaseResponse<>(EMPTY_JWT);
+            }
+
+            else{
+
+                int userIdx=jwtService.getUserIdx();
+
+                List<GetNotificationRes> getNotificationRes= newHomeProvider.getNotification(userIdx);
+                return new BaseResponse<>(getNotificationRes);
+            }
+
+        }catch(BaseException exception){
+            return new BaseResponse<>((exception.getStatus()));
+        }
+    }
+
+    @ResponseBody
+    @PatchMapping("/notification/{notificationIdx}")
+    public BaseResponse<String> modifyNotificationStatus(@PathVariable("notificationIdx")int notificationIdx) throws BaseException {
+
+        if(jwtService.getJwt()==null){
+            return new BaseResponse<>(EMPTY_JWT);
+        }
+
+        else{
+
+             newHomeService.modifyNotificationStatus(notificationIdx);
+            return new BaseResponse<>("확인 완료");
+        }
+
+    }
+
 }
