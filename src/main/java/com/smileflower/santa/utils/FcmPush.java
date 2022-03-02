@@ -33,14 +33,13 @@ private ObjectMapper objectMapper=new ObjectMapper();
     private static final String apiKey="AAAA2LFAFIk:APA91bHDz5DZ9_iqCYfA5Iom-QXPb9mJuBdlP_2EMzwaSNf-Vg2qCg30bvXieipFyFXMh-mq9u6o758TfaFgTo9o9YMQUds5PT_WSEbyOjp-YyN-fOa6XtXChIl86zNH5LbwuMPvm1LJ";
     private static final String senderId="930686702729";
 
-    public void push(String  token,String data2) throws IOException {
+    public void push(String  token,String title,String data) throws IOException {
         if (token != null) {
             OkHttpClient client = new OkHttpClient.Builder().build();
             RequestBody body = new FormBody.Builder()
-                    .add("to", "e5oSXNBZCk2oiW9Q9fa1KC:APA91bHZZAJjrTA-tV00h2Ewp-llv27qZbDha3qH-_h22D3yLsxIC_LODg7CqkGn3zMPUmHi9jPMCuG6Bw8qftT_w-O0QWUFY1-dzdQAQbgRxTmcLwSw9jmnhkeM-W8uJcfGBjgYxn1i")
+                    .add("to", token)
                     .add("project_id", senderId)
-                    .add("notification", "").add("title","test").add("body","test")
-
+                    .add("notification", "")
                    // .add("data", data2).add("noti","df")
                     .add("content-available","1")
                     .add("priority","high")
@@ -48,9 +47,9 @@ private ObjectMapper objectMapper=new ObjectMapper();
 
 
             sendMessageTo(
-                    "e5oSXNBZCk2oiW9Q9fa1KC:APA91bHZZAJjrTA-tV00h2Ewp-llv27qZbDha3qH-_h22D3yLsxIC_LODg7CqkGn3zMPUmHi9jPMCuG6Bw8qftT_w-O0QWUFY1-dzdQAQbgRxTmcLwSw9jmnhkeM-W8uJcfGBjgYxn1i",
-                    "test",
-                    "Testing");
+                    token,
+                    title,
+                    data);
            ResponseEntity.ok().build();
 
 
@@ -65,16 +64,16 @@ private ObjectMapper objectMapper=new ObjectMapper();
 
                 public void onFailure(Call call, IOException e) {
 
-                     System.out.println(e.getMessage() + "\n ERROR");
+                    // System.out.println(e.getMessage() + "\n ERROR");
                 }
 
 
                 public void onResponse(Call call, Response response) throws IOException {
                      if (response.isSuccessful()) {
 
-                      System.out.println(response.code() + "\n" + response.body().string() + "\n SUCCESS");
+                    //  System.out.println(response.code() + "\n" + response.body().string() + "\n SUCCESS");
                     } else {
-                      System.out.println(response.body());
+                    //  System.out.println(response.body());
                     }
                 }
             });
@@ -111,7 +110,7 @@ private ObjectMapper objectMapper=new ObjectMapper();
                 .build();
 
         Response response = client.newCall(request).execute();
-        System.out.println(response.code() + "\n" + response.body().string() + "\n SUCCESS");
+       // System.out.println(response.code() + "\n" + response.body().string() + "\n SUCCESS");
 
 
     }

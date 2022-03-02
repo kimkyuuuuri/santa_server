@@ -50,8 +50,8 @@ public class PictureService{
             String pushToken= pictureProvider.getPicturePushToken(pictureIdx);
             int userIdxbyPictureIdx=pictureProvider.getUserIdxByPicture(pictureIdx);
             if(userIdxbyPictureIdx!=userIdx){
-
-                fcmPush.push(pushToken,"회원님의 게시물에 댓글이 달렸습니다.");
+                pictureDao.createPictureSaveNotification(userIdxbyPictureIdx,pictureIdx);
+                fcmPush.push(pushToken,"좋아요 알림 ","회원님의 게시물을 좋아해요.");
 
             }
             return  new PostPictureSaveRes(pictureSaveIdx,"좋아요 완료");

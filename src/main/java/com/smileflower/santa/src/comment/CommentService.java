@@ -47,8 +47,9 @@ public class CommentService {
             int userIdxbyFlagIdx=commentProvider.getUserIdxByFlag(idx);
 
             if(userIdxbyFlagIdx!=userIdx){
-              
-              fcmPush.push(pushToken,"회원님의 게시물에 댓글이 달렸습니다.");
+                commentDao.createFlagCommentNotification(userIdxbyFlagIdx,idx);
+
+                fcmPush.push(pushToken,"댓글 알림","회원님의 게시물에 댓글이 달렸습니다.");
 
             }
         }
@@ -60,8 +61,9 @@ public class CommentService {
             String pushToken= commentProvider.getPicturePushToken(idx);
             int userIdxbyPictureIdx=commentProvider.getUserIdxByPicture(idx);
             if(userIdxbyPictureIdx!=userIdx){
+                commentDao.createPictureCommentNotification(userIdxbyPictureIdx,idx);
 
-                fcmPush.push(pushToken,"회원님의 게시물에 댓글이 달렸습니다.");
+                fcmPush.push(pushToken,"댓글 알림","회원님의 게시물에 댓글이 달렸습니다.");
 
             }
         }
@@ -82,16 +84,20 @@ public class CommentService {
             int userIdxbyFlagCommentIdx=commentProvider.getUserIdxByFlagComment(commentIdx);
 
             if(userIdxbyFlagCommentIdx!=userIdx){
-
-                fcmPush.push(flagCommentPushToken,"회원님의 댓글에 재댓글이 달렸습니다.");
+                Long flagIdx=commentDao.getFlagIdx(commentIdx);
+                commentDao.createFlagRecommentNotification(userIdxbyFlagCommentIdx,flagIdx);
+                fcmPush.push(flagCommentPushToken,"댓글 알림","회원님의 댓글에 재댓글이 달렸습니다.");
 
             }
             String flagPushToken= commentProvider.getUserFlagPushTokenByRecomment(commentIdx);
             int userIdxbyFlagIdx=commentProvider.getUserIdxByFlagCommentByRecomment(commentIdx);
+
             if(userIdxbyFlagIdx!=userIdx){
+                Long flagIdx=commentDao.getFlagIdx(commentIdx);
 
-                fcmPush.push(flagPushToken,"회원님의 게시물에 댓글이 달렸습니다.");
-
+                    commentDao.createFlagCommentNotification(userIdxbyFlagIdx,flagIdx);
+                fcmPush.push(flagPushToken,"댓글 알림","회원님의 게시물에 댓글이 달렸습니다.");
+                System.out.println(userIdxbyFlagCommentIdx);
             }
 
             recommentIdx = commentDao.createFlagRecomment(postRecommentReq, commentIdx, userIdx);
@@ -104,15 +110,19 @@ public class CommentService {
             String pictureCommentPushToken= commentProvider.getPictureCommentPushToken(commentIdx);
             int userIdxbyPictureCommentIdx=commentProvider.getUserIdxByPictureComment(commentIdx);
             if(userIdxbyPictureCommentIdx!=userIdx){
+                Long pictureIdx=commentDao.getPictureIdx(commentIdx);
+                commentDao.createPictureRecommentNotification(userIdxbyPictureCommentIdx,pictureIdx);
 
-                fcmPush.push(pictureCommentPushToken,"회원님의 댓글에 재댓글이 달렸습니다.");
+                fcmPush.push(pictureCommentPushToken,"댓글 알림","회원님의 댓글에 재댓글이 달렸습니다.");
 
             }
 
             String picturePushToken= commentProvider.getUserPicturePushTokenByRecomment(commentIdx);
             int userIdxbyPictureIdx=commentProvider.getUserIdxByPictureCommentByRecomment(commentIdx);
             if(userIdxbyPictureIdx!=userIdx){
-                fcmPush.push(picturePushToken,"회원님의 게시물에 댓글이 달렸습니다.");
+                Long pictureIdx=commentDao.getPictureIdx(commentIdx);
+                commentDao.createPictureCommentNotification(userIdxbyPictureIdx,pictureIdx);
+                fcmPush.push(picturePushToken,"댓글 알림","회원님의 게시물에 댓글이 달렸습니다.");
 
             }
             recommentIdx = commentDao.createPictureRecomment(postRecommentReq, commentIdx, userIdx);

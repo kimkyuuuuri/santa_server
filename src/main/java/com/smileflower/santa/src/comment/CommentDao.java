@@ -193,7 +193,7 @@ public class CommentDao {
 
 
     public int createFlagCommentNotification(int userIdx, Long flagIdx){
-        Object[] createFlagCommentNotificationParams = new Object[]{userIdx, flagIdx,'T'};
+        Object[] createFlagCommentNotificationParams = new Object[]{userIdx, flagIdx,"T"};
 
         this.jdbcTemplate.update("insert into notification (userIdx,flagIdx,isComment) VALUES (? ,?,?)",
 
@@ -202,9 +202,27 @@ public class CommentDao {
     }
 
     public int createPictureCommentNotification(int userIdx, Long pictureIdx){
-        Object[] createPictureCommentNotificationParams = new Object[]{userIdx, pictureIdx,'T'};
+        Object[] createPictureCommentNotificationParams = new Object[]{userIdx, pictureIdx,"T"};
 
         this.jdbcTemplate.update("insert into notification (userIdx,pictureIdx,isComment) VALUES (? ,?,?)",
+
+                createPictureCommentNotificationParams);
+        return this.jdbcTemplate.queryForObject("select last_insert_id()",int.class);
+    }
+
+    public int createFlagRecommentNotification(int userIdx, Long flagIdx){
+        Object[] createFlagCommentNotificationParams = new Object[]{userIdx, flagIdx,"T"};
+
+        this.jdbcTemplate.update("insert into notification (userIdx,flagIdx,isRecomment) VALUES (? ,?,?)",
+
+                createFlagCommentNotificationParams);
+        return this.jdbcTemplate.queryForObject("select last_insert_id()",int.class);
+    }
+
+    public int createPictureRecommentNotification(int userIdx, Long pictureIdx){
+        Object[] createPictureCommentNotificationParams = new Object[]{userIdx, pictureIdx,"T"};
+
+        this.jdbcTemplate.update("insert into notification (userIdx,pictureIdx,isRecomment) VALUES (? ,?,?)",
 
                 createPictureCommentNotificationParams);
         return this.jdbcTemplate.queryForObject("select last_insert_id()",int.class);
@@ -320,9 +338,18 @@ public class CommentDao {
     public int getUserIdxByFlagComment(Long flagCommentIdx){
         return this.jdbcTemplate.queryForObject("select user.userIdx from user\n" +
                 "join flagcomment f on user.userIdx = f.userIdx\n" +
-                "where f.flagcommentIdx=?", int.class,flagCommentIdx);
+                "where f.flagcommentIdx=?", Integer.class,flagCommentIdx);
     }
-
+    public Long getFlagIdx(Long flagCommentIdx){
+        return this.jdbcTemplate.queryForObject("select flag.flagIdx from flag\n" +
+                "                join flagcomment f on f.flagIdx = flag.flagIdx\n" +
+                "                where f.flagcommentIdx=?", Long.class,flagCommentIdx);
+    }
+    public Long getPictureIdx(Long pictureCommentIdx){
+        return this.jdbcTemplate.queryForObject("select picture.pictureIdx from picture\n" +
+                "                join picturecomment p on p.pictureIdx = picture.pictureIdx\n" +
+                "                where p.picturecommentIdx=?", Long.class,pictureCommentIdx);
+    }
 
     public String getUserPictureCommentPushToken(Long pictureCommentIdx){
         return this.jdbcTemplate.queryForObject("select pushToken from user\n" +

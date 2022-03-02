@@ -126,5 +126,20 @@ public class PictureDao {
                 "join picture p on user.userIdx = p.userIdx\n" +
                 "where p.pictureIdx=?", int.class,pictureIdx);
     }
+    public Long getFlagIdx(Long flagCommentIdx){
+        return this.jdbcTemplate.queryForObject("select flag.flagIdx from flag\n" +
+                "                join flagcomment f on f.flagIdx = flag.flagIdx\n" +
+                "                where f.flagcommentIdx=?", Long.class,flagCommentIdx);
+    }
+
+
+    public int createPictureSaveNotification(int userIdx,int pictureIdx){
+        Object[] createPictureSaveNotificationParams = new Object[]{userIdx, pictureIdx,"T"};
+
+        this.jdbcTemplate.update("insert into notification (userIdx,pictureIdx,isSave) VALUES (? ,?,?)",
+
+                createPictureSaveNotificationParams);
+        return this.jdbcTemplate.queryForObject("select last_insert_id()",int.class);
+    }
 
 }

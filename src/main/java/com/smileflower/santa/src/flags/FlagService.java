@@ -204,7 +204,8 @@ public class FlagService {
             String pushToken= flagProvider.getFlagPushToken(flagIdx);
             int userIdxbyFlagIdx=flagProvider.getUserIdxByFlag(flagIdx);
             if(userIdxbyFlagIdx!=userIdx){
-                fcmPush.push(pushToken,"회원님의 게시물에 댓글이 달렸습니다.");
+                flagDao.createFlagSaveNotification(userIdxbyFlagIdx,flagIdx);
+                fcmPush.push(pushToken,"좋아요 알림","회원님의 게시물에 좋아요를 했어요.");
 
             }
 

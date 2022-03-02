@@ -380,4 +380,13 @@ public class FlagDao {
     }
 
 
+    public int createFlagSaveNotification(int userIdx, int flagIdx){
+        Object[] createFlagSaveNotificationParams = new Object[]{userIdx, flagIdx,"T"};
+
+        this.jdbcTemplate.update("insert into notification (userIdx,flagIdx,isSave) VALUES (? ,?,?)",
+
+                createFlagSaveNotificationParams);
+        return this.jdbcTemplate.queryForObject("select last_insert_id()",int.class);
+    }
+
 }
