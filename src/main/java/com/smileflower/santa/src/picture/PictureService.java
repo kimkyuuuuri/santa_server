@@ -45,13 +45,15 @@ public class PictureService{
             throw new BaseException(INVALID_POST);
         }
         if (pictureProvider.checkSaveExist(userIdx,pictureIdx)!=1) {
-
+            GetUserInfoRes getUserInfoRes=pictureDao.getUserName(userIdx);
              int pictureSaveIdx =pictureDao.postPictureSaveRes(userIdx, pictureIdx);
             String pushToken= pictureProvider.getPicturePushToken(pictureIdx);
             int userIdxbyPictureIdx=pictureProvider.getUserIdxByPicture(pictureIdx);
+            GetUserInfoRes getUserInfoResForPush=pictureProvider.getUserName(userIdxbyPictureIdx);
             if(userIdxbyPictureIdx!=userIdx){
                 pictureDao.createPictureSaveNotification(userIdxbyPictureIdx,pictureIdx);
-                fcmPush.push(pushToken,"좋아요 알림 ","회원님의 게시물을 좋아해요.");
+                if (getUserInfoResForPush.getTokenType().equals("I"))
+                fcmPush.iosPush(pushToken,"좋아요 알림 ","회원님의 게시물을 좋아해요.");
 
             }
             return  new PostPictureSaveRes(pictureSaveIdx,"좋아요 완료");

@@ -185,4 +185,7 @@ public class CommentProvider {
     public int getUserIdxByPictureCommentByRecomment(Long pictureCommentIdx){
         return commentDao.getUserIdxByPictureCommentByRecomment(pictureCommentIdx);
     }
+    public GetUserInfoRes getUserName(int userIdx){
+        return commentDao.getUserName(userIdx);
+    }
 }

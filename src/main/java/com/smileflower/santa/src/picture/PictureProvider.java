@@ -1,5 +1,6 @@
 package com.smileflower.santa.src.picture;
 
+import com.smileflower.santa.src.picture.model.*;
 import com.smileflower.santa.utils.JwtService;
 import com.smileflower.santa.utils.S3Service;
 import org.slf4j.Logger;
@@ -51,5 +52,8 @@ public class PictureProvider {
         return pictureDao.getUserIdxByPicture(pictureIdx);
     }
 
+    public GetUserInfoRes getUserName(int userIdx){
+        return pictureDao.getUserName(userIdx);
+    }
 
 }

@@ -1,7 +1,7 @@
 package com.smileflower.santa.src.picture;
 
-import com.smileflower.santa.src.flags.model.GetFlagCommentIdxRes;
-import com.smileflower.santa.src.picture.model.GetPictureCommentIdxRes;
+
+import com.smileflower.santa.src.picture.model.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
@@ -141,5 +141,14 @@ public class PictureDao {
                 createPictureSaveNotificationParams);
         return this.jdbcTemplate.queryForObject("select last_insert_id()",int.class);
     }
+
+    public GetUserInfoRes getUserName(int userIdx){
+        return this.jdbcTemplate.queryForObject("select name,tokenType from user where userIdx=?",
+                (rs, rowNum) -> new GetUserInfoRes(
+                        rs.getString("name"),
+                        rs.getString("tokenType")
+
+                ),
+                userIdx);   }
 
 }

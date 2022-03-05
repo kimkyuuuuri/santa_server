@@ -33,7 +33,8 @@ private ObjectMapper objectMapper=new ObjectMapper();
     private static final String apiKey="AAAA2LFAFIk:APA91bHDz5DZ9_iqCYfA5Iom-QXPb9mJuBdlP_2EMzwaSNf-Vg2qCg30bvXieipFyFXMh-mq9u6o758TfaFgTo9o9YMQUds5PT_WSEbyOjp-YyN-fOa6XtXChIl86zNH5LbwuMPvm1LJ";
     private static final String senderId="930686702729";
 
-    public void push(String  token,String title,String data) throws IOException {
+    public void iosPush(String  token,String title,String data) throws IOException {
+        //System.out.println(data);
         if (token != null) {
             OkHttpClient client = new OkHttpClient.Builder().build();
             RequestBody body = new FormBody.Builder()

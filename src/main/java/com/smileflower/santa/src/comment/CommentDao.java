@@ -1,6 +1,7 @@
 package com.smileflower.santa.src.comment;
 
 import com.smileflower.santa.src.comment.model.*;
+import com.smileflower.santa.src.flags.model.GetPickRes;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
@@ -385,4 +386,15 @@ public class CommentDao {
                 "join picturecomment p2 on p.pictureIdx = p2.pictureIdx\n" +
                 "where p2.picturecommentIdx=?", int.class,pictureCommentIdx);
     }
+
+
+    public GetUserInfoRes getUserName(int userIdx){
+        return this.jdbcTemplate.queryForObject("select name,tokenType from user where userIdx=?",
+                (rs, rowNum) -> new GetUserInfoRes(
+                        rs.getString("name"),
+                        rs.getString("tokenType")
+
+                ),
+                userIdx);   }
+
 }

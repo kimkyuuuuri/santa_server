@@ -2,6 +2,7 @@ package com.smileflower.santa.src.flags;
 
 
 import com.smileflower.santa.config.BaseException;
+
 import com.smileflower.santa.src.flags.model.*;
 import com.smileflower.santa.utils.JwtService;
 import com.smileflower.santa.utils.S3Service;
@@ -157,5 +158,8 @@ public class FlagProvider {
         return flagDao.getUserIdxByFlag(flagIdx);
     }
 
+    public GetUserInfoRes getUserName(int userIdx){
+        return flagDao.getUserName(userIdx);
+    }
 
 }

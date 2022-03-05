@@ -4,7 +4,8 @@ package com.smileflower.santa.src.flags;
 import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.smileflower.santa.config.BaseException;
-import com.smileflower.santa.flag.model.GpsInfoRequest;
+import com.smileflower.santa.flag.model.*;
+
 import com.smileflower.santa.src.flags.model.*;
 
 import com.smileflower.santa.utils.FcmPush;
@@ -203,9 +204,15 @@ public class FlagService {
             int flagSaveIdx =flagDao.postFlagSaveRes(userIdx, flagIdx);
             String pushToken= flagProvider.getFlagPushToken(flagIdx);
             int userIdxbyFlagIdx=flagProvider.getUserIdxByFlag(flagIdx);
+            GetUserInfoRes getUserInfoRes=flagProvider.getUserName(userIdx);
+
             if(userIdxbyFlagIdx!=userIdx){
+                GetUserInfoRes getUserInfoResForPush=flagProvider.getUserName(userIdxbyFlagIdx);
+
                 flagDao.createFlagSaveNotification(userIdxbyFlagIdx,flagIdx);
-                fcmPush.push(pushToken,"좋아요 알림","회원님의 게시물에 좋아요를 했어요.");
+
+                if (getUserInfoResForPush.getTokenType().equals("I"))
+                fcmPush.iosPush(pushToken,"좋아요 알림","회원님의 게시물에 좋아요를 했어요.");
 
             }
 
