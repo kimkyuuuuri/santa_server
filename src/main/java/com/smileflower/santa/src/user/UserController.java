@@ -70,7 +70,7 @@ public class UserController {
 
             PostUserRes postUserRes = userService.createUser(postUserReq);
 
-            PostUserLoginReq postUserLoginReq = new PostUserLoginReq(postUserReq.getEmailId(),forLoginPw,postUserReq.getPushToken());
+            PostUserLoginReq postUserLoginReq = new PostUserLoginReq(postUserReq.getEmailId(),forLoginPw,postUserReq.getPushToken(),postUserReq.getTokenType());
 
             PostUserLoginRes postUserLoginRes = userService.loginUser(postUserLoginReq);
 

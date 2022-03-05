@@ -94,7 +94,7 @@ public class Social_loginController {
 
             }
 
-                PostUserLoginRes postUserLoginRes = socialloginService.kakaoLogin(Integer.toString(kakaoProfile.getId()),postUserReq.getPushToken());
+                PostUserLoginRes postUserLoginRes = socialloginService.kakaoLogin(Integer.toString(kakaoProfile.getId()),postUserReq.getPushToken(), postUserReq.getTokenType());
              return new BaseResponse<>(postUserLoginRes);
         } catch(BaseException exception){
             return new BaseResponse<>((exception.getStatus()));

@@ -146,10 +146,10 @@ public class Social_loginDao {
     }
 
 
-    public void updateUserToken(int userIdx,String token) {
+    public void updateUserToken(int userIdx,String token,String tokenType) {
 
-        this.jdbcTemplate.update("UPDATE user SET pushToken = ? WHERE userIdx = ?",
-                token,userIdx);
+        this.jdbcTemplate.update("UPDATE user SET pushToken = ?,tokenType=? WHERE userIdx = ?",
+                token,tokenType,userIdx);
     }
 
 

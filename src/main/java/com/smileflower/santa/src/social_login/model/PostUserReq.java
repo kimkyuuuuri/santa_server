@@ -10,5 +10,6 @@ import lombok.Setter;
 public class PostUserReq {
     private String accessToken;
     private String pushToken;
+    private String tokenType;
     public PostUserReq(){}
 }

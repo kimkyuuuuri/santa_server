@@ -12,4 +12,5 @@ public class PostUserLoginReq {
     private String emailId;
     private String password;
     private String pushToken;
+    private String tokenType;
 }
