@@ -1,5 +1,6 @@
 package com.smileflower.santa.src.profile.model;
 
+
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
@@ -17,6 +18,7 @@ public class GetMyPostsRes {
 
     private String name;
     private List<GetPostsRes> getPostsRes;
+
 
 
     public GetMyPostsRes(int userIdx, String name, List<GetPostsRes> getPostsRes) {

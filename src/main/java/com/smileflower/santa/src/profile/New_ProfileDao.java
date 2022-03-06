@@ -296,5 +296,29 @@ public class New_ProfileDao {
     public int getHighSum(int userIdx) {
         return this.jdbcTemplate.queryForObject("SELECT COALESCE(SUM(height),0) as sum FROM flag WHERE userIdx = ?",new Object[]{userIdx}, Integer.class);
     }
+    public List<GetCommentRes> getPictureCommentRes(long pictureIdx){
+        return this.jdbcTemplate.query("select user.userIdx, user.userImageUrl,user.name as userName, picturecomment.contents  from picturecomment inner join user on picturecomment.userIdx = user.userIdx\n" +
+                "  where picturecomment.pictureIdx=? and user.status='t' order by picturecomment.createdAt limit 1",(rs,rownum2)  -> new GetCommentRes(
+                rs.getInt("userIdx"),
+                rs.getString("userImageUrl"),
+                rs.getString("userName"),
+                rs.getString("contents"),
+                this.jdbcTemplate.queryForObject("select ((select count(*) from picturerecomment where picturerecomment.picturecommentIdx=picturecomment.picturecommentIdx   ) +count(*) ) as count\n" +
+                        "from picturecomment  where pictureIdx=?  order by createdAt limit 1;",(rl,rownum3) -> rl.getInt("count"),pictureIdx)
+
+                ),pictureIdx);
+    }
+    public List<GetCommentRes> getFlagCommentRes(long flagIdx){
+        return this.jdbcTemplate.query("select user.userIdx, user.userImageUrl,user.name as userName, flagcomment.contents  from flagcomment inner join user on flagcomment.userIdx = user.userIdx" +
+                "               where flagcomment.flagIdx=? and user.status='t' order by flagcomment.createdAt limit 1",(rs,rownum2)  -> new GetCommentRes(
+                rs.getInt("userIdx"),
+                rs.getString("userImageUrl"),
+                rs.getString("userName"),
+                rs.getString("contents"),
+                this.jdbcTemplate.queryForObject("select ((select count(*) from flagrecomment where flagrecomment.flagcommentIdx=flagcomment.flagcommentIdx   ) +count(*) ) as count\n" +
+                        "from flagcomment  where flagIdx=?  order by createdAt limit 1;",(rl,rownum3) -> rl.getInt("count"),flagIdx)
+
+        ),flagIdx);
+    }
 
 }

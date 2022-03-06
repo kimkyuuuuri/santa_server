@@ -1,16 +1,18 @@
 package com.smileflower.santa.src.profile.model;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 import org.jetbrains.annotations.NotNull;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.List;
 
 
 @Getter
 @Setter
-
+@AllArgsConstructor
 public class GetPostsRes implements Comparable<GetPostsRes>{
     private boolean isFlag;
     private Long flagIdx;
@@ -21,18 +23,21 @@ public class GetPostsRes implements Comparable<GetPostsRes>{
     private String name;
     private String createdAt;
     private String pictureUrl;
+    private List<GetCommentRes> getCommentRes;
 
-    public GetPostsRes(boolean isFlag, Long flagIdx, Long pictureIdx, int userIdx, int flagCount, Long mountainIdx, String name, String createdAt, String pictureUrl) {
-        this.isFlag = isFlag;
-        this.flagIdx = flagIdx;
-        this.pictureIdx = pictureIdx;
-        this.userIdx = userIdx;
-        this.flagCount = flagCount;
-        this.mountainIdx = mountainIdx;
-        this.name = name;
-        this.createdAt = createdAt;
-        this.pictureUrl = pictureUrl;
+    public GetPostsRes(boolean isFlag, Long flagIdx, Long pictureIdx, int userIdx, int flagCount, Long mountainIdx, String name, String format, String fileUrl) {
+    this.isFlag=isFlag;
+    this.flagIdx=flagIdx;
+    this.pictureIdx=pictureIdx;
+    this.userIdx=userIdx;
+    this.flagCount=flagCount;
+    this.mountainIdx=mountainIdx;
+    this.name=name;
+    this.createdAt=format;
+    this.pictureUrl=fileUrl;
+
     }
+
 
     @Override
     public int compareTo(@NotNull GetPostsRes o) {
