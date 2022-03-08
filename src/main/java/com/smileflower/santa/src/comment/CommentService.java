@@ -52,7 +52,7 @@ public class CommentService {
             if(userIdxbyFlagIdx!=userIdx){
                 commentDao.createFlagCommentNotification(userIdxbyFlagIdx,idx);
                 if(getUserInfoResForPush.getTokenType().equals("I"))
-                fcmPush.iosPush(pushToken,"댓글 알림",getUserInfoRes.getName()+"님이 회원님의 게시물에 댓글을 남겼어요! 지금 확인해보세요👀");
+                fcmPush.iosPush(pushToken,"SANTA",getUserInfoRes.getName()+"님이 회원님의 게시물에 댓글을 남겼어요! 지금 확인해보세요👀");
 
             }
         }
@@ -68,7 +68,7 @@ public class CommentService {
             if(userIdxbyPictureIdx!=userIdx){
                 commentDao.createPictureCommentNotification(userIdxbyPictureIdx,idx);
                 if(getUserInfoResForPush.getTokenType().equals("I"))
-                fcmPush.iosPush(pushToken,"댓글 알림",getUserInfoRes.getName()+"님이 회원님의 게시물에 댓글을 남겼어요! 지금 확인해보세요👀");
+                fcmPush.iosPush(pushToken,"SANTA",getUserInfoRes.getName()+"님이 회원님의 게시물에 댓글을 남겼어요! 지금 확인해보세요👀");
 
             }
         }
@@ -86,8 +86,8 @@ public class CommentService {
         if(type.equals("flag")) {
             if (commentProvider.checkFlagCommentExist(commentIdx) == 0)
                 throw new BaseException(INVALID_COMMENT);
-            //else if (commentProvider.checkFlagCommentWhereUserExist(commentIdx, userIdx) == 0)
-              //  throw new BaseException(INVALID_COMMENT_USER);
+            else if (commentProvider.checkFlagCommentWhereUserExist(commentIdx, userIdx) == 0)
+               throw new BaseException(INVALID_COMMENT_USER);
             String flagCommentPushToken= commentProvider.getFlagCommentPushToken(commentIdx);
             int userIdxbyFlagCommentIdx=commentProvider.getUserIdxByFlagComment(commentIdx);
             GetUserInfoRes getUserInfoRes=commentProvider.getUserName(userIdx);
@@ -97,7 +97,7 @@ public class CommentService {
                  Long flagIdx=commentDao.getFlagIdx(commentIdx);
                 commentDao.createFlagRecommentNotification(userIdxbyFlagCommentIdx,flagIdx);
                 if(getUserInfoResForPush.getTokenType().equals("I"))
-                fcmPush.iosPush(flagCommentPushToken,"댓글 알림",getUserInfoRes.getName()+"회원님의 댓글에 답글을 남겼어요! 지금 확인해보세요👀");
+                fcmPush.iosPush(flagCommentPushToken,"SANTA",getUserInfoRes.getName()+"님이 회원님의 댓글에 답글을 남겼어요! 지금 확인해보세요👀");
 
             }
 
@@ -108,7 +108,7 @@ public class CommentService {
 
                     commentDao.createFlagCommentNotification(userIdxbyFlagIdx,flagIdx);
                 if(getUserInfoResForPush.getTokenType().equals("I"))
-                fcmPush.iosPush(flagPushToken,"댓글 알림",getUserInfoRes.getName()+"님이 회원님의 게시물에 댓글을 남겼어요! 지금 확인해보세요👀");
+                fcmPush.iosPush(flagPushToken,"SANTA",getUserInfoRes.getName()+"님이 회원님의 게시물에 댓글을 남겼어요! 지금 확인해보세요👀");
 
             }
 
@@ -121,8 +121,8 @@ public class CommentService {
         if(type.equals("picture")) {
             if (commentProvider.checkPictureExist(commentIdx) == 0)
                 throw new BaseException(INVALID_POST);
-         //   else if (commentProvider.checkPictureCommentWhereUserExist(commentIdx, userIdx) == 0)
-               // throw new BaseException(INVALID_COMMENT_USER);
+           else if (commentProvider.checkPictureCommentWhereUserExist(commentIdx, userIdx) == 0)
+                throw new BaseException(INVALID_COMMENT_USER);
             GetUserInfoRes getUserInfoRes=commentProvider.getUserName(userIdx);
             String pictureCommentPushToken= commentProvider.getPictureCommentPushToken(commentIdx);
             int userIdxbyPictureCommentIdx=commentProvider.getUserIdxByPictureComment(commentIdx);
@@ -133,7 +133,7 @@ public class CommentService {
                 commentDao.createPictureRecommentNotification(userIdxbyPictureCommentIdx,pictureIdx);
                 if(getUserInfoResForPush.getTokenType().equals("I")) {
 
-                    fcmPush.iosPush(pictureCommentPushToken, "댓글 알림", getUserInfoRes.getName() + "회원님의 댓글에 답글을 남겼어요! 지금 확인해보세요👀");
+                    fcmPush.iosPush(pictureCommentPushToken, "SANTA", getUserInfoRes.getName() + "님이 회원님의 댓글에 답글을 남겼어요! 지금 확인해보세요👀");
                 }
             }
 
@@ -143,7 +143,7 @@ public class CommentService {
                 Long pictureIdx=commentDao.getPictureIdx(commentIdx);
                 commentDao.createPictureCommentNotification(userIdxbyPictureIdx,pictureIdx);
                 if(getUserInfoResForPush.getTokenType().equals("I"))
-                fcmPush.iosPush(picturePushToken,"댓글 알림",getUserInfoRes.getName()+"님이 회원님의 게시물에 댓글을 남겼어요! 지금 확인해보세요👀");
+                fcmPush.iosPush(picturePushToken,"SANTA",getUserInfoRes.getName()+"님이 회원님의 게시물에 댓글을 남겼어요! 지금 확인해보세요👀");
 
             }
             recommentIdx = commentDao.createPictureRecomment(postRecommentReq, commentIdx, userIdx);
@@ -175,15 +175,15 @@ public class CommentService {
         if(type.equals("flag")) {
             if (commentProvider.checkFlagRecommentExist(recommentIdx) == 0)
                 throw new BaseException(INVALID_COMMENT);
-           // else if (commentProvider.checkFlagCommentWhereUserExist(recommentIdx, userIdx) == 0)
-             //   throw new BaseException(INVALID_COMMENT_USER);
+            else if (commentProvider.checkFlagCommentWhereUserExist(recommentIdx, userIdx) == 0)
+                throw new BaseException(INVALID_COMMENT_USER);
             commentDao.deleteFlagRecomment(recommentIdx);
         }
         else if (type.equals("picture")) {
             if (commentProvider.checkPictureRecommentExist(recommentIdx) == 0)
                 throw new BaseException(INVALID_COMMENT);
-           // else if (commentProvider.checkPictureCommentWhereUserExist(recommentIdx, userIdx) == 0)
-             //   throw new BaseException(INVALID_COMMENT_USER);
+            else if (commentProvider.checkPictureCommentWhereUserExist(recommentIdx, userIdx) == 0)
+                throw new BaseException(INVALID_COMMENT_USER);
             commentDao.deletePictureRecomment(recommentIdx);
         }
         return new PatchRecommentStatusRes(recommentIdx);

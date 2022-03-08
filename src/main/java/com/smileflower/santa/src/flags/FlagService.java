@@ -116,8 +116,8 @@ public class FlagService {
         boolean isDoubleVisited = flagDao.findTodayFlagByIdx(userIdx)!=0;
         boolean isFlag = flagDao.findIsFlagByLatAndLong(gpsInfoRequest.getLatitude(),gpsInfoRequest.getLongitude(),mountainIdx)==1;
        // if (isFlag == false)
-         //   if (isFlag == false)
-        //         //   throw new BaseException(INVALID_FLAG_LOCATION)
+            if (isFlag == false)
+                    throw new BaseException(INVALID_FLAG_LOCATION);
         //if (isDoubleVisited == true)
          //throw new BaseException(POST_FLAGS_EXISTS_FLAG);
         //if(isFlag && !isDoubleVisited){
@@ -181,8 +181,8 @@ public class FlagService {
     public DeleteFlagRes deleteFlag(Long flagIdx,int userIdx) throws BaseException {
         if (flagProvider.checkFlagExist(flagIdx) == 0)
             throw new BaseException(INVALID_POST);
-       // else if (flagProvider.checkFlagWhereUserExist(flagIdx,userIdx) == 0)
-         //   throw new BaseException(INVALID_POST_USER);
+        else if (flagProvider.checkFlagWhereUserExist(flagIdx,userIdx) == 0)
+            throw new BaseException(INVALID_POST_USER);
         List<GetFlagCommentIdxRes> getFlagCommentIdxRes=flagDao.getFlagCommentIdxRes(flagIdx);
         for(int i=0;i<getFlagCommentIdxRes.size();i++){
             flagDao.deleteFlagRecomment(getFlagCommentIdxRes.get(i).getFlagcommentIdx());
@@ -207,13 +207,15 @@ public class FlagService {
             GetUserInfoRes getUserInfoRes=flagProvider.getUserName(userIdx);
 
             if(userIdxbyFlagIdx!=userIdx){
-                GetUserInfoRes getUserInfoResForPush=flagProvider.getUserName(userIdxbyFlagIdx);
+
+                GetUserInfoRes getUserInfoResForPush=flagProvider.getUserName(userIdx);
 
                 flagDao.createFlagSaveNotification(userIdxbyFlagIdx,flagIdx);
 
-                if (getUserInfoResForPush.getTokenType().equals("I"))
-                fcmPush.iosPush(pushToken,"좋아요 알림","회원님의 게시물에 좋아요를 했어요.");
+                if (getUserInfoResForPush.getTokenType().equals("I")) {
+                    fcmPush.iosPush(pushToken, "SANTA", getUserInfoRes.getName() + "님이 회원님의 게시물에 좋아요를 눌렀어요!💚");
 
+                }
             }
 
             return  new PostFlagSaveRes(flagSaveIdx,"좋아요 완료");

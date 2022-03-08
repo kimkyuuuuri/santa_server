@@ -49,11 +49,13 @@ public class PictureService{
              int pictureSaveIdx =pictureDao.postPictureSaveRes(userIdx, pictureIdx);
             String pushToken= pictureProvider.getPicturePushToken(pictureIdx);
             int userIdxbyPictureIdx=pictureProvider.getUserIdxByPicture(pictureIdx);
-            GetUserInfoRes getUserInfoResForPush=pictureProvider.getUserName(userIdxbyPictureIdx);
+
             if(userIdxbyPictureIdx!=userIdx){
+                GetUserInfoRes getUserInfoResForPush=pictureProvider.getUserName(userIdx);
                 pictureDao.createPictureSaveNotification(userIdxbyPictureIdx,pictureIdx);
+                System.out.print(userIdxbyPictureIdx);
                 if (getUserInfoResForPush.getTokenType().equals("I"))
-                fcmPush.iosPush(pushToken,"좋아요 알림 ","회원님의 게시물을 좋아해요.");
+                fcmPush.iosPush(pushToken,"SANTA",getUserInfoRes.getName()+"님이 회원님의 게시물에 좋아요를 눌렀어요!💚");
 
             }
             return  new PostPictureSaveRes(pictureSaveIdx,"좋아요 완료");
