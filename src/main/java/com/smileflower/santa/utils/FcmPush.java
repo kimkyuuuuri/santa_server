@@ -34,8 +34,9 @@ private ObjectMapper objectMapper=new ObjectMapper();
     private static final String senderId="930686702729";
 
     public void iosPush(String  token,String title,String data) throws IOException {
-        //System.out.println(data);
+        System.out.println(data);
         if (token != null) {
+            System.out.println(data);
             OkHttpClient client = new OkHttpClient.Builder().build();
             RequestBody body = new FormBody.Builder()
                     .add("to", token)
@@ -71,9 +72,9 @@ private ObjectMapper objectMapper=new ObjectMapper();
                 public void onResponse(Call call, Response response) throws IOException {
                      if (response.isSuccessful()) {
 
-                    //  System.out.println(response.code() + "\n" + response.body().string() + "\n SUCCESS");
+                      System.out.println(response.code() + "\n" + response.body().string() + "\n SUCCESS");
                     } else {
-                    //  System.out.println(response.body());
+                      System.out.println(response.body());
                     }
                 }
             });
@@ -154,7 +155,7 @@ private ObjectMapper objectMapper=new ObjectMapper();
                 .build();
 
         Response response = client.newCall(request).execute();
-       // System.out.println(response.code() + "\n" + response.body().string() + "\n SUCCESS");
+        System.out.println(response.code() + "\n" + response.body().string() + "\n SUCCESS");
 
 
     }
