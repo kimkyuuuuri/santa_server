@@ -216,6 +216,10 @@ public class FlagService {
                     fcmPush.iosPush(pushToken, "SANTA", getUserInfoRes.getName() + "님이 회원님의 게시물에 좋아요를 눌렀어요!💚");
 
                 }
+                else if (getUserInfoResForPush.getTokenType().equals("A")) {
+                    fcmPush.androidPush(pushToken, "SANTA", getUserInfoRes.getName() + "님이 회원님의 게시물에 좋아요를 눌렀어요!💚");
+
+                }
             }
 
             return  new PostFlagSaveRes(flagSaveIdx,"좋아요 완료");

@@ -41,13 +41,12 @@ private ObjectMapper objectMapper=new ObjectMapper();
                     .add("to", token)
                     .add("project_id", senderId)
                     .add("notification", "")
-                   // .add("data", data2).add("noti","df")
                     .add("content-available","1")
                     .add("priority","high")
                     .build();
 
 
-            sendMessageTo(
+            iosSendMessageTo(
                     token,
                     title,
                     data);
@@ -83,7 +82,49 @@ private ObjectMapper objectMapper=new ObjectMapper();
 
     }
 
-    private String makeMessage(String targetToken, String title, String body) throws JsonParseException, JsonProcessingException {
+    public void androidPush(String  token,String title,String data) throws IOException {
+        //System.out.println(data);
+        if (token != null) {
+            OkHttpClient client=new OkHttpClient.Builder().build();
+            okhttp3.RequestBody body=new FormBody.Builder()
+                    .add("to",token)
+                    .add("projeect_id",senderId)
+                    .add("notification","").add("title",title).add("message",data)
+                    .add("data",data)
+
+                    .build();
+
+
+
+            Request request = new Request.Builder()
+                    .url("https://fcm.googleapis.com/v1/projects/santa-dev-7262a/messages:send")
+                    .post(body)
+                    .addHeader(HttpHeaders.AUTHORIZATION, "Bearer " + getAccessToken())
+                    .addHeader(HttpHeaders.CONTENT_TYPE, "application/json; UTF-8")
+                    .build();
+
+            Response response = client.newCall(request).execute();
+
+            client.newCall(request).enqueue(new Callback() {
+                @Override
+                public void onFailure(Call call, IOException e) {
+                    //System.out.println(e.getMessage() + "\n ERROR");
+                }
+
+                @Override
+                public void onResponse(Call call, Response response) throws IOException {
+                    if (response.isSuccessful()) {
+                        //  System.out.println(response.code() + "\n" + response.body().string() + "\n SUCCESS");
+                    } else {
+                        // System.out.println(response.body());
+                    }
+                }});
+        }
+
+
+    }
+
+    private String iosMakeMessage(String targetToken, String title, String body) throws JsonParseException, JsonProcessingException {
        PushModel fcmMessage = PushModel.builder()
                 .message(PushModel.Message.builder()
                         .token(targetToken)
@@ -97,8 +138,10 @@ private ObjectMapper objectMapper=new ObjectMapper();
         return objectMapper.writeValueAsString(fcmMessage);
     }
 
-    public void sendMessageTo(String targetToken, String title, String body) throws IOException {
-        String message = makeMessage(targetToken, title, body);
+
+
+    public void iosSendMessageTo(String targetToken, String title, String body) throws IOException {
+        String message = iosMakeMessage(targetToken, title, body);
 
         OkHttpClient client = new OkHttpClient();
         RequestBody requestBody = RequestBody.create(MediaType.get("application/json; charset=utf-8"),
