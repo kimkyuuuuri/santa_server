@@ -34,7 +34,7 @@ private ObjectMapper objectMapper=new ObjectMapper();
     private static final String senderId="930686702729";
 
     public void iosPush(String  token,String title,String data) throws IOException {
-        System.out.println(data);
+
         if (token != null) {
             System.out.println(data);
             OkHttpClient client = new OkHttpClient.Builder().build();
@@ -155,7 +155,6 @@ private ObjectMapper objectMapper=new ObjectMapper();
                 .build();
 
         Response response = client.newCall(request).execute();
-        System.out.println(response.code() + "\n" + response.body().string() + "\n SUCCESS");
 
 
     }

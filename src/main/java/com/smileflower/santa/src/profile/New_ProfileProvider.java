@@ -92,6 +92,8 @@ public class New_ProfileProvider {
         List<GetPicturesRes> getPicturesRes =newProfileDao.getPicturesRes(userIdx);
         GetUserRes getUserRes= newProfileDao.getUserRes(userIdx);
         for(int i=0;i<getPicturesRes.size();i++){
+            if (getPicturesRes.get(i).getUserImageUrl() != null)
+                getPicturesRes.get(i).setUserImageUrl(s3Service.getFileUrl(getPicturesRes.get(i).getUserImageUrl()));
 
             List<GetCommentRes> getCommentRes=newProfileDao.getPictureCommentRes(getPicturesRes.get(i).getPictureIdx());
            for(int j=0;j<getCommentRes.size();j++){
@@ -104,6 +106,8 @@ public class New_ProfileProvider {
         }
 
         for(int i=0;i<getFlagRes.size();i++){
+            if (getFlagRes.get(i).getUserImageUrl() != null)
+                getFlagRes.get(i).setUserImageUrl(s3Service.getFileUrl(getFlagRes.get(i).getUserImageUrl()));
 
             List<GetCommentRes> getCommentRes=newProfileDao.getFlagCommentRes(getFlagRes.get(i).getFlagIdx());
             for(int j=0;j<getCommentRes.size();j++) {

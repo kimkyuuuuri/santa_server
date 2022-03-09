@@ -54,9 +54,11 @@ public class PictureService{
                 GetUserInfoRes getUserInfoResForPush=pictureProvider.getUserName(userIdx);
                 GetUserInfoRes getUserInfoResForPush2=pictureProvider.getUserName(userIdxbyPictureIdx);
                 pictureDao.createPictureSaveNotification(userIdxbyPictureIdx,pictureIdx);
+    System.out.println(getUserInfoResForPush2.getTokenType());
 
-            System.out.println(getUserInfoResForPush2.getTokenType());
-                if (getUserInfoResForPush.getTokenType().equals('I')) {
+
+                if (getUserInfoResForPush2.getTokenType().equals("I")) {
+
                     fcmPush.iosPush(pushToken, "SANTA", getUserInfoRes.getName() + "님이 회원님의 게시물에 좋아요를 눌렀어요!💚");
 
                 }
