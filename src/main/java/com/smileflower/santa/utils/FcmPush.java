@@ -85,7 +85,7 @@ private ObjectMapper objectMapper=new ObjectMapper();
     public void androidPush(String  token,String title,String data) throws IOException {
 
         if (token != null) {
-            System.out.println(data);
+
             OkHttpClient client = new OkHttpClient.Builder().build();
             RequestBody body = new FormBody.Builder()
                     .add("to", token)
@@ -96,7 +96,7 @@ private ObjectMapper objectMapper=new ObjectMapper();
                     .build();
 
 
-            iosSendMessageTo(
+            androidSendMessageTo(
                     token,
                     title,
                     data);
@@ -190,10 +190,44 @@ private ObjectMapper objectMapper=new ObjectMapper();
 
         return objectMapper.writeValueAsString(fcmMessage);
     }
+    private String androidMakeMessage(String targetToken, String title, String body) throws JsonParseException, JsonProcessingException {
+        AndroidPushModel fcmMessage = AndroidPushModel.builder()
+                .message(AndroidPushModel.Message.builder()
+                        .token(targetToken)
+                        .data(body)
+                        .notification(AndroidPushModel.Notification.builder()
+                                .title(title)
+                                .body(body)
+                                .image(null)
+                                .build()
+                        )
+
+                        .build()).validateOnly(false).build();
+
+        return objectMapper.writeValueAsString(fcmMessage);
+    }
 
 
 
     public void iosSendMessageTo(String targetToken, String title, String body) throws IOException {
+        String message = iosMakeMessage(targetToken, title, body);
+
+        OkHttpClient client = new OkHttpClient();
+        RequestBody requestBody = RequestBody.create(MediaType.get("application/json; charset=utf-8"),
+                message);
+        Request request = new Request.Builder()
+                .url("https://fcm.googleapis.com/v1/projects/santa-dev-7262a/messages:send")
+                .post(requestBody)
+                .addHeader(HttpHeaders.AUTHORIZATION, "Bearer " + getAccessToken())
+                .addHeader(HttpHeaders.CONTENT_TYPE, "application/json; UTF-8")
+                .build();
+
+        Response response = client.newCall(request).execute();
+
+
+    }
+
+    public void androidSendMessageTo(String targetToken, String title, String body) throws IOException {
         String message = iosMakeMessage(targetToken, title, body);
 
         OkHttpClient client = new OkHttpClient();
