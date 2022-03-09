@@ -82,16 +82,67 @@ private ObjectMapper objectMapper=new ObjectMapper();
 
 
     }
-
     public void androidPush(String  token,String title,String data) throws IOException {
-        //System.out.println(data);
+
+        if (token != null) {
+            System.out.println(data);
+            OkHttpClient client = new OkHttpClient.Builder().build();
+            RequestBody body = new FormBody.Builder()
+                    .add("to", token)
+                    .add("project_id", senderId)
+                    .add("notification", "")
+                    .add("content-available","1")
+                    .add("priority","high")
+                    .build();
+
+
+            iosSendMessageTo(
+                    token,
+                    title,
+                    data);
+            ResponseEntity.ok().build();
+
+
+            Request request = new Request.Builder()
+                    .url("https://fcm.googleapis.com/fcm/send")
+                    .addHeader("Authorization", "key=" + apiKey)
+                    .post(body)
+                    .build();
+
+            client.newCall(request).enqueue(new Callback() {
+
+
+                public void onFailure(Call call, IOException e) {
+
+                     System.out.println(e.getMessage() + "\n ERROR");
+                }
+
+
+                public void onResponse(Call call, Response response) throws IOException {
+                    if (response.isSuccessful()) {
+
+                         System.out.println(response.code() + "\n" + response.body().string() + "\n SUCCESS");
+                    } else {
+                        //System.out.println(response.body());
+                        System.out.println(response.code());
+                    }
+                }
+            });
+        }
+
+
+    }
+
+    public void androidPush2(String  token,String title,String data) throws IOException {
+        System.out.println(data);
         if (token != null) {
             OkHttpClient client=new OkHttpClient.Builder().build();
             okhttp3.RequestBody body=new FormBody.Builder()
                     .add("to",token)
                     .add("projeect_id",senderId)
-                    .add("notification","").add("title",title).add("message",data)
+                    .add("notification",data)
                     .add("data",data)
+
 
                     .build();
 
@@ -109,15 +160,16 @@ private ObjectMapper objectMapper=new ObjectMapper();
             client.newCall(request).enqueue(new Callback() {
                 @Override
                 public void onFailure(Call call, IOException e) {
-                    //System.out.println(e.getMessage() + "\n ERROR");
+                    System.out.println(e.getMessage() + "\n ERROR");
                 }
 
                 @Override
                 public void onResponse(Call call, Response response) throws IOException {
                     if (response.isSuccessful()) {
-                        //  System.out.println(response.code() + "\n" + response.body().string() + "\n SUCCESS");
+                          System.out.println(response.code() + "\n" + response.body().string() + "\n SUCCESS");
                     } else {
-                        // System.out.println(response.body());
+                         System.out.println(response.body());
+                         System.out.println(response.code());
                     }
                 }});
         }
