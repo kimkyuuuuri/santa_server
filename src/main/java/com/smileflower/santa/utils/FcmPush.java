@@ -36,7 +36,7 @@ private ObjectMapper objectMapper=new ObjectMapper();
     public void iosPush(String  token,String title,String data) throws IOException {
 
         if (token != null) {
-            System.out.println(data);
+
             OkHttpClient client = new OkHttpClient.Builder().build();
             RequestBody body = new FormBody.Builder()
                     .add("to", token)
@@ -91,12 +91,12 @@ private ObjectMapper objectMapper=new ObjectMapper();
                     .add("to", token)
                     .add("project_id", senderId)
                     .add("notification", "")
-                    .add("content-available","1")
-                    .add("priority","high")
+                    .add("content-available", "1")
+                    .add("priority", "high")
                     .build();
 
 
-            androidSendMessageTo(
+            iosSendMessageTo(
                     token,
                     title,
                     data);
@@ -114,24 +114,21 @@ private ObjectMapper objectMapper=new ObjectMapper();
 
                 public void onFailure(Call call, IOException e) {
 
-                     System.out.println(e.getMessage() + "\n ERROR");
+                    // System.out.println(e.getMessage() + "\n ERROR");
                 }
 
 
                 public void onResponse(Call call, Response response) throws IOException {
                     if (response.isSuccessful()) {
 
-                         //System.out.println(response.code() + "\n" + response.body().string() + "\n SUCCESS");
+                        // System.out.println(response.code() + "\n" + response.body().string() + "\n SUCCESS");
                     } else {
-                        //System.out.println(response.body());
-                       // System.out.println(response.code());
+                        System.out.println(response.body());
                     }
                 }
             });
-        }
 
-
-    }
+        }}
 
 
 
@@ -148,22 +145,7 @@ private ObjectMapper objectMapper=new ObjectMapper();
 
         return objectMapper.writeValueAsString(fcmMessage);
     }
-    private String androidMakeMessage(String targetToken, String title, String body) throws JsonParseException, JsonProcessingException {
-        AndroidPushModel fcmMessage = AndroidPushModel.builder()
-                .message(AndroidPushModel.Message.builder()
-                        .token(targetToken)
-                        .data(body)
-                        .notification(AndroidPushModel.Notification.builder()
-                                .title(title)
-                                .body(body)
-                                .image(null)
-                                .build()
-                        )
 
-                        .build()).validateOnly(false).build();
-
-        return objectMapper.writeValueAsString(fcmMessage);
-    }
 
 
 
@@ -199,6 +181,7 @@ private ObjectMapper objectMapper=new ObjectMapper();
                 .build();
 
         Response response = client.newCall(request).execute();
+        System.out.println(response.code());
 
 
     }

@@ -68,13 +68,17 @@ public class CommentService {
             GetUserInfoRes getUserInfoResForPush=commentProvider.getUserName(userIdx);
             if(userIdxbyPictureIdx!=userIdx){
                 commentDao.createPictureCommentNotification(userIdxbyPictureIdx,idx);
-                if(getUserInfoResForPush.getTokenType().equals("I"))
-                fcmPush.iosPush(pushToken,"SANTA",getUserInfoRes.getName()+"님이 회원님의 게시물에 댓글을 남겼어요! 지금 확인해보세요👀");
+                System.out.println(getUserInfoResForPush.getName());
+                System.out.println(getUserInfoResForPush.getTokenType());
 
-                else if(getUserInfoResForPush.getTokenType().equals("A"))
-                    fcmPush.androidPush(pushToken,"SANTA",getUserInfoRes.getName()+"님이 회원님의 게시물에 댓글을 남겼어요! 지금 확인해보세요👀");
+                if(getUserInfoResForPush.getTokenType().equals("I")) {
+                    System.out.println("wh");
+                    fcmPush.iosPush(pushToken, "SANTA", getUserInfoRes.getName() + "님이 회원님의 게시물에 댓글을 남겼어요! 지금 확인해보세요👀");
+                }
+                else if(getUserInfoResForPush.getTokenType().equals("A")) {
+                    fcmPush.androidPush(pushToken, "SANTA", getUserInfoRes.getName() + "님이 회원님의 게시물에 댓글을 남겼어요! 지금 확인해보세요👀");
 
-
+                }
             }
         }
 
@@ -102,12 +106,12 @@ public class CommentService {
 
                  Long flagIdx=commentDao.getFlagIdx(commentIdx);
                 commentDao.createFlagRecommentNotification(userIdxbyFlagCommentIdx,flagIdx);
-                if(getUserInfoResForPush.getTokenType().equals("I"))
-                fcmPush.iosPush(flagCommentPushToken,"SANTA",getUserInfoRes.getName()+"님이 회원님의 댓글에 답글을 남겼어요! 지금 확인해보세요👀");
-
-                else if(getUserInfoResForPush.getTokenType().equals("A"))
-                    fcmPush.androidPush(flagCommentPushToken,"SANTA",getUserInfoRes.getName()+"님이 회원님의 댓글에 답글을 남겼어요! 지금 확인해보세요👀");
-
+                if(getUserInfoResForPush.getTokenType().equals("I")) {
+                    fcmPush.iosPush(flagCommentPushToken, "SANTA", getUserInfoRes.getName() + "님이 회원님의 댓글에 답글을 남겼어요! 지금 확인해보세요👀");
+                }
+                else if(getUserInfoResForPush.getTokenType().equals("A")) {
+                    fcmPush.androidPush(flagCommentPushToken, "SANTA", getUserInfoRes.getName() + "님이 회원님의 댓글에 답글을 남겼어요! 지금 확인해보세요👀");
+                }
              }
 
             else if(userIdxbyFlagIdx!=userIdx){
@@ -116,11 +120,11 @@ public class CommentService {
                  Long flagIdx=commentDao.getFlagIdx(commentIdx);
 
                     commentDao.createFlagCommentNotification(userIdxbyFlagIdx,flagIdx);
-                if(getUserInfoResForPush.getTokenType().equals("I"))
-                fcmPush.iosPush(flagPushToken,"SANTA",getUserInfoRes.getName()+"님이 회원님의 게시물에 댓글을 남겼어요! 지금 확인해보세요👀");
-                else if(getUserInfoResForPush.getTokenType().equals("A"))
-                    fcmPush.androidPush(flagCommentPushToken,"SANTA",getUserInfoRes.getName()+"님이 회원님의 게시물에 댓글을 남겼어요! 지금 확인해보세요👀");
-
+                if(getUserInfoResForPush.getTokenType().equals("I")) {
+                    fcmPush.iosPush(flagPushToken, "SANTA", getUserInfoRes.getName() + "님이 회원님의 게시물에 댓글을 남겼어요! 지금 확인해보세요👀");
+                }else if(getUserInfoResForPush.getTokenType().equals("A")) {
+                    fcmPush.androidPush(flagCommentPushToken, "SANTA", getUserInfoRes.getName() + "님이 회원님의 게시물에 댓글을 남겼어요! 지금 확인해보세요👀");
+                }
 
              }
 
@@ -146,9 +150,9 @@ public class CommentService {
 
                     fcmPush.iosPush(pictureCommentPushToken, "SANTA", getUserInfoRes.getName() + "님이 회원님의 댓글에 답글을 남겼어요! 지금 확인해보세요👀");
                 }
-                else if(getUserInfoResForPush.getTokenType().equals("A"))
-                    fcmPush.androidPush(pictureCommentPushToken,"SANTA",getUserInfoRes.getName()+"님이 회원님의 댓글에 답글을 남겼어요! 지금 확인해보세요👀");
-
+                else if(getUserInfoResForPush.getTokenType().equals("A")) {
+                    fcmPush.androidPush(pictureCommentPushToken, "SANTA", getUserInfoRes.getName() + "님이 회원님의 댓글에 답글을 남겼어요! 지금 확인해보세요👀");
+                }
 
             }
 
@@ -157,12 +161,12 @@ public class CommentService {
 
                 Long pictureIdx=commentDao.getPictureIdx(commentIdx);
                 commentDao.createPictureCommentNotification(userIdxbyPictureIdx,pictureIdx);
-                if(getUserInfoResForPush.getTokenType().equals("I"))
-                fcmPush.iosPush(picturePushToken,"SANTA",getUserInfoRes.getName()+"님이 회원님의 게시물에 댓글을 남겼어요! 지금 확인해보세요👀");
-
-                else if(getUserInfoResForPush.getTokenType().equals("A"))
-                    fcmPush.androidPush(pictureCommentPushToken,"SANTA",getUserInfoRes.getName()+"님이 회원님의 게시물에 댓글을 남겼어요! 지금 확인해보세요👀");
-
+                if(getUserInfoResForPush.getTokenType().equals("I")) {
+                    fcmPush.iosPush(picturePushToken, "SANTA", getUserInfoRes.getName() + "님이 회원님의 게시물에 댓글을 남겼어요! 지금 확인해보세요👀");
+                }
+                else if(getUserInfoResForPush.getTokenType().equals("A")) {
+                    fcmPush.androidPush(pictureCommentPushToken, "SANTA", getUserInfoRes.getName() + "님이 회원님의 게시물에 댓글을 남겼어요! 지금 확인해보세요👀");
+                }
             }
             recommentIdx = commentDao.createPictureRecomment(postRecommentReq, commentIdx, userIdx);
         }
