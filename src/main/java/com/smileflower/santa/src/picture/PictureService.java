@@ -54,8 +54,8 @@ public class PictureService{
                 GetUserInfoRes getUserInfoResForPush=pictureProvider.getUserName(userIdx);
                 GetUserInfoRes getUserInfoResForPush2=pictureProvider.getUserName(userIdxbyPictureIdx);
                 pictureDao.createPictureSaveNotification(userIdxbyPictureIdx,pictureIdx);
-   // System.out.println(getUserInfoResForPush2.getTokenType());
-
+   // System.out.println(getUserInfoResForPush2.getTokenType())
+              //  System.out.println(pushToken);
 
                 if (getUserInfoResForPush2.getTokenType().equals("I")) {
 
