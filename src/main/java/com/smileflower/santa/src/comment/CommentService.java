@@ -91,11 +91,12 @@ public class CommentService {
         if(type.equals("flag")) {
             if (commentProvider.checkFlagCommentExist(commentIdx) == 0)
                 throw new BaseException(INVALID_COMMENT);
-            else if (commentProvider.checkFlagCommentWhereUserExist(commentIdx, userIdx) == 0)
-               throw new BaseException(INVALID_COMMENT_USER);
+
             String flagCommentPushToken= commentProvider.getFlagCommentPushToken(commentIdx);
             int userIdxbyFlagCommentIdx=commentProvider.getUserIdxByFlagComment(commentIdx);
             GetUserInfoRes getUserInfoRes=commentProvider.getUserName(userIdx);
+            //GetUserInfoRes getUserInfoRes2=commentProvider.getUserName(userIdxbyFlagIdx);
+
              if(userIdxbyFlagCommentIdx!=userIdx){
                  GetUserInfoRes getUserInfoResForPush=commentProvider.getUserName(userIdxbyFlagCommentIdx);
 
@@ -126,14 +127,13 @@ public class CommentService {
             recommentIdx = commentDao.createFlagRecomment(postRecommentReq, commentIdx, userIdx);
         }
 
-        String picturePushToken= commentProvider.getUserPicturePushTokenByRecomment(commentIdx);
-        int userIdxbyPictureIdx=commentProvider.getUserIdxByPictureCommentByRecomment(commentIdx);
 
         if(type.equals("picture")) {
             if (commentProvider.checkPictureExist(commentIdx) == 0)
                 throw new BaseException(INVALID_POST);
-           else if (commentProvider.checkPictureCommentWhereUserExist(commentIdx, userIdx) == 0)
-                throw new BaseException(INVALID_COMMENT_USER);
+            String picturePushToken= commentProvider.getUserPicturePushTokenByRecomment(commentIdx);
+            int userIdxbyPictureIdx=commentProvider.getUserIdxByPictureCommentByRecomment(commentIdx);
+
             GetUserInfoRes getUserInfoRes=commentProvider.getUserName(userIdx);
             String pictureCommentPushToken= commentProvider.getPictureCommentPushToken(commentIdx);
             int userIdxbyPictureCommentIdx=commentProvider.getUserIdxByPictureComment(commentIdx);

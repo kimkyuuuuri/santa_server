@@ -209,7 +209,7 @@ public class FlagService {
             if(userIdxbyFlagIdx!=userIdx){
 
                 GetUserInfoRes getUserInfoResForPush=flagProvider.getUserName(userIdx);
-                GetUserInfoRes getUserInfoResForPush2=flagProvider.getUserName(userIdx);
+                GetUserInfoRes getUserInfoResForPush2=flagProvider.getUserName(userIdxbyFlagIdx);
 
                 flagDao.createFlagSaveNotification(userIdxbyFlagIdx,flagIdx);
 
