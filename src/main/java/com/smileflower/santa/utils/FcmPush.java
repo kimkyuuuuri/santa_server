@@ -228,7 +228,7 @@ private ObjectMapper objectMapper=new ObjectMapper();
     }
 
     public void androidSendMessageTo(String targetToken, String title, String body) throws IOException {
-        String message = iosMakeMessage(targetToken, title, body);
+        String message = androidMakeMessage(targetToken, title, body);
 
         OkHttpClient client = new OkHttpClient();
         RequestBody requestBody = RequestBody.create(MediaType.get("application/json; charset=utf-8"),
