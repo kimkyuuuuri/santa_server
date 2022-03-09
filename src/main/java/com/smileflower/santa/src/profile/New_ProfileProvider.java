@@ -54,10 +54,12 @@ public class New_ProfileProvider {
         }
 
         for(int i=0;i<getPicturesRes.size();i++){
-            getPostsRes.add(new GetPostsRes(false,null,getPicturesRes.get(i).getPictureIdx(),getPicturesRes.get(i).getUserIdx(),0,null,null,getPicturesRes.get(i).getCreatedAt().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")),s3Service.getFileUrl(getPicturesRes.get(i).getImageUrl())));
+
+            getPostsRes.add(new GetPostsRes(false,null,getPicturesRes.get(i).getPictureIdx(),getPicturesRes.get(i).getImageUrl(),getPicturesRes.get(i).getUserIdx(),getPicturesRes.get(i).getLevel(),getPicturesRes.get(i).getUserName(),0,null,null,getPicturesRes.get(i).getCreatedAt().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")),s3Service.getFileUrl(getPicturesRes.get(i).getImageUrl())));
+
         }
         for(int i=0;i<getFlagRes.size();i++){
-            getPostsRes.add(new GetPostsRes(true,getFlagRes.get(i).getFlagIdx(),null,getFlagRes.get(i).getUserIdx(),getFlagRes.get(i).getFlagCount(),getFlagRes.get(i).getMountainIdx(),getFlagRes.get(i).getName(),getFlagRes.get(i).getCreatedAt(),s3Service.getFileUrl(getFlagRes.get(i).getPictureUrl())));
+            getPostsRes.add(new GetPostsRes(true,getFlagRes.get(i).getFlagIdx(),null,getFlagRes.get(i).getUserImageUrl(),getFlagRes.get(i).getUserIdx(),getFlagRes.get(i).getLevel(),getFlagRes.get(i).getUserName(),getFlagRes.get(i).getFlagCount(),getFlagRes.get(i).getMountainIdx(),getFlagRes.get(i).getName(),getFlagRes.get(i).getCreatedAt(),s3Service.getFileUrl(getFlagRes.get(i).getPictureUrl())));
         }
         Collections.sort(getPostsRes);
 
@@ -90,6 +92,7 @@ public class New_ProfileProvider {
         List<GetPicturesRes> getPicturesRes =newProfileDao.getPicturesRes(userIdx);
         GetUserRes getUserRes= newProfileDao.getUserRes(userIdx);
         for(int i=0;i<getPicturesRes.size();i++){
+
             List<GetCommentRes> getCommentRes=newProfileDao.getPictureCommentRes(getPicturesRes.get(i).getPictureIdx());
            for(int j=0;j<getCommentRes.size();j++){
 
@@ -97,17 +100,17 @@ public class New_ProfileProvider {
                        getCommentRes.get(j).setUserImageUrl(s3Service.getFileUrl(getCommentRes.get(j).getUserImageUrl()));
 
                }
-            getPostsRes.add(new GetPostsRes(false,null,getPicturesRes.get(i).getPictureIdx(),getPicturesRes.get(i).getUserIdx(),0,null,null,getPicturesRes.get(i).getCreatedAt().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")),s3Service.getFileUrl(getPicturesRes.get(i).getImageUrl()),getCommentRes));
+            getPostsRes.add(new GetPostsRes(false,null,getPicturesRes.get(i).getPictureIdx(),getPicturesRes.get(i).getUserImageUrl(),getPicturesRes.get(i).getUserIdx(),getPicturesRes.get(i).getLevel(),getPicturesRes.get(i).getUserName(),0,null,null,getPicturesRes.get(i).getCreatedAt().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")),s3Service.getFileUrl(getPicturesRes.get(i).getImageUrl()),getCommentRes));
         }
-        for(int i=0;i<getFlagRes.size();i++){
-            List<GetCommentRes> getCommentRes=newProfileDao.getFlagCommentRes(getFlagRes.get(i).getFlagIdx());
-            for(int j=0;j<getCommentRes.size();j++){
 
+        for(int i=0;i<getFlagRes.size();i++){
+
+            List<GetCommentRes> getCommentRes=newProfileDao.getFlagCommentRes(getFlagRes.get(i).getFlagIdx());
+            for(int j=0;j<getCommentRes.size();j++) {
                 if (getCommentRes.get(j).getUserImageUrl() != null)
                     getCommentRes.get(j).setUserImageUrl(s3Service.getFileUrl(getCommentRes.get(j).getUserImageUrl()));
-
             }
-            getPostsRes.add(new GetPostsRes(true,getFlagRes.get(i).getFlagIdx(),null,getFlagRes.get(i).getUserIdx(),getFlagRes.get(i).getFlagCount(),getFlagRes.get(i).getMountainIdx(),getFlagRes.get(i).getName(),getFlagRes.get(i).getCreatedAt(),s3Service.getFileUrl(getFlagRes.get(i).getPictureUrl()),getCommentRes));
+            getPostsRes.add(new GetPostsRes(true,getFlagRes.get(i).getFlagIdx(),null,getFlagRes.get(i).getUserImageUrl(),getFlagRes.get(i).getUserIdx(),getFlagRes.get(i).getLevel(),getFlagRes.get(i).getUserName(),getFlagRes.get(i).getFlagCount(),getFlagRes.get(i).getMountainIdx(),getFlagRes.get(i).getName(),getFlagRes.get(i).getCreatedAt(),s3Service.getFileUrl(getFlagRes.get(i).getPictureUrl()),getCommentRes));
         }
         Collections.sort(getPostsRes);
 

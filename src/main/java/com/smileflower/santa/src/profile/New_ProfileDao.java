@@ -37,11 +37,24 @@ public class New_ProfileDao {
                 userIdx);
     }
     public List<GetPicturesRes> getPicturesRes(int userIdx) {
-        String query = "select * from picture where userIdx =?";
+        String query = "select picture.pictureIdx, u.userImageUrl,u.userIdx,(select case" +
+                "                                                                                                                              when  count(*) > 0 and  count(*) < 2 then 'Lv.1'" +
+                "                                                                                                                                          when count(*)>= 2 and  count(*) < 4 then 'Lv.2'" +
+                "                                                                                                                                           when  count(*) >= 4 and  count(*) < 6 then 'Lv.3'" +
+                "                                                                                                                                         when  count(*)>= 6 and  count(*) < 8 then 'Lv.4'" +
+                "                                                                                                                                          when  count(*) >= 8 and  count(*) < 10 then 'Lv.5'" +
+                "                                                                                                                                           when  count(*) >= 10 then 'Lv.6' end as level"  +
+                "                                                                                 from flag where  flag.userIdx=u.userIdx and u.status='t')" +
+                "                                                                   as level,u.name as userName,picture.imgUrl,picture.createdAt, picture.updatedAt,picture.status from picture"+
+                " left join user u on picture.userIdx = u.userIdx " +
+                "where picture.userIdx=?";
         Object[] param = new Object[]{userIdx};
         List<GetPicturesRes> getPicturesRes = this.jdbcTemplate.query(query,param,(rs,rowNum) -> new GetPicturesRes(
                 rs.getLong("pictureIdx"),
+                rs.getString("userImageUrl"),
                 rs.getInt("userIdx"),
+                rs.getString("level"),
+                rs.getString("userName"),
                 rs.getString("imgUrl"),
                 rs.getTimestamp("createdAt").toLocalDateTime(),
                 rs.getTimestamp("updatedAt").toLocalDateTime(),
@@ -51,11 +64,25 @@ public class New_ProfileDao {
     }
 
     public List<GetFlagRes> getFlagRes(int userIdx) {
-        String query = "SELECT a.flagIdx, a.userIdx, a.mountainIdx, a.createdAt, a.pictureUrl, b.cnt, b.name from flag a left join (Select ANY_VALUE(f.userIdx) as userIdx, ANY_VALUE(f.mountainIdx) as mountainIdx, COUNT(f.mountainIdx) as cnt, m.name  from flag f LEFT JOIN mountain m ON f.mountainIdx = m.mountainIdx group by f.mountainIdx) b on a.mountainIdx = b.mountainIdx where a.useridx = ?";
-        Object[] param = new Object[]{userIdx};
+        String query = "SELECT a.flagIdx, (select userImageUrl as userImgUrl from user where userIdx=?) as userImgUrl,a.userIdx,(select case" +
+                "                                                                                                                                   when  count(*) > 0 and  count(*) < 2 then 'Lv.1'" +
+                "                                                                                                                                                      when count(*)>= 2 and  count(*) < 4 then 'Lv.2'" +
+                "                                                                                                                                                          when  count(*) >= 4 and  count(*) < 6 then 'Lv.3'" +
+                "                                                                                                                                                         when  count(*)>= 6 and  count(*) < 8 then 'Lv.4'" +
+                "                                                                                                                                                          when  count(*) >= 8 and  count(*) < 10 then 'Lv.5'" +
+                "                                                                                                                                                           when  count(*) >= 10 then 'Lv.6' end as level" +
+                "                                                                                                 from flag where  flag.userIdx=a.userIdx and a.status='t')" +
+                "                                                                                   as level, (select name as userName from user where userIdx=?)as userName,a.mountainIdx, a.createdAt, a.pictureUrl, b.cnt, b.name from flag a left join (Select ANY_VALUE(f.userIdx) as userIdx," +
+                " ANY_VALUE(f.mountainIdx) as mountainIdx, COUNT(f.mountainIdx) as cnt, m.name  " +
+                "from flag f LEFT JOIN mountain m ON f.mountainIdx = m.mountainIdx group by f.mountainIdx) b on a.mountainIdx = b.mountainIdx where a.useridx = ?";
+
+        Object[] param = new Object[]{userIdx,userIdx,userIdx};
         List<GetFlagRes> getFlagRes = this.jdbcTemplate.query(query,param,(rs,rowNum) -> new GetFlagRes(
                 rs.getLong("flagIdx"),
+                rs.getString("userImgUrl"),
                 rs.getInt("userIdx"),
+                rs.getString("level"),
+                rs.getString("userName"),
                 rs.getLong("mountainIdx"),
                 rs.getTimestamp("createdAt").toLocalDateTime().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")),
                 rs.getString("pictureUrl"),
