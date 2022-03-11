@@ -17,9 +17,9 @@ public class GetProfileRes {
     private int flagCount;
     private int postCount;
     private String fileUrl;
-    private List<GetPostsRes> postsResList;
+    private List<GetPostForProfileRes> postsResList;
 
-    public GetProfileRes(int userIdx, String name, int level, int flagCount, int postCount, String fileUrl, List<GetPostsRes> postsResList) {
+    public GetProfileRes(int userIdx, String name, int level, int flagCount, int postCount, String fileUrl, List<GetPostForProfileRes> postsResList) {
         this.userIdx = userIdx;
         this.name = name;
         this.level = level;

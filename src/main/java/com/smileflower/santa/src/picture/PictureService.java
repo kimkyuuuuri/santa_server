@@ -53,7 +53,7 @@ public class PictureService{
             if(userIdxbyPictureIdx!=userIdx){
                 GetUserInfoRes getUserInfoResForPush=pictureProvider.getUserName(userIdx);
                 GetUserInfoRes getUserInfoResForPush2=pictureProvider.getUserName(userIdxbyPictureIdx);
-                pictureDao.createPictureSaveNotification(userIdxbyPictureIdx,pictureIdx);
+                pictureDao.createPictureSaveNotification(userIdxbyPictureIdx,pictureIdx,getUserInfoRes.getName() + "님이 회원님의 게시물에 좋아요를 눌렀어요!💚");
    // System.out.println(getUserInfoResForPush2.getTokenType())
               //  System.out.println(pushToken);
 

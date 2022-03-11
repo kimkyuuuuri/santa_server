@@ -36,34 +36,7 @@ public class New_ProfileDao {
                 int.class,
                 userIdx);
     }
-    public List<GetPicturesRes> getPicturesRes(int userIdx) {
-        String query = "select picture.pictureIdx, u.userImageUrl,u.userIdx,(select case" +
-                "                                                                                                                              when  count(*) > 0 and  count(*) < 2 then 'Lv.1'" +
-                "                                                                                                                                          when count(*)>= 2 and  count(*) < 4 then 'Lv.2'" +
-                "                                                                                                                                           when  count(*) >= 4 and  count(*) < 6 then 'Lv.3'" +
-                "                                                                                                                                         when  count(*)>= 6 and  count(*) < 8 then 'Lv.4'" +
-                "                                                                                                                                          when  count(*) >= 8 and  count(*) < 10 then 'Lv.5'" +
-                "                                                                                                                                           when  count(*) >= 10 then 'Lv.6' end as level"  +
-                "                                                                                 from flag where  flag.userIdx=u.userIdx and u.status='t')" +
-                "                                                                   as level,u.name as userName,picture.imgUrl,picture.createdAt, picture.updatedAt,picture.status from picture"+
-                " left join user u on picture.userIdx = u.userIdx " +
-                "where picture.userIdx=?";
-        Object[] param = new Object[]{userIdx};
-        List<GetPicturesRes> getPicturesRes = this.jdbcTemplate.query(query,param,(rs,rowNum) -> new GetPicturesRes(
-                rs.getLong("pictureIdx"),
-                rs.getString("userImageUrl"),
-                rs.getInt("userIdx"),
-                rs.getString("level"),
-                rs.getString("userName"),
-                rs.getString("imgUrl"),
-                rs.getTimestamp("createdAt").toLocalDateTime(),
-                rs.getTimestamp("updatedAt").toLocalDateTime(),
-                rs.getString("status")
-        ));
-        return getPicturesRes;
-    }
-
-    public List<GetFlagRes> getFlagRes(int userIdx) {
+    public List<GetFlagResForProfile> getFlagResForProfile(int userIdx) {
         String query = "SELECT a.flagIdx, (select userImageUrl as userImgUrl from user where userIdx=?) as userImgUrl,a.userIdx,(select case" +
                 "                                                                                                                                   when  count(*) > 0 and  count(*) < 2 then 'Lv.1'" +
                 "                                                                                                                                                      when count(*)>= 2 and  count(*) < 4 then 'Lv.2'" +
@@ -77,7 +50,7 @@ public class New_ProfileDao {
                 "from flag f LEFT JOIN mountain m ON f.mountainIdx = m.mountainIdx group by f.mountainIdx) b on a.mountainIdx = b.mountainIdx where a.useridx = ?";
 
         Object[] param = new Object[]{userIdx,userIdx,userIdx};
-        List<GetFlagRes> getFlagRes = this.jdbcTemplate.query(query,param,(rs,rowNum) -> new GetFlagRes(
+        List<GetFlagResForProfile> getFlagRes = this.jdbcTemplate.query(query,param,(rs,rowNum) -> new GetFlagResForProfile(
                 rs.getLong("flagIdx"),
                 rs.getString("userImgUrl"),
                 rs.getInt("userIdx"),
@@ -88,6 +61,81 @@ public class New_ProfileDao {
                 rs.getString("pictureUrl"),
                 rs.getInt("cnt"),
                 rs.getString("name")
+        ));
+        return getFlagRes;
+    }
+    public List<GetPicturesRes> getPicturesRes(int userIdx) {
+        String query = "select picture.pictureIdx ,user.userImageUrl,user.userIdx, (select" +
+                "                                                                                                 case" +
+                "                                                                                               when  count(*) > 0 and  count(*) < 2 then 'Lv.1'" +
+                "                                                                                                               when count(*)>= 2 and  count(*) < 4 then 'Lv.2'" +
+                "                                                                                                              when  count(*) >= 4 and  count(*) < 6 then 'Lv.3'" +
+                "                                                                                                            when  count(*)>= 6 and  count(*) < 8 then 'Lv.4'" +
+                "                                                                                                               when  count(*) >= 8 and  count(*) < 10 then 'Lv.5'" +
+                "                                                                                                              when  count(*) >= 10 then 'Lv.6' end as level" +
+                "                                                     from picture where  picture.userIdx=user.userIdx and user.status='t')" +
+                "                                     as level,user.name as userName,picture.createdAt," +
+                "                   picture.imgUrl as imgUrl,   case when EXISTS(select picturesaveIdx from picturesave where picturesave.userIdx=? and picturesave.pictureIdx=picture.pictureIdx  and picturesave.status='t') =1 then 'T' else 'F' end as isSaved," +
+                "                                                       (select count(*) from picturerecomment where picturerecomment.picturecommentIdx=picturecomment.picturecommentIdx  ) +(select count(*) from picturecomment where picturecomment.pictureIdx=picture.pictureIdx)  as commentCount" +
+                "                                                      ,count( distinct  picturesave.picturesaveIdx) as saveCount" +
+                "                                      from picture" +
+                "                                          left join picturesave on picture.pictureIdx = picturesave.pictureIdx" +
+                "                                         inner join user on picture.userIdx = user.userIdx" +
+                "                                        left join picturecomment on picture.pictureIdx =picturecomment.pictureIdx" +
+                "                                       where picturesave.status='t' and user.status='t' group by picturesave.pictureIdx " ;
+
+        Object[] param = new Object[]{userIdx};
+        List<GetPicturesRes> getPicturesRes = this.jdbcTemplate.query(query,param,(rs,rowNum) -> new GetPicturesRes(
+                rs.getLong("pictureIdx"),
+                rs.getString("userImageUrl"),
+                rs.getInt("userIdx"),
+                rs.getString("level"),
+                rs.getString("userName"),
+                rs.getString("imgUrl"),
+                rs.getTimestamp("createdAt").toLocalDateTime(),
+
+                rs.getString("isSaved"),
+                rs.getInt("commentCount"),
+                rs.getInt("saveCount")
+        ));
+        return getPicturesRes;
+    }
+
+    public List<GetFlagRes> getFlagRes(int userIdx) {
+        String query = "select flag.flagIdx ,user.userImageUrl as userImgUrl,user.userIdx, (select" +
+                "                                                                                                 case" +
+                "                                                                                               when  count(*) > 0 and  count(*) < 2 then 'Lv.1'" +
+                "                                                                                                               when count(*)>= 2 and  count(*) < 4 then 'Lv.2'" +
+                "                                                                                                              when  count(*) >= 4 and  count(*) < 6 then 'Lv.3'" +
+                "                                                                                                            when  count(*)>= 6 and  count(*) < 8 then 'Lv.4'" +
+                "                                                                                                               when  count(*) >= 8 and  count(*) < 10 then 'Lv.5'" +
+                "                                                                                                              when  count(*) >= 10 then 'Lv.6' end as level" +
+                "                                                     from flag where  flag.userIdx=user.userIdx and user.status='t')" +
+                "                                     as level,user.name as userName,flag.createdAt," +
+                "                   flag.pictureUrl as pictureUrl,   case when EXISTS(select flagsaveIdx from flagsave where flagsave.userIdx=? and flagsave.flagIdx=flag.flagIdx  and flagsave.status='t') =1 then 'T' else 'F' end as isSaved," +
+                "                                                       (select count(*) from flagrecomment where flagrecomment.flagcommentIdx=flagcomment.flagcommentIdx  ) +(select count(*) from flagcomment where flagcomment.flagIdx=flag.flagIdx)  as commentCount" +
+                "                                                      ,count( distinct  flagsave.flagsaveIdx) as saveCount" +
+                "                                      from flag" +
+                "                                          left join flagsave on flag.flagIdx = flagsave.flagIdx" +
+                "                                         inner join user on flag.userIdx = user.userIdx" +
+                "                                        left join flagcomment on flag.flagIdx = flagcomment.flagIdx" +
+                "                                       where flagsave.status='t' and user.status='t' group by flagsave.flagIdx " ;
+
+        Object[] param = new Object[]{userIdx};
+        List<GetFlagRes> getFlagRes = this.jdbcTemplate.query(query,param,(rs,rowNum) -> new GetFlagRes(
+                rs.getLong("flagIdx"),
+                rs.getString("userImgUrl"),
+                rs.getInt("userIdx"),
+                rs.getString("level"),
+                rs.getString("userName"),
+                rs.getTimestamp("createdAt").toLocalDateTime().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")),
+                rs.getString("pictureUrl"),
+
+                rs.getString("isSaved"),
+                rs.getInt("commentCount"),
+                rs.getInt("saveCount")
+
+
         ));
         return getFlagRes;
     }

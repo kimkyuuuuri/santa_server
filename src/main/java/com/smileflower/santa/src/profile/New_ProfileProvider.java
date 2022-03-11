@@ -4,7 +4,7 @@ import com.smileflower.santa.config.BaseException;
 
 import com.smileflower.santa.config.BaseResponseStatus;
 import com.smileflower.santa.src.profile.model.*;
-import com.smileflower.santa.src.user.model.GetAutoRes;
+
 import com.smileflower.santa.utils.JwtService;
 import com.smileflower.santa.utils.S3Service;
 import org.slf4j.Logger;
@@ -40,8 +40,8 @@ public class New_ProfileProvider {
     }
 
     public GetProfileRes getProfileRes(int userIdx) throws BaseException {
-        List<GetPostsRes> getPostsRes = new ArrayList<>();
-        List<GetFlagRes> getFlagRes = newProfileDao.getFlagRes(userIdx);
+        List<GetPostForProfileRes> getPostsRes = new ArrayList<>();
+        List<GetFlagResForProfile> getFlagRes = newProfileDao.getFlagResForProfile(userIdx);
         List<GetPicturesRes> getPicturesRes = newProfileDao.getPicturesRes(userIdx);
         GetUserRes getUserRes= newProfileDao.getUserRes(userIdx);
         int flagsResponseCnt = getFlagRes.size();
@@ -52,27 +52,44 @@ public class New_ProfileProvider {
         else{
             level = (flagsResponseCnt+2)/2;
         }
+        int size=getPicturesRes.size();
+        for(int i=size-1;i>=0;i--){
 
-        for(int i=0;i<getPicturesRes.size();i++){
+            if(getPicturesRes.get(i).getImageUrl()!=null)
+                getPicturesRes.get(i).setUserImageUrl(s3Service.getFileUrl(getPicturesRes.get(i).getImageUrl()));
 
-            getPostsRes.add(new GetPostsRes(false,null,getPicturesRes.get(i).getPictureIdx(),getPicturesRes.get(i).getImageUrl(),getPicturesRes.get(i).getUserIdx(),getPicturesRes.get(i).getLevel(),getPicturesRes.get(i).getUserName(),0,null,null,getPicturesRes.get(i).getCreatedAt().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")),s3Service.getFileUrl(getPicturesRes.get(i).getImageUrl())));
+            if (getPicturesRes.get(i).getUserImageUrl() != null)
+                      getPostsRes.add(new GetPostForProfileRes(false,null,getPicturesRes.get(i).getPictureIdx(),s3Service.getFileUrl(getPicturesRes.get(i).getUserImageUrl()),getPicturesRes.get(i).getUserIdx(),getPicturesRes.get(i).getLevel(),getPicturesRes.get(i).getUserName(),0,null,null,getPicturesRes.get(i).getCreatedAt().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")),s3Service.getFileUrl(getPicturesRes.get(i).getImageUrl())));
+    else
+                getPostsRes.add(new GetPostForProfileRes(false,null,getPicturesRes.get(i).getPictureIdx(),getPicturesRes.get(i).getUserImageUrl(),getPicturesRes.get(i).getUserIdx(),getPicturesRes.get(i).getLevel(),getPicturesRes.get(i).getUserName(),0,null,null,getPicturesRes.get(i).getCreatedAt().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")),s3Service.getFileUrl(getPicturesRes.get(i).getImageUrl())));
 
         }
-        for(int i=0;i<getFlagRes.size();i++){
-            getPostsRes.add(new GetPostsRes(true,getFlagRes.get(i).getFlagIdx(),null,getFlagRes.get(i).getUserImageUrl(),getFlagRes.get(i).getUserIdx(),getFlagRes.get(i).getLevel(),getFlagRes.get(i).getUserName(),getFlagRes.get(i).getFlagCount(),getFlagRes.get(i).getMountainIdx(),getFlagRes.get(i).getName(),getFlagRes.get(i).getCreatedAt(),s3Service.getFileUrl(getFlagRes.get(i).getPictureUrl())));
+        size=getFlagRes.size();
+        for(int i=size-1;i>=0;i--){
+            if(getFlagRes.get(i).getPictureUrl()!=null)
+                getFlagRes.get(i).setPictureUrl(s3Service.getFileUrl(getFlagRes.get(i).getPictureUrl()));
+
+            if (getFlagRes.get(i).getUserImageUrl() != null)
+                getPostsRes.add(new GetPostForProfileRes(true,getFlagRes.get(i).getFlagIdx(),null,s3Service.getFileUrl(getFlagRes.get(i).getUserImageUrl()),getFlagRes.get(i).getUserIdx(),getFlagRes.get(i).getLevel(),getFlagRes.get(i).getUserName(),getFlagRes.get(i).getFlagCount(),getFlagRes.get(i).getMountainIdx(),getFlagRes.get(i).getName(),getFlagRes.get(i).getCreatedAt(),getFlagRes.get(i).getPictureUrl()));
+        else
+                getPostsRes.add(new GetPostForProfileRes(true,getFlagRes.get(i).getFlagIdx(),null,getFlagRes.get(i).getUserImageUrl(),getFlagRes.get(i).getUserIdx(),getFlagRes.get(i).getLevel(),getFlagRes.get(i).getUserName(),getFlagRes.get(i).getFlagCount(),getFlagRes.get(i).getMountainIdx(),getFlagRes.get(i).getName(),getFlagRes.get(i).getCreatedAt(),getFlagRes.get(i).getPictureUrl()));
+
         }
+
         Collections.sort(getPostsRes);
 
-       String userImg=null;
+        String userImg=null;
         if(getUserRes.getUserImageUrl()!=null) {
             userImg=s3Service.getFileUrl(getUserRes.getUserImageUrl());
         }
 
-            GetProfileRes getProfileRes = new GetProfileRes(userIdx,getUserRes.getUserName(),level,flagsResponseCnt,flagsResponseCnt+getPicturesRes.size(),userImg,getPostsRes);
+        GetProfileRes getProfileRes = new GetProfileRes(userIdx,getUserRes.getUserName(),level,flagsResponseCnt,flagsResponseCnt+getPicturesRes.size(),userImg,getPostsRes);
 
         return getProfileRes;
 
     }
+
+
     public GetMyPostsRes getMyPostsRes(int userIdx,int userIdxByJwt)  throws BaseException{
         String isMyPost="T";
 
@@ -102,7 +119,7 @@ public class New_ProfileProvider {
                        getCommentRes.get(j).setUserImageUrl(s3Service.getFileUrl(getCommentRes.get(j).getUserImageUrl()));
 
                }
-            getPostsRes.add(new GetPostsRes(false,null,getPicturesRes.get(i).getPictureIdx(),getPicturesRes.get(i).getUserImageUrl(),getPicturesRes.get(i).getUserIdx(),getPicturesRes.get(i).getLevel(),getPicturesRes.get(i).getUserName(),0,null,null,getPicturesRes.get(i).getCreatedAt().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")),s3Service.getFileUrl(getPicturesRes.get(i).getImageUrl()),getCommentRes));
+            getPostsRes.add(new GetPostsRes(false,null,getPicturesRes.get(i).getPictureIdx(),getPicturesRes.get(i).getUserImageUrl(),getPicturesRes.get(i).getUserIdx(),getPicturesRes.get(i).getLevel(),getPicturesRes.get(i).getUserName(),getPicturesRes.get(i).getCreatedAt().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")),s3Service.getFileUrl(getPicturesRes.get(i).getImageUrl()),getPicturesRes.get(i).getIsSaved(),getPicturesRes.get(i).getCommentCount(),getPicturesRes.get(i).getSaveCount(),getCommentRes));
         }
 
         for(int i=0;i<getFlagRes.size();i++){
@@ -114,7 +131,8 @@ public class New_ProfileProvider {
                 if (getCommentRes.get(j).getUserImageUrl() != null)
                     getCommentRes.get(j).setUserImageUrl(s3Service.getFileUrl(getCommentRes.get(j).getUserImageUrl()));
             }
-            getPostsRes.add(new GetPostsRes(true,getFlagRes.get(i).getFlagIdx(),null,getFlagRes.get(i).getUserImageUrl(),getFlagRes.get(i).getUserIdx(),getFlagRes.get(i).getLevel(),getFlagRes.get(i).getUserName(),getFlagRes.get(i).getFlagCount(),getFlagRes.get(i).getMountainIdx(),getFlagRes.get(i).getName(),getFlagRes.get(i).getCreatedAt(),s3Service.getFileUrl(getFlagRes.get(i).getPictureUrl()),getCommentRes));
+            getPostsRes.add(new GetPostsRes(true,getFlagRes.get(i).getFlagIdx(),null,getFlagRes.get(i).getUserImageUrl(),getFlagRes.get(i).getUserIdx(),getFlagRes.get(i).getLevel(),getFlagRes.get(i).getUserName(),getFlagRes.get(i).getCreatedAt(),s3Service.getFileUrl(getFlagRes.get(i).getPictureUrl()),getFlagRes.get(i).getIsSaved(),getFlagRes.get(i).getCommentCount(),getFlagRes.get(i).getSaveCount(),getCommentRes));
+
         }
         Collections.sort(getPostsRes);
 

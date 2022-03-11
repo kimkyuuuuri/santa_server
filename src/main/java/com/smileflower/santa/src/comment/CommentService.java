@@ -50,7 +50,7 @@ public class CommentService {
             int userIdxbyFlagIdx=commentProvider.getUserIdxByFlag(idx);
             GetUserInfoRes getUserInfoResForPush=commentProvider.getUserName(userIdx);
             if(userIdxbyFlagIdx!=userIdx){
-                commentDao.createFlagCommentNotification(userIdxbyFlagIdx,idx);
+                commentDao.createFlagCommentNotification(userIdxbyFlagIdx,idx,getUserInfoRes.getName()+"님이 회원님의 게시물에 댓글을 남겼어요! 지금 확인해보세요👀");
                 if(getUserInfoResForPush.getTokenType().equals("I"))
                 fcmPush.iosPush(pushToken,"SANTA",getUserInfoRes.getName()+"님이 회원님의 게시물에 댓글을 남겼어요! 지금 확인해보세요👀");
                 else if(getUserInfoResForPush.getTokenType().equals("A"))
@@ -67,7 +67,7 @@ public class CommentService {
             GetUserInfoRes getUserInfoRes =commentProvider.getUserName(userIdx);
             GetUserInfoRes getUserInfoResForPush=commentProvider.getUserName(userIdx);
             if(userIdxbyPictureIdx!=userIdx){
-                commentDao.createPictureCommentNotification(userIdxbyPictureIdx,idx);
+                commentDao.createPictureCommentNotification(userIdxbyPictureIdx,idx,getUserInfoRes.getName() + "님이 회원님의 게시물에 댓글을 남겼어요! 지금 확인해보세요👀");
                 System.out.println(getUserInfoResForPush.getName());
                 System.out.println(getUserInfoResForPush.getTokenType());
 
@@ -105,7 +105,7 @@ public class CommentService {
                  GetUserInfoRes getUserInfoResForPush=commentProvider.getUserName(userIdxbyFlagCommentIdx);
 
                  Long flagIdx=commentDao.getFlagIdx(commentIdx);
-                commentDao.createFlagRecommentNotification(userIdxbyFlagCommentIdx,flagIdx);
+                commentDao.createFlagRecommentNotification(userIdxbyFlagCommentIdx,flagIdx,getUserInfoRes.getName() + "님이 회원님의 댓글에 답글을 남겼어요! 지금 확인해보세요👀");
                 if(getUserInfoResForPush.getTokenType().equals("I")) {
                     fcmPush.iosPush(flagCommentPushToken, "SANTA", getUserInfoRes.getName() + "님이 회원님의 댓글에 답글을 남겼어요! 지금 확인해보세요👀");
                 }
@@ -119,7 +119,7 @@ public class CommentService {
 
                  Long flagIdx=commentDao.getFlagIdx(commentIdx);
 
-                    commentDao.createFlagCommentNotification(userIdxbyFlagIdx,flagIdx);
+                    commentDao.createFlagCommentNotification(userIdxbyFlagIdx,flagIdx,getUserInfoRes.getName() + "님이 회원님의 게시물에 댓글을 남겼어요! 지금 확인해보세요👀");
                 if(getUserInfoResForPush.getTokenType().equals("I")) {
                     fcmPush.iosPush(flagPushToken, "SANTA", getUserInfoRes.getName() + "님이 회원님의 게시물에 댓글을 남겼어요! 지금 확인해보세요👀");
                 }else if(getUserInfoResForPush.getTokenType().equals("A")) {
@@ -145,7 +145,7 @@ public class CommentService {
                 GetUserInfoRes getUserInfoResForPush=commentProvider.getUserName(userIdxbyPictureCommentIdx);
 
                 Long pictureIdx=commentDao.getPictureIdx(commentIdx);
-                commentDao.createPictureRecommentNotification(userIdxbyPictureCommentIdx,pictureIdx);
+                commentDao.createPictureRecommentNotification(userIdxbyPictureCommentIdx,pictureIdx,getUserInfoRes.getName() + "님이 회원님의 댓글에 답글을 남겼어요! 지금 확인해보세요👀");
                 if(getUserInfoResForPush.getTokenType().equals("I")) {
 
                     fcmPush.iosPush(pictureCommentPushToken, "SANTA", getUserInfoRes.getName() + "님이 회원님의 댓글에 답글을 남겼어요! 지금 확인해보세요👀");
@@ -160,7 +160,7 @@ public class CommentService {
                 GetUserInfoRes getUserInfoResForPush=commentProvider.getUserName(userIdxbyPictureIdx);
 
                 Long pictureIdx=commentDao.getPictureIdx(commentIdx);
-                commentDao.createPictureCommentNotification(userIdxbyPictureIdx,pictureIdx);
+                commentDao.createPictureCommentNotification(userIdxbyPictureIdx,pictureIdx,getUserInfoRes.getName() + "님이 회원님의 게시물에 댓글을 남겼어요! 지금 확인해보세요👀");
                 if(getUserInfoResForPush.getTokenType().equals("I")) {
                     fcmPush.iosPush(picturePushToken, "SANTA", getUserInfoRes.getName() + "님이 회원님의 게시물에 댓글을 남겼어요! 지금 확인해보세요👀");
                 }

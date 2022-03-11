@@ -1,3 +1,4 @@
+
 package com.smileflower.santa.src.profile.model;
 
 
@@ -5,28 +6,20 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.time.LocalDateTime;
-
 @Getter
 @Setter
-
-
 @AllArgsConstructor
-public class GetPicturesRes {
-    private  Long pictureIdx;
+public class GetFlagResForProfile {
+    private Long flagIdx;
     private String userImageUrl;
     private int userIdx;
     private String level;
     private String userName;
-    private String imageUrl;
-    private LocalDateTime createdAt;
-    private String isSaved;
-    private int commentCount;
-    private int  saveCount;
+    private Long mountainIdx;
+    private String createdAt;
+    private String pictureUrl;
+    private int flagCount;
+    private String name;
 
-
-
-
-    //Constructor
 
 }

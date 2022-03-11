@@ -133,10 +133,10 @@ public class PictureDao {
     }
 
 
-    public int createPictureSaveNotification(int userIdx,int pictureIdx){
-        Object[] createPictureSaveNotificationParams = new Object[]{userIdx, pictureIdx,"T"};
+    public int createPictureSaveNotification(int userIdx,int pictureIdx,String contents){
+        Object[] createPictureSaveNotificationParams = new Object[]{userIdx, pictureIdx,"T",contents};
 
-        this.jdbcTemplate.update("insert into notification (userIdx,pictureIdx,isSave) VALUES (? ,?,?)",
+        this.jdbcTemplate.update("insert into notification (userIdx,pictureIdx,isSave,contents) VALUES (? ,?,?,?)",
 
                 createPictureSaveNotificationParams);
         return this.jdbcTemplate.queryForObject("select last_insert_id()",int.class);

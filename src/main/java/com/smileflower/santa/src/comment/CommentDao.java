@@ -193,37 +193,37 @@ public class CommentDao {
     }
 
 
-    public int createFlagCommentNotification(int userIdx, Long flagIdx){
-        Object[] createFlagCommentNotificationParams = new Object[]{userIdx, flagIdx,"T"};
+    public int createFlagCommentNotification(int userIdx, Long flagIdx,String contents){
+        Object[] createFlagCommentNotificationParams = new Object[]{userIdx, flagIdx,"T",contents};
 
-        this.jdbcTemplate.update("insert into notification (userIdx,flagIdx,isComment) VALUES (? ,?,?)",
+        this.jdbcTemplate.update("insert into notification (userIdx,flagIdx,isComment,contents) VALUES (? ,?,?,?)",
 
                 createFlagCommentNotificationParams);
         return this.jdbcTemplate.queryForObject("select last_insert_id()",int.class);
     }
 
-    public int createPictureCommentNotification(int userIdx, Long pictureIdx){
-        Object[] createPictureCommentNotificationParams = new Object[]{userIdx, pictureIdx,"T"};
+    public int createPictureCommentNotification(int userIdx, Long pictureIdx,String contents){
+        Object[] createPictureCommentNotificationParams = new Object[]{userIdx, pictureIdx,"T",contents};
 
-        this.jdbcTemplate.update("insert into notification (userIdx,pictureIdx,isComment) VALUES (? ,?,?)",
+        this.jdbcTemplate.update("insert into notification (userIdx,pictureIdx,isComment,contents) VALUES (? ,?,?,?)",
 
                 createPictureCommentNotificationParams);
         return this.jdbcTemplate.queryForObject("select last_insert_id()",int.class);
     }
 
-    public int createFlagRecommentNotification(int userIdx, Long flagIdx){
-        Object[] createFlagCommentNotificationParams = new Object[]{userIdx, flagIdx,"T"};
+    public int createFlagRecommentNotification(int userIdx, Long flagIdx,String contents){
+        Object[] createFlagCommentNotificationParams = new Object[]{userIdx, flagIdx,"T",contents};
 
-        this.jdbcTemplate.update("insert into notification (userIdx,flagIdx,isRecomment) VALUES (? ,?,?)",
+        this.jdbcTemplate.update("insert into notification (userIdx,flagIdx,isRecomment,contents) VALUES (? ,?,?,?)",
 
                 createFlagCommentNotificationParams);
         return this.jdbcTemplate.queryForObject("select last_insert_id()",int.class);
     }
 
-    public int createPictureRecommentNotification(int userIdx, Long pictureIdx){
-        Object[] createPictureCommentNotificationParams = new Object[]{userIdx, pictureIdx,"T"};
+    public int createPictureRecommentNotification(int userIdx, Long pictureIdx,String contents){
+        Object[] createPictureCommentNotificationParams = new Object[]{userIdx, pictureIdx,"T",contents};
 
-        this.jdbcTemplate.update("insert into notification (userIdx,pictureIdx,isRecomment) VALUES (? ,?,?)",
+        this.jdbcTemplate.update("insert into notification (userIdx,pictureIdx,isRecomment,contents) VALUES (? ,?,?,contents)",
 
                 createPictureCommentNotificationParams);
         return this.jdbcTemplate.queryForObject("select last_insert_id()",int.class);

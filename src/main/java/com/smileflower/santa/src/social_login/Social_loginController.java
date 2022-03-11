@@ -147,7 +147,7 @@ public class Social_loginController {
     @ResponseBody
     public BaseResponse<AppleToken> androidAppleLogin(@RequestBody ServicesResponse serviceResponse) throws BaseException {
 
-
+    System.out.println(serviceResponse);
             if (serviceResponse == null) {
                 return null;
             }
