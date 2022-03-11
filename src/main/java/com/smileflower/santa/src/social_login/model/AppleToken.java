@@ -1,9 +1,14 @@
 package com.smileflower.santa.src.social_login.model;
+import com.fasterxml.jackson.annotation.JsonAutoDetect;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
+import org.checkerframework.checker.units.qual.A;
 
+@AllArgsConstructor
 @Getter
 @Setter
+@JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY)
 public class AppleToken {
 
     public AppleToken(String code, String client_secret) {
