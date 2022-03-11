@@ -68,11 +68,10 @@ public class CommentService {
             GetUserInfoRes getUserInfoResForPush=commentProvider.getUserName(userIdx);
             if(userIdxbyPictureIdx!=userIdx){
                 commentDao.createPictureCommentNotification(userIdxbyPictureIdx,idx,getUserInfoRes.getName() + "님이 회원님의 게시물에 댓글을 남겼어요! 지금 확인해보세요👀");
-                System.out.println(getUserInfoResForPush.getName());
-                System.out.println(getUserInfoResForPush.getTokenType());
+
 
                 if(getUserInfoResForPush.getTokenType().equals("I")) {
-                    System.out.println("wh");
+
                     fcmPush.iosPush(pushToken, "SANTA", getUserInfoRes.getName() + "님이 회원님의 게시물에 댓글을 남겼어요! 지금 확인해보세요👀");
                 }
                 else if(getUserInfoResForPush.getTokenType().equals("A")) {

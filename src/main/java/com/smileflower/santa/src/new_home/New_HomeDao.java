@@ -306,7 +306,7 @@ public class New_HomeDao {
     }
 
     public List<GetNotificationRes> getNotificationRes(int userIdx) {
-        return this.jdbcTemplate.query("select notificationIdx,flagIdx,pictureIdx, case when isComment='T' then 'comment' when isRecomment='T' then 'recomment'\n" +
+        return this.jdbcTemplate.query("select notificationIdx,flagIdx,pictureIdx, contents,case when isComment='T' then 'comment' when isRecomment='T' then 'recomment'\n" +
                         "when isSave='t' then 'save' end as type ,\n" +
                         "       status,\n" +
                         "       case when timestampdiff(minute , createdAt, current_timestamp()) < 60\n" +
@@ -323,6 +323,7 @@ public class New_HomeDao {
                 rk.getInt("notificationIdx"),
                  rk.getInt("flagIdx"),
                 rk.getInt("pictureIdx"),
+                rk.getString("contents"),
                 rk.getString("type"),
                 rk.getString("status"),
                 rk.getString("createdAt")
