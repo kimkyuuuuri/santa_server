@@ -325,7 +325,7 @@ public class New_ProfileDao {
     }
     public List<GetCommentRes> getPictureCommentRes(long pictureIdx){
         return this.jdbcTemplate.query("select user.userIdx, user.userImageUrl,user.name as userName, picturecomment.contents  from picturecomment inner join user on picturecomment.userIdx = user.userIdx\n" +
-                "  where picturecomment.pictureIdx=? and user.status='t' order by picturecomment.createdAt limit 1",(rs,rownum2)  -> new GetCommentRes(
+                "  where picturecomment.pictureIdx=? and user.status='t' and picturecomment.status='t'  order by picturecomment.createdAt limit 1",(rs,rownum2)  -> new GetCommentRes(
                 rs.getInt("userIdx"),
                 rs.getString("userImageUrl"),
                 rs.getString("userName"),
@@ -337,7 +337,7 @@ public class New_ProfileDao {
     }
     public List<GetCommentRes> getFlagCommentRes(long flagIdx){
         return this.jdbcTemplate.query("select user.userIdx, user.userImageUrl,user.name as userName, flagcomment.contents  from flagcomment inner join user on flagcomment.userIdx = user.userIdx" +
-                "               where flagcomment.flagIdx=? and user.status='t' order by flagcomment.createdAt limit 1",(rs,rownum2)  -> new GetCommentRes(
+                "               where flagcomment.flagIdx=? and user.status='t' and flagcomment.status='t' order by flagcomment.createdAt limit 1",(rs,rownum2)  -> new GetCommentRes(
                 rs.getInt("userIdx"),
                 rs.getString("userImageUrl"),
                 rs.getString("userName"),

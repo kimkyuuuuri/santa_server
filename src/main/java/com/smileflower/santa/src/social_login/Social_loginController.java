@@ -146,7 +146,7 @@ public class Social_loginController {
     @PostMapping(value = "/new-apple/loginCallBackApple")
     @ResponseBody
     public BaseResponse<AppleToken> androidAppleLogin(@RequestBody ServicesResponse serviceResponse) throws BaseException {
-        System.out.println("오는중?");
+
 
             if (serviceResponse == null) {
                 return null;

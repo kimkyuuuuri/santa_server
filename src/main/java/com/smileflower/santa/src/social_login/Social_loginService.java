@@ -114,9 +114,10 @@ public class Social_loginService {
 
 
     public String getAppleClientSecret(String id_token) throws BaseException {
-
+    System.out.println(id_token);
         if (newAppleJwtUtils.getClaimsBy(id_token)!=null) {
             try {
+
                 return newAppleJwtUtils.makeClientSecret();
             } catch (IOException e) {
                 e.printStackTrace();
