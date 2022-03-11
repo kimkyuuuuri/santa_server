@@ -12,7 +12,7 @@ import java.util.List;
 
 @Getter
 @Setter
-
+@AllArgsConstructor
 public class GetPostsRes implements Comparable<GetPostsRes>{
     private boolean isFlag;
     private Long flagIdx;
@@ -22,46 +22,28 @@ public class GetPostsRes implements Comparable<GetPostsRes>{
     private String level;
     private String userName;
 
-    private int flagCount;
-    private Long mountainIdx;
-    private String name;
+
     private String createdAt;
     private String pictureUrl;
+    private String isSaved;
+    private int commentCount;
+    private int  saveCount;
     private List<GetCommentRes> getCommentRes;
 
-    public GetPostsRes(boolean isFlag, Long flagIdx, Long pictureIdx, String imgUrl, int userIdx, String level, String userName, int flagCount, Long mountainIdx, String name, String createdAt, String fileUrl) {
-   this.isFlag=isFlag;
-   this.flagIdx=flagIdx;
-   this.userImageUrl=imgUrl;
-   this.pictureIdx=pictureIdx;
-   this.userIdx=userIdx;
-   this.level=level;
-   this.userName=userName;
-   this.flagCount=flagCount;
-   this.mountainIdx=mountainIdx;
-   this.name=name;
-   this.createdAt=createdAt;
-   this.pictureUrl=fileUrl;
+    public GetPostsRes(boolean isFlag, Long flagIdx, Long pictureIdx, String imgUrl, int userIdx, String level, String userName, String createdAt, String fileUrl) {
+        this.isFlag = isFlag;
+        this.flagIdx = flagIdx;
+        this.userImageUrl = imgUrl;
+        this.pictureIdx = pictureIdx;
+        this.userIdx = userIdx;
+        this.level = level;
+        this.userName = userName;
+
+
+        this.createdAt = createdAt;
+        this.pictureUrl = fileUrl;
 
     }
-    public GetPostsRes(boolean isFlag, Long flagIdx, Long pictureIdx, String imgUrl,int userIdx, String level, String userName, int flagCount, Long mountainIdx, String name, String createdAt, String fileUrl,List<GetCommentRes> getCommentRes) {
-        this.isFlag=isFlag;
-        this.flagIdx=flagIdx;
-        this.pictureIdx=pictureIdx;
-        this.userImageUrl=imgUrl;
-        this.userIdx=userIdx;
-        this.level=level;
-        this.userName=userName;
-        this.flagCount=flagCount;
-        this.mountainIdx=mountainIdx;
-        this.name=name;
-        this.createdAt=createdAt;
-        this.pictureUrl=fileUrl;
-        this.getCommentRes=getCommentRes;
-
-    }
-
-
 
 
     @Override

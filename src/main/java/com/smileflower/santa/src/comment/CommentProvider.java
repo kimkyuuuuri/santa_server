@@ -72,7 +72,11 @@ public class CommentProvider {
     }
 
     public String getUserImage(int userIdx){
-        return commentDao.selectUserImage(userIdx);
+            String image=commentDao.selectUserImage(userIdx);
+        if (image != null)
+            image=s3Service.getFileUrl(image);
+
+        return image;
     }
 
     public List<GetCommentRes> getComment(Long idx,String type,int userIdx) throws BaseException {

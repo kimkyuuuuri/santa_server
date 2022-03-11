@@ -14,11 +14,15 @@ public class GetFlagRes {
     private int userIdx;
     private String level;
     private String userName;
-    private Long mountainIdx;
+
     private String createdAt;
     private String pictureUrl;
-    private int flagCount;
-    private String name;
+
+
+    private String isSaved;
+    private int commentCount;
+    private int  saveCount;
+
 
 
 }
