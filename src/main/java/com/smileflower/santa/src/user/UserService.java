@@ -221,6 +221,13 @@ public class UserService {
         }
 
     }
+    public void agree(int userIdx){
+
+
+        userDao.patchUserIsFirst(userIdx);
+
+    }
+
 }
 
 

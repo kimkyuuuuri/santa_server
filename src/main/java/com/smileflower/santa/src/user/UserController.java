@@ -256,5 +256,24 @@ public class UserController {
         }
     }
 
+    @ResponseBody
+    @PatchMapping ("agree")
+    public BaseResponse<String> agree() throws BaseException {
+        try{
+            if(jwtService.getJwt()==null){
+                return new BaseResponse<>(EMPTY_JWT);
+            }
+
+            else{
+                int userIdx=jwtService.getUserIdx();
+                userService.agree(userIdx);
+                return new BaseResponse<>("수정 완료");
+            }
+
+        }catch(BaseException exception){
+            return new BaseResponse<>((exception.getStatus()));
+        }
+
+    }
 
 }

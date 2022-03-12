@@ -353,6 +353,8 @@ public class New_ProfileDao {
         Object[] params = new Object[]{filename, userIdx};
         return this.jdbcTemplate.update(query,params);
     }
+
+
     public int deleteProfileImg(int userIdx) {
         String query = "update user set userImageUrl = null where userIdx = ? ";
         int param = userIdx;

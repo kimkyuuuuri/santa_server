@@ -259,5 +259,9 @@ public class UserDao {
                 token,tokenType,userIdx);
     }
 
-
+    public int patchUserIsFirst(int userIdx ){
+        String query = "update user set status= 'T' where userIdx = ? ";
+        Object[] params = new Object[]{userIdx};
+        return this.jdbcTemplate.update(query,params);
+    }
 }
