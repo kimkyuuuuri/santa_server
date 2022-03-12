@@ -77,14 +77,15 @@ public class New_ProfileDao {
                 "                                     as level,user.name as userName,picture.createdAt," +
                 "                   picture.imgUrl as imgUrl,   case when EXISTS(select picturesaveIdx from picturesave where picturesave.userIdx=? and picturesave.pictureIdx=picture.pictureIdx  and picturesave.status='t') =1 then 'T' else 'F' end as isSaved," +
                 "                                                       (select count(*) from picturerecomment where picturerecomment.picturecommentIdx=picturecomment.picturecommentIdx  ) +(select count(*) from picturecomment where picturecomment.pictureIdx=picture.pictureIdx)  as commentCount" +
-                "                                                      ,count( distinct  picturesave.picturesaveIdx) as saveCount" +
+                "                                                      ,(select count(*) from picturesave where picturesave.pictureIdx=picture.pictureIdx) as saveCount" +
                 "                                      from picture" +
                 "                                          left join picturesave on picture.pictureIdx = picturesave.pictureIdx" +
                 "                                         inner join user on picture.userIdx = user.userIdx" +
-                "                                        left join picturecomment on picture.pictureIdx =picturecomment.pictureIdx" +
-                "                                       where picturesave.status='t' and user.status='t' group by picturesave.pictureIdx " ;
+                "" +
+                " left join picturecomment on picture.pictureIdx = picturecomment.pictureIdx" +
+                "                                       where user.status='t' and picture.userIdx=? group by picture.pictureIdx order by picture.createdAt " ;
 
-        Object[] param = new Object[]{userIdx};
+        Object[] param = new Object[]{userIdx,userIdx};
         List<GetPicturesRes> getPicturesRes = this.jdbcTemplate.query(query,param,(rs,rowNum) -> new GetPicturesRes(
                 rs.getLong("pictureIdx"),
                 rs.getString("userImageUrl"),
@@ -114,14 +115,14 @@ public class New_ProfileDao {
                 "                                     as level,user.name as userName,flag.createdAt," +
                 "                   flag.pictureUrl as pictureUrl,   case when EXISTS(select flagsaveIdx from flagsave where flagsave.userIdx=? and flagsave.flagIdx=flag.flagIdx  and flagsave.status='t') =1 then 'T' else 'F' end as isSaved," +
                 "                                                       (select count(*) from flagrecomment where flagrecomment.flagcommentIdx=flagcomment.flagcommentIdx  ) +(select count(*) from flagcomment where flagcomment.flagIdx=flag.flagIdx)  as commentCount" +
-                "                                                      ,count( distinct  flagsave.flagsaveIdx) as saveCount" +
+                "                                                       ,(select count(*) from flagsave where flagsave.flagIdx=flag.flagIdx) as saveCount" +
                 "                                      from flag" +
                 "                                          left join flagsave on flag.flagIdx = flagsave.flagIdx" +
                 "                                         inner join user on flag.userIdx = user.userIdx" +
                 "                                        left join flagcomment on flag.flagIdx = flagcomment.flagIdx" +
-                "                                       where flagsave.status='t' and user.status='t' group by flagsave.flagIdx " ;
+                "                                       where  user.status='t' and flag.userIdx=? group by flag.flagIdx order by flag.createdAt " ;
 
-        Object[] param = new Object[]{userIdx};
+        Object[] param = new Object[]{userIdx,userIdx};
         List<GetFlagRes> getFlagRes = this.jdbcTemplate.query(query,param,(rs,rowNum) -> new GetFlagRes(
                 rs.getLong("flagIdx"),
                 rs.getString("userImgUrl"),
