@@ -78,36 +78,6 @@ public class UserService {
     }
 
 
-    //POST
-    public PostUserRes createKakaoUser(PostUserReq postUserReq) throws BaseException {
-        //중복
-        if (postUserReq.getPassword().equals(postUserReq.getPasswordCheck())) {
-            if (userProvider.checkName(postUserReq.getName()) == 1) {
-                throw new BaseException(POST_USER_EXISTS_NAME);
-            }
-            if (userProvider.checkEmailId(postUserReq.getEmailId()) == 1) {
-                throw new BaseException(POST_USERS_EXISTS_EMAIL);
-            }
-
-            String pwd;
-            try {
-                //암호화
-                pwd = new AES128(Secret.USER_INFO_PASSWORD_KEY).encrypt(postUserReq.getPassword());
-                postUserReq.setPassword(pwd);
-            } catch (Exception ignored) {
-                throw new BaseException(PASSWORD_ENCRYPTION_ERROR);
-            }
-
-            int userIdx = userDao.createUser(postUserReq);
-
-            //jwt발급
-            String jwt = jwtService.createJwt(userIdx);
-            return new PostUserRes(jwt, userIdx);
-        } else {
-            throw new BaseException(PASSWORD_CONFIRM_ERROR);
-        }
-
-    }
 
     @Transactional
     public PostUserLoginRes loginUser(PostUserLoginReq postUserLoginReq) throws BaseException {
