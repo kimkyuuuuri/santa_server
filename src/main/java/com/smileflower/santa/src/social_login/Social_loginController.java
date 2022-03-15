@@ -74,7 +74,7 @@ public class Social_loginController {
         KakaoProfile kakaoProfile = null;
 
         objectMapper2.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-        System.out.println(postUserReq.getAccessToken());
+
 
         try {
 
@@ -96,7 +96,8 @@ public class Social_loginController {
             }
 
                 PostUserLoginRes postUserLoginRes = socialloginService.kakaoLogin(Integer.toString(kakaoProfile.getId()),postUserReq.getPushToken(), postUserReq.getTokenType());
-             return new BaseResponse<>(postUserLoginRes);
+
+            return new BaseResponse<>(postUserLoginRes);
         } catch(BaseException exception){
             return new BaseResponse<>((exception.getStatus()));
         }

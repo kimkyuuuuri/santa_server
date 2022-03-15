@@ -132,7 +132,7 @@ public class CommentService {
 
 
         if(type.equals("picture")) {
-            if (commentProvider.checkPictureExist(commentIdx) == 0)
+            if (commentProvider.checkPictureCommentExist(commentIdx) == 0)
                 throw new BaseException(INVALID_POST);
             String picturePushToken= commentProvider.getUserPicturePushTokenByRecomment(commentIdx);
             int userIdxbyPictureIdx=commentProvider.getUserIdxByPictureCommentByRecomment(commentIdx);

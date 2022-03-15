@@ -77,7 +77,7 @@ public class New_ProfileDao {
                 "                                     as level,user.name as userName,picture.createdAt," +
                 "                   picture.imgUrl as imgUrl,   case when EXISTS(select picturesaveIdx from picturesave where picturesave.userIdx=? and picturesave.pictureIdx=picture.pictureIdx  and picturesave.status='t') =1 then 'T' else 'F' end as isSaved," +
                 "                                                       (select count(*) from picturerecomment where picturerecomment.picturecommentIdx=picturecomment.picturecommentIdx  ) +(select count(*) from picturecomment where picturecomment.pictureIdx=picture.pictureIdx)  as commentCount" +
-                "                                                      ,(select count(*) from picturesave where picturesave.pictureIdx=picture.pictureIdx) as saveCount" +
+                "                                                      ,(select count(*) from picturesave where picturesave.pictureIdx=picture.pictureIdx and picturesave.status='t') as saveCount" +
                 "                                      from picture" +
                 "                                          left join picturesave on picture.pictureIdx = picturesave.pictureIdx" +
                 "                                         inner join user on picture.userIdx = user.userIdx" +
@@ -115,7 +115,7 @@ public class New_ProfileDao {
                 "                                     as level,user.name as userName,flag.createdAt," +
                 "                   flag.pictureUrl as pictureUrl,   case when EXISTS(select flagsaveIdx from flagsave where flagsave.userIdx=? and flagsave.flagIdx=flag.flagIdx  and flagsave.status='t') =1 then 'T' else 'F' end as isSaved," +
                 "                                                       (select count(*) from flagrecomment where flagrecomment.flagcommentIdx=flagcomment.flagcommentIdx  ) +(select count(*) from flagcomment where flagcomment.flagIdx=flag.flagIdx)  as commentCount" +
-                "                                                       ,(select count(*) from flagsave where flagsave.flagIdx=flag.flagIdx) as saveCount" +
+                "                                                       ,(select count(*) from flagsave where flagsave.flagIdx=flag.flagIdx and flagsave.status='t') as saveCount" +
                 "                                      from flag" +
                 "                                          left join flagsave on flag.flagIdx = flagsave.flagIdx" +
                 "                                         inner join user on flag.userIdx = user.userIdx" +
