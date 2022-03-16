@@ -54,4 +54,13 @@ public class EmailDao {
                 int.class,
                 checkEmailParams, checkPwParams);
     }
+
+    public int checkDeletedUserExist(String email){
+        String checkEmailQuery = "select exists(select userIdx from user where emailId = ? and status='F')";
+        String checkEmailParams = email;
+
+        return this.jdbcTemplate.queryForObject(checkEmailQuery,
+                int.class,
+                checkEmailParams);
+    }
 }

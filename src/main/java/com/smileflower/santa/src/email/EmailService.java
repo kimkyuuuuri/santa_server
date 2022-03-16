@@ -35,10 +35,12 @@ public class EmailService {
 
     @Transactional
     public void sendEmailMessage(String email) throws BaseException {
-
+        if(emailProvider.checkDeletedUser(email) == 1)
+            throw new BaseException(BaseResponseStatus.POST_USER_DELETED_USER);
         // 회원가입 된 이메일인지 확인
         if(emailProvider.checkDuplicateEmail(email) == 1)
             throw new BaseException(BaseResponseStatus.POST_AUTH_EXISTS_EMAIL);
+
 
         String pw = createKey();
         MimeMessage message = emailSender.createMimeMessage();

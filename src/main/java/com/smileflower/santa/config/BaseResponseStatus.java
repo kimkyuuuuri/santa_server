@@ -77,6 +77,7 @@ public enum BaseResponseStatus {
     RESPONSE_ERROR(false, 3000, "값을 불러오는데 실패하였습니다."),
 
     // [POST] /users
+    POST_USER_DELETED_USER(false,3012,"복구 가능한 상태의 탈퇴된 회원입니다."),
     DUPLICATED_EMAIL(false, 3013, "중복된 이메일입니다."),
     POST_USERS_NONEXIST_ACCOUNT(false,3014,"아이디 또는 비밀번호가 잘못되었습니다."),
     ALREADY_LOGGED(false,3015,"이미 로그인되어 있습니다"),

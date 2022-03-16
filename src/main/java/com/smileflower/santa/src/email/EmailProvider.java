@@ -45,6 +45,14 @@ public class EmailProvider {
         }
     }
 
+    public int checkDeletedUser(String email) throws BaseException{
+       // try{
+            return emailDao.checkDeletedUserExist(email);
+       // } catch (Exception exception){
+         //   throw new BaseException(BaseResponseStatus.DATABASE_ERROR);
+        //}
+    }
+
     public String checkpw(String email) throws BaseException{
        try{
             return emailDao.checkpw(email);
