@@ -264,4 +264,10 @@ public class UserDao {
         Object[] params = new Object[]{userIdx};
         return this.jdbcTemplate.update(query,params);
     }
+
+    public int patchUserTokenType(int userIdx ){
+        String query = "update user set tokenType= 'N' where userIdx = ? ";
+        Object[] params = new Object[]{userIdx};
+        return this.jdbcTemplate.update(query,params);
+    }
 }

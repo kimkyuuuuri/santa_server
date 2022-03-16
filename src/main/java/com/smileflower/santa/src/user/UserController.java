@@ -258,7 +258,7 @@ public class UserController {
 
     @ResponseBody
     @PatchMapping ("agree")
-    public BaseResponse<String> agree() throws BaseException {
+    public BaseResponse<String> agree(@RequestBody PostUserAgreeRes postUserAgreeRes) throws BaseException {
         try{
             if(jwtService.getJwt()==null){
                 return new BaseResponse<>(EMPTY_JWT);
@@ -266,7 +266,7 @@ public class UserController {
 
             else{
                 int userIdx=jwtService.getUserIdx();
-                userService.agree(userIdx);
+                userService.agree(userIdx,postUserAgreeRes);
                 return new BaseResponse<>("수정 완료");
             }
 

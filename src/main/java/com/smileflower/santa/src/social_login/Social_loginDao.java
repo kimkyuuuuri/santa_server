@@ -151,7 +151,11 @@ public class Social_loginDao {
         this.jdbcTemplate.update("UPDATE user SET pushToken = ?,tokenType=? WHERE userIdx = ?",
                 token,tokenType,userIdx);
     }
-
+    public int patchUserIsFirst(int userIdx ){
+        String query = "update user set status= 'T' where userIdx = ? ";
+        Object[] params = new Object[]{userIdx};
+        return this.jdbcTemplate.update(query,params);
+    }
 
 
     public String getStatusByToken(String refreshToken) {

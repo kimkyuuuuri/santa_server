@@ -97,6 +97,7 @@ public class UserService {
         String jwt = jwtService.createJwt(userIdx);
         int jwtIdx = userDao.postJwt(jwt);
         userDao.updateUserToken(userIdx,postUserLoginReq.getPushToken(),postUserLoginReq.getTokenType());
+        userDao.patchUserIsFirst(userIdx);
         return new PostUserLoginRes(jwt, userIdx, name);
     }
 
@@ -173,6 +174,13 @@ public class UserService {
 
     }
 
+    public void patchUserIsFirst(int userIdx) throws BaseException{
+        if (userProvider.checkUserIdx(userIdx)!=1) {
+            throw new BaseException(INVALID_USER);
+        }
+        userDao.patchUserIsFirst(userIdx);
+
+    }
     @Scheduled(cron = "0 0 0 * * *")	// 두달 후 테이블에 userIdx 0으로 바꾸기
     public void updateUserIdx() throws Exception {
 
@@ -191,10 +199,11 @@ public class UserService {
         }
 
     }
-    public void agree(int userIdx){
+    public void agree(int userIdx,PostUserAgreeRes postUserAgreeRes){
 
-
-        userDao.patchUserIsFirst(userIdx);
+        if(postUserAgreeRes.getIsAgree().equals("N")) {
+            userDao.patchUserTokenType(userIdx);
+        }
 
     }
 

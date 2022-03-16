@@ -61,7 +61,7 @@ public class Social_loginService {
         String jwt = jwtService.createJwt(userIdx);
         patchUserPushToken(userIdx,pushToken,tokenType);
         int jwtIdx = social_loginDao.postJwt(jwt);
-
+        patchUserStatus(userIdx);
         return new PostUserLoginRes(jwt, userIdx, name2);
     }
     public CheckUserRes checkUser(String id_token) throws BaseException {
@@ -93,7 +93,7 @@ public class Social_loginService {
             int userIdx = social_loginProvider.checkAppleAccount(applePostUserReq.getUserIdentifier());
        patchUserPushToken(userIdx,applePostUserReq.getPushToken(),applePostUserReq.getTokenType());
         String jwt = jwtService.createJwt(userIdx);
-
+      patchUserStatus(userIdx);
         return new AppleLoginRes(userIdx,jwt);
     }
 
@@ -131,7 +131,11 @@ public class Social_loginService {
 
     }
 
+    public void patchUserStatus(int userIdx) throws BaseException{
 
+        social_loginDao.patchUserIsFirst(userIdx);
+
+    }
     public ApplePostUserRes createUser(ApplePostUserReq applePostUserReq,int appleId) throws BaseException {
 
         social_loginDao.insertUser( applePostUserReq.getUserIdentifier(),"apple"+applePostUserReq.getName()+appleId);

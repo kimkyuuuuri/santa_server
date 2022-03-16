@@ -223,7 +223,7 @@ public class CommentDao {
     public int createPictureRecommentNotification(int userIdx, Long pictureIdx,String contents){
         Object[] createPictureCommentNotificationParams = new Object[]{userIdx, pictureIdx,"T",contents};
 
-        this.jdbcTemplate.update("insert into notification (userIdx,pictureIdx,isRecomment,contents) VALUES (? ,?,?,contents)",
+        this.jdbcTemplate.update("insert into notification (userIdx,pictureIdx,isRecomment,contents) VALUES (? ,?,?,?)",
 
                 createPictureCommentNotificationParams);
         return this.jdbcTemplate.queryForObject("select last_insert_id()",int.class);
@@ -231,7 +231,7 @@ public class CommentDao {
     public int createPictureRecomment(PostRecommentReq postReCommentReq, Long pictureCommentIdx, int userIdx){
         Object[] createPictureRecommentParams = new Object[]{userIdx, pictureCommentIdx, postReCommentReq.getContents()};
 
-        this.jdbcTemplate.update("insert into picturerecomment (userIdx,picturecommentIdx,contents) VALUES (? , ?,?)",
+        this.jdbcTemplate.update("insert into picturerecomment (userIdx,picturecommentIdx,contents) VALUES (? ,?,?)",
 
                 createPictureRecommentParams);
         return this.jdbcTemplate.queryForObject("select last_insert_id()",int.class);
@@ -276,23 +276,23 @@ public class CommentDao {
     }
 
     public int checkFlagCommentExist(Long flagCommentIdx){
-        return this.jdbcTemplate.queryForObject("select Exists(select flagCommentIdx from flagcomment\n" +
-                "                where status='t' and flagCommentIdx=? ) as FlagCommentExist", int.class,flagCommentIdx);
+        return this.jdbcTemplate.queryForObject("select Exists(select flagcommentIdx from flagcomment\n" +
+                "                where status='t' and flagcommentIdx=? ) as FlagCommentExist", int.class,flagCommentIdx);
     }
 
     public int checkPictureCommentExist(Long pictureCommentIdx){
-        return this.jdbcTemplate.queryForObject("select Exists(select pictureCommentIdx from picturecomment\n" +
-                "                where status='t' and pictureCommentIdx=? ) as pictureCommentExist", int.class,pictureCommentIdx);
+        return this.jdbcTemplate.queryForObject("select Exists(select picturecommentIdx from picturecomment\n" +
+                "                where status='t' and picturecommentIdx=? ) as pictureCommentExist", int.class,pictureCommentIdx);
     }
 
     public int checkFlagRecommentExist(Long flagRecommentIdx){
-        return this.jdbcTemplate.queryForObject("select Exists(select flagRecommentIdx from flagrecomment\n" +
-                "                where status='t' and flagRecommentIdx=? ) as FlagRecommentExist", int.class,flagRecommentIdx);
+        return this.jdbcTemplate.queryForObject("select Exists(select flagcecommentIdx from flagrecomment\n" +
+                "                where status='t' and flagrecommentIdx=? ) as FlagRecommentExist", int.class,flagRecommentIdx);
     }
 
     public int checkPictureRecommentExist(Long pictureRecommentIdx){
-        return this.jdbcTemplate.queryForObject("select Exists(select pictureRecommentIdx from picturerecomment\n" +
-                "                where status='t' and pictureRecommentIdx=? ) as pictureRecommentExist", int.class,pictureRecommentIdx);
+        return this.jdbcTemplate.queryForObject("select Exists(select picturececommentIdx from picturerecomment\n" +
+                "                where status='t' and picturerecommentIdx=? ) as pictureRecommentExist", int.class,pictureRecommentIdx);
     }
     public int checkFlagWhereUserExist(Long flagIdx,int userIdx){
         return this.jdbcTemplate.queryForObject("select Exists(select flagIdx from flag\n" +

@@ -57,7 +57,7 @@ public class CommentService {
                     fcmPush.androidPush(pushToken,"SANTA",getUserInfoRes.getName()+"님이 회원님의 게시물에 댓글을 남겼어요! 지금 확인해보세요👀");
             }
         }
-        if(type.equals("picture")) {
+        else if(type.equals("picture")) {
 
             if (commentProvider.checkPictureExist(idx) == 0)
                 throw new BaseException(INVALID_POST);
@@ -92,6 +92,7 @@ public class CommentService {
         int userIdxbyFlagIdx=commentProvider.getUserIdxByFlagCommentByRecomment(commentIdx);
 
         if(type.equals("flag")) {
+
             if (commentProvider.checkFlagCommentExist(commentIdx) == 0)
                 throw new BaseException(INVALID_COMMENT);
 
@@ -131,9 +132,10 @@ public class CommentService {
         }
 
 
-        if(type.equals("picture")) {
+        else if(type.equals("picture")) {
+
             if (commentProvider.checkPictureCommentExist(commentIdx) == 0)
-                throw new BaseException(INVALID_POST);
+                throw new BaseException(INVALID_COMMENT);
             String picturePushToken= commentProvider.getUserPicturePushTokenByRecomment(commentIdx);
             int userIdxbyPictureIdx=commentProvider.getUserIdxByPictureCommentByRecomment(commentIdx);
 
