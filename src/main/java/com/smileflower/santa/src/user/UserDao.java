@@ -202,6 +202,10 @@ public class UserDao {
         this.jdbcTemplate.update("UPDATE user SET status = 'F' WHERE userIdx = ?",
                 userIdx);
     }
+    public void patchUserStatusForRestore(int userIdx){
+        this.jdbcTemplate.update("UPDATE user SET status = 'T' WHERE userIdx = ?",
+                userIdx);
+    }
 
     public List<GetUserIdxRes> getTwoMonthAgoDeletedUser(){
         return this.jdbcTemplate.query("select userIdx from user where status='F' and  timestampdiff(day,updatedAt,NOW())=60",

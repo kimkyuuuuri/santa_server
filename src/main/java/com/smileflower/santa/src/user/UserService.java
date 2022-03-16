@@ -206,6 +206,14 @@ public class UserService {
         }
 
     }
+    public void restoreUser(PatchUserStatusReq patchUserAgreeRes) throws BaseException {
+        int userIdx = userProvider.checkAccount(patchUserAgreeRes.getEmailId(), patchUserAgreeRes.getPassword());
+
+
+            userDao.patchUserStatusForRestore(userIdx);
+
+
+    }
 
 }
 

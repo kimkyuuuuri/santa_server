@@ -276,4 +276,36 @@ public class UserController {
 
     }
 
+    @ResponseBody
+    @PatchMapping ("restore-user")
+    public BaseResponse<String> restoreUser(@RequestBody PatchUserStatusReq patchUserStatusReq) throws BaseException {
+        try{
+            if(patchUserStatusReq.getEmailId() == null || patchUserStatusReq.getPassword()==null){
+                return new BaseResponse<>(POST_USERS_EMPTY);
+            }
+
+            //이메일 정규표현
+            if(!isRegexEmail(patchUserStatusReq.getEmailId())){
+                return new BaseResponse<>(POST_USERS_INVALID_EMAIL);
+            }
+
+            if(patchUserStatusReq.getPassword().length()<8){
+                return new BaseResponse<>(INSUFFICIENT_PW_RANGE);
+            }
+            if(patchUserStatusReq.getPassword().length()>16){
+                return new BaseResponse<>(EXCEED_PW_RANGE);
+            }
+
+            else{
+
+                userService.restoreUser(patchUserStatusReq);
+                return new BaseResponse<>("복구 완료");
+            }
+
+        }catch(BaseException exception){
+            return new BaseResponse<>((exception.getStatus()));
+        }
+
+    }
+
 }
