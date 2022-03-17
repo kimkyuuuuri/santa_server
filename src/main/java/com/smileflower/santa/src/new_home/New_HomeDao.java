@@ -54,7 +54,7 @@ public class New_HomeDao {
                         "    inner join user on flag.userIdx = user.userIdx \n" +
                         "    left join flagcomment on flag.flagIdx = flagcomment.flagIdx\n" +
                         "\n" +
-                        "where flagsave.status='t' and user.status='t'  group by flagsave.flagIdx order by  saveCount desc,commentCount desc limit 6",
+                        "where flagsave.status='T' and user.status='T' and flag.status='T' group by flagsave.flagIdx order by  saveCount desc,commentCount desc limit 6",
                         (rk,rownum) -> new GetFlagsRes(
                                 rk.getInt("userIdx"),
                                 rk.getString("userImageUrl"),
@@ -136,7 +136,7 @@ public class New_HomeDao {
                         ))),userIdx,userIdx);
 
     }
-
+//no use
     public List<GetFlagsRes> getFlagRes() {
         return this.jdbcTemplate.query("select user.userIdx,user.userImageUrl, (select\n" +
                 "                                                                          case\n" +
@@ -154,7 +154,7 @@ public class New_HomeDao {
                         "    inner join user on picture.userIdx = user.userIdx\n" +
                         "    left join comment on picture.pictureIdx = comment.pictureIdx\n" +
                         "\n" +
-                        "where picturesave.status='t' and user.status='t' group by picturesave.pictureIdx order by  saveCount desc,commentCount desc limit 10",
+                        "where picturesave.status='t' and user.status='t'  group by picturesave.pictureIdx order by  saveCount desc,commentCount desc limit 10",
                 (rk,rownum) -> new GetFlagsRes(
                         rk.getInt("userIdx"),
                         rk.getString("userImageUrl"),
@@ -196,7 +196,7 @@ public class New_HomeDao {
                         "\n" +
                         "from user\n" +
                         "         left join (select userIdx,count(flagIdx) as flagCount,createdAt from flag group by userIdx) f\n" +
-                        "                   on f.userIdx = user.userIdx\n" +
+                        "                   on f.userIdx = user.userIdx where user.status='t' " +
                         "order by user.height desc limit 10;",
                 (rk,rownum) -> new GetUsersRes(
                         rk.getInt("userIdx"),
@@ -229,7 +229,7 @@ public class New_HomeDao {
                         "                            left join flagsave on flag.flagIdx = flagsave.flagIdx\n" +
                         "                            inner join user on flag.userIdx = user.userIdx\n" +
                         "                            left join flagcomment on flag.flagIdx = flagcomment.flagIdx\n" +
-                        "                        where flagsave.status='t' and user.status='t' group by flagsave.flagIdx order by  saveCount desc,commentCount desc limit 10\n",
+                        "                        where flagsave.status='t' and user.status='t' and flag.status='t' group by flagsave.flagIdx order by  saveCount desc,commentCount desc limit 10\n",
                 (rk,rownum) -> new GetFlagsMoreRes(
                         rk.getInt("userIdx"),
                         rk.getString("userImageUrl"),
@@ -241,7 +241,7 @@ public class New_HomeDao {
                         rk.getInt("flagIdx"),
                         rk.getString("flagImageUrl"),
                         getCommentRes=this.jdbcTemplate.query("select user.userIdx, user.userImageUrl,user.name as userName, flagcomment.contents  from flagcomment inner join user on flagcomment.userIdx = user.userIdx\n" +
-                                "  where flagcomment.flagIdx=? and user.status='t' order by flagcomment.createdAt limit 1",(rs,rownum2) -> new GetCommentRes(
+                                "  where flagcomment.flagIdx=? and user.status='t' and flagcomment.status='t' order by flagcomment.createdAt limit 1",(rs,rownum2) -> new GetCommentRes(
                         rs.getInt("userIdx"),
                         rs.getString("userImageUrl"),
                         rs.getString("userName"),

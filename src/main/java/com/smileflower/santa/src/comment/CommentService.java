@@ -48,8 +48,9 @@ public class CommentService {
             String pushToken= commentProvider.getFlagPushToken(idx);
             GetUserInfoRes getUserInfoRes=commentProvider.getUserName(userIdx);
             int userIdxbyFlagIdx=commentProvider.getUserIdxByFlag(idx);
-            GetUserInfoRes getUserInfoResForPush=commentProvider.getUserName(userIdx);
+
             if(userIdxbyFlagIdx!=userIdx){
+                GetUserInfoRes getUserInfoResForPush=commentProvider.getUserName(userIdx);
                 commentDao.createFlagCommentNotification(userIdxbyFlagIdx,idx,getUserInfoRes.getName()+"님이 회원님의 게시물에 댓글을 남겼어요! 지금 확인해보세요👀");
                 if(getUserInfoResForPush.getTokenType().equals("I"))
                 fcmPush.iosPush(pushToken,"SANTA",getUserInfoRes.getName()+"님이 회원님의 게시물에 댓글을 남겼어요! 지금 확인해보세요👀");
@@ -64,9 +65,10 @@ public class CommentService {
             commentIdx = commentDao.createPictureComment(postCommentReq, idx, userIdx);
             String pushToken= commentProvider.getPicturePushToken(idx);
             int userIdxbyPictureIdx=commentProvider.getUserIdxByPicture(idx);
-            GetUserInfoRes getUserInfoRes =commentProvider.getUserName(userIdx);
-            GetUserInfoRes getUserInfoResForPush=commentProvider.getUserName(userIdx);
+
             if(userIdxbyPictureIdx!=userIdx){
+                GetUserInfoRes getUserInfoRes =commentProvider.getUserName(userIdx);
+                GetUserInfoRes getUserInfoResForPush=commentProvider.getUserName(userIdx);
                 commentDao.createPictureCommentNotification(userIdxbyPictureIdx,idx,getUserInfoRes.getName() + "님이 회원님의 게시물에 댓글을 남겼어요! 지금 확인해보세요👀");
 
 
@@ -88,22 +90,22 @@ public class CommentService {
 
     public PostRecommentRes createRecomment(PostRecommentReq postRecommentReq, long commentIdx, int userIdx, String type) throws BaseException, IOException {
        int recommentIdx=0;
-        String flagPushToken= commentProvider.getUserFlagPushTokenByRecomment(commentIdx);
-        int userIdxbyFlagIdx=commentProvider.getUserIdxByFlagCommentByRecomment(commentIdx);
+
 
         if(type.equals("flag")) {
-
+            String flagPushToken= commentProvider.getUserFlagPushTokenByRecomment(commentIdx);
+            int userIdxbyFlagIdx=commentProvider.getUserIdxByFlagCommentByRecomment(commentIdx);
             if (commentProvider.checkFlagCommentExist(commentIdx) == 0)
                 throw new BaseException(INVALID_COMMENT);
 
             String flagCommentPushToken= commentProvider.getFlagCommentPushToken(commentIdx);
             int userIdxbyFlagCommentIdx=commentProvider.getUserIdxByFlagComment(commentIdx);
-            GetUserInfoRes getUserInfoRes=commentProvider.getUserName(userIdx);
+
             //GetUserInfoRes getUserInfoRes2=commentProvider.getUserName(userIdxbyFlagIdx);
 
              if(userIdxbyFlagCommentIdx!=userIdx){
                  GetUserInfoRes getUserInfoResForPush=commentProvider.getUserName(userIdxbyFlagCommentIdx);
-
+                 GetUserInfoRes getUserInfoRes=commentProvider.getUserName(userIdx);
                  Long flagIdx=commentDao.getFlagIdx(commentIdx);
                 commentDao.createFlagRecommentNotification(userIdxbyFlagCommentIdx,flagIdx,getUserInfoRes.getName() + "님이 회원님의 댓글에 답글을 남겼어요! 지금 확인해보세요👀");
                 if(getUserInfoResForPush.getTokenType().equals("I")) {
@@ -115,6 +117,7 @@ public class CommentService {
              }
 
             else if(userIdxbyFlagIdx!=userIdx){
+                 GetUserInfoRes getUserInfoRes=commentProvider.getUserName(userIdx);
                  GetUserInfoRes getUserInfoResForPush=commentProvider.getUserName(userIdxbyFlagIdx);
 
                  Long flagIdx=commentDao.getFlagIdx(commentIdx);
@@ -133,16 +136,17 @@ public class CommentService {
 
 
         else if(type.equals("picture")) {
-
+            System.out.println("dd");
             if (commentProvider.checkPictureCommentExist(commentIdx) == 0)
                 throw new BaseException(INVALID_COMMENT);
             String picturePushToken= commentProvider.getUserPicturePushTokenByRecomment(commentIdx);
             int userIdxbyPictureIdx=commentProvider.getUserIdxByPictureCommentByRecomment(commentIdx);
 
-            GetUserInfoRes getUserInfoRes=commentProvider.getUserName(userIdx);
-            String pictureCommentPushToken= commentProvider.getPictureCommentPushToken(commentIdx);
+
             int userIdxbyPictureCommentIdx=commentProvider.getUserIdxByPictureComment(commentIdx);
             if(userIdxbyPictureCommentIdx!=userIdx){
+                GetUserInfoRes getUserInfoRes=commentProvider.getUserName(userIdx);
+                String pictureCommentPushToken= commentProvider.getPictureCommentPushToken(commentIdx);
                 GetUserInfoRes getUserInfoResForPush=commentProvider.getUserName(userIdxbyPictureCommentIdx);
 
                 Long pictureIdx=commentDao.getPictureIdx(commentIdx);
@@ -158,6 +162,8 @@ public class CommentService {
             }
 
                 else if(userIdxbyPictureIdx!=userIdx){
+                GetUserInfoRes getUserInfoRes=commentProvider.getUserName(userIdx);
+                String pictureCommentPushToken= commentProvider.getPictureCommentPushToken(commentIdx);
                 GetUserInfoRes getUserInfoResForPush=commentProvider.getUserName(userIdxbyPictureIdx);
 
                 Long pictureIdx=commentDao.getPictureIdx(commentIdx);

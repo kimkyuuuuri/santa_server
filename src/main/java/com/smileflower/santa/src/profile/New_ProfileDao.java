@@ -47,7 +47,7 @@ public class New_ProfileDao {
                 "                                                                                                 from flag where  flag.userIdx=a.userIdx and a.status='t')" +
                 "                                                                                   as level, (select name as userName from user where userIdx=?)as userName,a.mountainIdx, a.createdAt, a.pictureUrl, b.cnt, b.name from flag a left join (Select ANY_VALUE(f.userIdx) as userIdx," +
                 " ANY_VALUE(f.mountainIdx) as mountainIdx, COUNT(f.mountainIdx) as cnt, m.name  " +
-                "from flag f LEFT JOIN mountain m ON f.mountainIdx = m.mountainIdx group by f.mountainIdx) b on a.mountainIdx = b.mountainIdx where a.useridx = ?";
+                "from flag f LEFT JOIN mountain m ON f.mountainIdx = m.mountainIdx group by f.mountainIdx) b on a.mountainIdx = b.mountainIdx where a.userIdx = ? and f.status='t' ";
 
         Object[] param = new Object[]{userIdx,userIdx,userIdx};
         List<GetFlagResForProfile> getFlagRes = this.jdbcTemplate.query(query,param,(rs,rowNum) -> new GetFlagResForProfile(
@@ -83,7 +83,7 @@ public class New_ProfileDao {
                 "                                         inner join user on picture.userIdx = user.userIdx" +
                 "" +
                 " left join picturecomment on picture.pictureIdx = picturecomment.pictureIdx" +
-                "                                       where user.status='t' and picture.userIdx=? group by picture.pictureIdx order by picture.createdAt " ;
+                "                                       where user.status='t' and picture.userIdx=? and picture.status='t' group by picture.pictureIdx order by picture.createdAt " ;
 
         Object[] param = new Object[]{userIdx,userIdx};
         List<GetPicturesRes> getPicturesRes = this.jdbcTemplate.query(query,param,(rs,rowNum) -> new GetPicturesRes(
@@ -120,7 +120,7 @@ public class New_ProfileDao {
                 "                                          left join flagsave on flag.flagIdx = flagsave.flagIdx" +
                 "                                         inner join user on flag.userIdx = user.userIdx" +
                 "                                        left join flagcomment on flag.flagIdx = flagcomment.flagIdx" +
-                "                                       where  user.status='t' and flag.userIdx=? group by flag.flagIdx order by flag.createdAt " ;
+                "                                       where  user.status='t' and flag.userIdx=? and flag.status='t' group by flag.flagIdx order by flag.createdAt " ;
 
         Object[] param = new Object[]{userIdx,userIdx};
         List<GetFlagRes> getFlagRes = this.jdbcTemplate.query(query,param,(rs,rowNum) -> new GetFlagRes(
@@ -154,7 +154,7 @@ public class New_ProfileDao {
 
     public GetUserLoginInfoRes getUserLoginInfoRes(int userIdx) {
         String query = "\n" +
-                "    select case when pw='kakao'  then  'kakao' when  pw='apple' then 'appe' else emailId end as userLoginInfo\n" +
+                "    select case when pw='kakao'  then  'kakao' when  pw='apple' then 'apple' else emailId end as userLoginInfo\n" +
                 "    from user where userIdx =?";
         Object[] param = new Object[]{userIdx};
         return this.jdbcTemplate.queryForObject(query,param,(rs, rowNum) -> new GetUserLoginInfoRes(
@@ -169,7 +169,7 @@ public class New_ProfileDao {
                 "FROM flag a\n" +
                 "         INNER JOIN (\n" +
                 "    SELECT max(count) as count, flagIdx,mountainIdx\n" +
-                "    FROM flag b where userIdx=?\n" +
+                "    FROM flag b where userIdx=? and status='t' \n" +
                 "             group by b.mountainIdx\n" +
                 ") b ON b.flagIdx = a.flagIdx\n" +
                 "where a.userIdx=? and a.mountainIdx=b.mountainIdx";
@@ -213,7 +213,7 @@ public class New_ProfileDao {
                 "from mountain\n" +
                 "                                                                  left join flag f on mountain.mountainIdx = f.mountainIdx\n" +
                 "\n" +
-                "                                                                  where f.userIdx=? group by f.mountainIdx;\n";
+                "                                                                  where f.userIdx=? and f.status='t' group by f.mountainIdx;\n";
         Object[] param = new Object[]{userIdx};
         List<GetMountainsRes> getMountainsRes = this.jdbcTemplate.query(getMountainQuery,param,(rs,rowNum) -> new GetMountainsRes(
                 rs.getInt("mountainIdx"),
@@ -246,7 +246,7 @@ public class New_ProfileDao {
                    "from mountain\n" +
                    "                                                                  left join flag f on mountain.mountainIdx = f.mountainIdx\n" +
                    "\n" +
-                   "                                                                  where f.userIdx=? group by f.mountainIdx\n" +
+                   "                                                                  where f.userIdx=? and f.status='t' group by f.mountainIdx\n" +
                    "order by orderColumn desc;";
        }
        else if (order==2){
@@ -265,7 +265,7 @@ public class New_ProfileDao {
                    "from mountain\n" +
                    "         left join flag f on mountain.mountainIdx = f.mountainIdx\n" +
                    "\n" +
-                   "where f.userIdx=? group by f.mountainIdx\n" +
+                   "where f.userIdx=? and f.status='t' group by f.mountainIdx\n" +
                    "order by orderColumn ;";
        }
        else if (order==3)
@@ -285,7 +285,7 @@ public class New_ProfileDao {
                    "from mountain\n" +
                    "         left join flag f on mountain.mountainIdx = f.mountainIdx\n" +
                    "\n" +
-                   "where f.userIdx=? group by f.mountainIdx\n" +
+                   "where f.userIdx=? and f.status='t' group by f.mountainIdx\n" +
                    " order by orderColumn desc;\n";
        }
        else if (order==4){
@@ -304,7 +304,7 @@ public class New_ProfileDao {
                    "from mountain\n" +
                    "         left join flag f on mountain.mountainIdx = f.mountainIdx\n" +
                    "\n" +
-                   "where f.userIdx=? group by f.mountainIdx\n" +
+                   "where f.userIdx=? and f.status='t' group by f.mountainIdx\n" +
                    "order by orderColumn desc;";
        }
        else {

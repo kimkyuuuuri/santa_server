@@ -124,12 +124,12 @@ public class PictureDao {
     public int getUserIdxByPicture(int pictureIdx){
         return this.jdbcTemplate.queryForObject("select user.userIdx from user\n" +
                 "join picture p on user.userIdx = p.userIdx\n" +
-                "where p.pictureIdx=?", int.class,pictureIdx);
+                "where p.pictureIdx=? and p.status='t'" , int.class,pictureIdx);
     }
     public Long getFlagIdx(Long flagCommentIdx){
         return this.jdbcTemplate.queryForObject("select flag.flagIdx from flag\n" +
                 "                join flagcomment f on f.flagIdx = flag.flagIdx\n" +
-                "                where f.flagcommentIdx=?", Long.class,flagCommentIdx);
+                "                where f.flagcommentIdx=? and f.status='T' ", Long.class,flagCommentIdx);
     }
 
 

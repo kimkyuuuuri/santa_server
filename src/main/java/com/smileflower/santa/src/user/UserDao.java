@@ -58,7 +58,7 @@ public class UserDao {
     public int deleteUser(int userIdx) {
         String userQuery = "delete from user where userIdx = ?";
 
-
+// 여기에 게시글들, 댓글들만 삭제하기
         Object[] params = new Object[]{userIdx};
 
         int changedCnt = this.jdbcTemplate.update(userQuery,params);
@@ -228,32 +228,32 @@ public class UserDao {
     //모든 테이블에 있는 userIdx 0으로 바꾸기
     public void updateUserIdx(int userIdx){
 
-        this.jdbcTemplate.update("UPDATE flag SET userIdx = 0 WHERE userIdx = ?",
+        this.jdbcTemplate.update("UPDATE flag SET userIdx = 0 and status='F' WHERE userIdx = ?",
                 userIdx);
-        this.jdbcTemplate.update("UPDATE flagcomment SET userIdx = 0 WHERE userIdx = ?",
+        this.jdbcTemplate.update("UPDATE flagcomment SET userIdx = 0   WHERE userIdx = ?",
                 userIdx);
-        this.jdbcTemplate.update("UPDATE flagrecomment SET userIdx = 0 WHERE userIdx = ?",
+        this.jdbcTemplate.update("UPDATE flagrecomment SET userIdx = 0   WHERE userIdx = ?",
                 userIdx);
-        this.jdbcTemplate.update("UPDATE flagsave SET userIdx = 0 WHERE userIdx = ?",
+        this.jdbcTemplate.update("UPDATE flagsave SET userIdx = 0  and status='F'  WHERE userIdx = ?",
                 userIdx);
-        this.jdbcTemplate.update("UPDATE picklist SET userIdx = 0 WHERE userIdx = ?",
+        this.jdbcTemplate.update("UPDATE picklist SET userIdx = 0  and status='F' WHERE userIdx = ?",
                 userIdx);
-        this.jdbcTemplate.update("UPDATE picture SET userIdx = 0 WHERE userIdx = ?",
+        this.jdbcTemplate.update("UPDATE picture SET userIdx = 0 and status='F'  WHERE userIdx = ?",
                 userIdx);
-        this.jdbcTemplate.update("UPDATE picturecomment SET userIdx = 0 WHERE userIdx = ?",
+        this.jdbcTemplate.update("UPDATE picturecomment SET userIdx = 0   WHERE userIdx = ?",
                 userIdx);
-        this.jdbcTemplate.update("UPDATE picturerecomment SET userIdx = 0 WHERE userIdx = ?",
+        this.jdbcTemplate.update("UPDATE picturerecomment SET userIdx = 0    WHERE userIdx = ?",
                 userIdx);
-        this.jdbcTemplate.update("UPDATE picturereport SET userIdx = 0 WHERE userIdx = ?",
+        this.jdbcTemplate.update("UPDATE picturereport SET userIdx = 0  and status='F' WHERE userIdx = ?",
                 userIdx);
-        this.jdbcTemplate.update("UPDATE picturesave SET userIdx = 0 WHERE userIdx = ?",
+        this.jdbcTemplate.update("UPDATE picturesave SET userIdx = 0  and status='F' WHERE userIdx = ?",
                 userIdx);
-        this.jdbcTemplate.update("UPDATE report SET userIdx = 0 WHERE userIdx = ?",
+        this.jdbcTemplate.update("UPDATE report SET userIdx = 0 WHERE  and status='F' userIdx = ?",
                 userIdx);
-        this.jdbcTemplate.update("UPDATE loghistory SET userIdx = 0 WHERE userIdx = ?",
+        this.jdbcTemplate.update("UPDATE loghistory SET userIdx = 0 WHERE  and status='F' userIdx = ?",
                 userIdx);
 
-        this.jdbcTemplate.update("UPDATE searchlog SET userIdx = 0 WHERE userIdx = ?",
+        this.jdbcTemplate.update("UPDATE searchlog SET userIdx = 0 WHERE  and status='F'  userIdx = ?",
                 userIdx);
     }
 

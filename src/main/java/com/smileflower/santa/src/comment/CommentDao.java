@@ -368,6 +368,7 @@ public class CommentDao {
                 "join flagcomment f on user.userIdx = f.userIdx\n" +
                 "where f.flagcommentIdx=?", String.class,flagCommentIdx);
     }
+
     public int getUserIdxByFlagCommentByRecomment(Long flagCommentIdx){
         return this.jdbcTemplate.queryForObject("select user.userIdx from user\n" +
                 " join flag f on user.userIdx = f.userIdx\n" +
