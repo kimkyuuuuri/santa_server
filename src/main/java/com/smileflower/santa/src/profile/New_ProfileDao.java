@@ -47,7 +47,7 @@ public class New_ProfileDao {
                 "                                                                                                 from flag where  flag.userIdx=a.userIdx and a.status='t')" +
                 "                                                                                   as level, (select name as userName from user where userIdx=?)as userName,a.mountainIdx, a.createdAt, a.pictureUrl, b.cnt, b.name from flag a left join (Select ANY_VALUE(f.userIdx) as userIdx," +
                 " ANY_VALUE(f.mountainIdx) as mountainIdx, COUNT(f.mountainIdx) as cnt, m.name  " +
-                "from flag f LEFT JOIN mountain m ON f.mountainIdx = m.mountainIdx group by f.mountainIdx) b on a.mountainIdx = b.mountainIdx where a.userIdx = ? and f.status='t' ";
+                "from flag f LEFT JOIN mountain m ON f.mountainIdx = m.mountainIdx group by f.mountainIdx) b on a.mountainIdx = b.mountainIdx where a.userIdx = ?  ";
 
         Object[] param = new Object[]{userIdx,userIdx,userIdx};
         List<GetFlagResForProfile> getFlagRes = this.jdbcTemplate.query(query,param,(rs,rowNum) -> new GetFlagResForProfile(
