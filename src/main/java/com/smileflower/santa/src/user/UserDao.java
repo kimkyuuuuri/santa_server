@@ -202,9 +202,9 @@ public class UserDao {
         this.jdbcTemplate.update("UPDATE user SET status = 'F' WHERE userIdx = ?",
                 userIdx);
     }
-    public void patchUserStatusForRestore(int userIdx){
-        this.jdbcTemplate.update("UPDATE user SET status = 'T' WHERE userIdx = ?",
-                userIdx);
+    public void patchUserStatusForRestore(int userIdx,String name){
+        this.jdbcTemplate.update("UPDATE user SET status = 'T' ,name=? WHERE userIdx = ?",
+               name, userIdx);
     }
 
     public List<GetUserIdxRes> getTwoMonthAgoDeletedUser(){
@@ -227,7 +227,8 @@ public class UserDao {
 
     //모든 테이블에 있는 userIdx 0으로 바꾸기
     public void updateUserIdx(int userIdx){
-
+        this.jdbcTemplate.update("UPDATE user SET name='' WHERE userIdx = ?",
+                userIdx);
         this.jdbcTemplate.update("UPDATE flag SET userIdx = 0 and status='F' WHERE userIdx = ?",
                 userIdx);
         this.jdbcTemplate.update("UPDATE flagcomment SET userIdx = 0   WHERE userIdx = ?",

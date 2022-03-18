@@ -31,7 +31,7 @@ public class New_HomeDao {
     }
 
     public GetHomeRes getHomeRes(int userIdx) {
-        String getNoticeQuery = "select  case when exists(select notificationIdx from notification where userIdx=? and status='t') =1 then 't' else 'f' end as notice," +
+        String getNoticeQuery = "select  case when exists(select notificationIdx from notification where userIdx=? and status='f') =1 then 't' else 'f' end as notice," +
                 "case when user.status='f' then 't' else 'f' end as isFirst from user where userIdx=?" ;
         return this.jdbcTemplate.queryForObject(getNoticeQuery,
                 (rs, rowNum) -> new GetHomeRes(

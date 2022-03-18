@@ -10,6 +10,7 @@ import lombok.Setter;
 public class PatchUserStatusReq {
     private String emailId;
     private String password;
+    private String name;
 
     PatchUserStatusReq() {
 

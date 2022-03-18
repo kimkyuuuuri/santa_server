@@ -280,7 +280,7 @@ public class UserController {
     @PatchMapping ("restore-user")
     public BaseResponse<String> restoreUser(@RequestBody PatchUserStatusReq patchUserStatusReq) throws BaseException {
         try{
-            if(patchUserStatusReq.getEmailId() == null || patchUserStatusReq.getPassword()==null){
+            if(patchUserStatusReq.getEmailId() == null || patchUserStatusReq.getPassword()==null||patchUserStatusReq.getName()==null){
                 return new BaseResponse<>(POST_USERS_EMPTY);
             }
 
@@ -288,6 +288,8 @@ public class UserController {
             if(!isRegexEmail(patchUserStatusReq.getEmailId())){
                 return new BaseResponse<>(POST_USERS_INVALID_EMAIL);
             }
+
+
 
             if(patchUserStatusReq.getPassword().length()<8){
                 return new BaseResponse<>(INSUFFICIENT_PW_RANGE);

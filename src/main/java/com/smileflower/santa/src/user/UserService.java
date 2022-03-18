@@ -206,11 +206,11 @@ public class UserService {
         }
 
     }
-    public void restoreUser(PatchUserStatusReq patchUserAgreeRes) throws BaseException {
-        int userIdx = userProvider.checkAccount(patchUserAgreeRes.getEmailId(), patchUserAgreeRes.getPassword());
+    public void restoreUser(PatchUserStatusReq patchUserStatusRes) throws BaseException {
+        int userIdx = userProvider.checkAccount(patchUserStatusRes.getEmailId(), patchUserStatusRes.getPassword());
 
 
-            userDao.patchUserStatusForRestore(userIdx);
+            userDao.patchUserStatusForRestore(userIdx,patchUserStatusRes.getName());
 
 
     }
