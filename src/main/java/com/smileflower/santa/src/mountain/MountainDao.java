@@ -151,7 +151,7 @@ public class MountainDao {
                         "                                                from flag f\n" +
                         "                                                             inner join mountain m on f.mountainIdx = m.mountainIdx\n" +
                         "                                                               inner join user u on f.userIdx = u.userIdx\n" +
-                        "                                                      where f.mountainIdx = ? and u.status='t'\n" +
+                        "                                                      where f.mountainIdx = ? " +
                         "\n" +
                         "                                                     group by f.userIdx\n" +
                         "                                                     order by ranking) a inner join (select userIdx,(case\n" +
@@ -161,7 +161,7 @@ public class MountainDao {
                         "                                                              then concat(timestampdiff(hour , max(f.createdAt), current_timestamp()), '시간전')\n" +
                         "                                                          ELSE\n" +
                         "                                                              concat(timestampdiff(day, max(f.createdAt), current_timestamp()), '일전') end)      agoTime\n" +
-                        "                                                from flag f where mountainIdx= ? group by userIdx)b on a.userIdx=b.userIdx order by ranking;;",
+                        "                                                from flag f where mountainIdx= ? group by userIdx)b on a.userIdx=b.userIdx order by ranking;",
                 (rs, rowNum) -> new GetRankRes(
                         rs.getInt("ranking"),
                         rs.getInt("userIdx"),
@@ -192,7 +192,7 @@ public class MountainDao {
                         "                                                from flag f\n" +
                         "                                                             inner join mountain m on f.mountainIdx = m.mountainIdx\n" +
                         "                                                               inner join user u on f.userIdx = u.userIdx\n" +
-                        "                                                      where f.mountainIdx = ? and u.status='t'\n" +
+                        "                                                      where f.mountainIdx = ?" +
                         "\n" +
                         "                                                     group by f.userIdx\n" +
                         "                                                     order by ranking) a inner join (select userIdx,(case\n" +

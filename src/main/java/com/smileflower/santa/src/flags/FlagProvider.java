@@ -69,11 +69,13 @@ public class FlagProvider {
                 getFlagRankRes.setFirstRank(getRankRes);
             }
             else {
-                GetRankRes getRankRes= flagDao.getmyRank(userIdx,mountainIdx);
-                if(getRankRes.getUserImage()!=null){
-                    getRankRes.setUserImage(s3Service.getFileUrl(getRankRes.getUserImage()));
+                List<GetRankRes> getRankRes= flagDao.getmyRank(userIdx,mountainIdx);
+                if(getRankRes.size()!=0) {
+                    if (getRankRes.get(0).getUserImage() != null) {
+                        getRankRes.get(0).setUserImage(s3Service.getFileUrl(getRankRes.get(0).getUserImage()));
+                    }
+                    getFlagRankRes.setMyRank(getRankRes.get(0));
                 }
-                getFlagRankRes.setMyRank(getRankRes);
             }
         }
         return getFlagRankRes;

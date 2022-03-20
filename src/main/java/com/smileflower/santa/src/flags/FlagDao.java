@@ -39,6 +39,7 @@ public class FlagDao {
         return this.jdbcTemplate.queryForObject("select last_insert_id()",int.class);
     }
 
+
     public int checkPickExist(int userIdx,int mountainIdx){
         return this.jdbcTemplate.queryForObject("select Exists(select status from picklist\n" +
                 "where mountainIdx=? and userIdx=? ) as PickExist", int.class,mountainIdx,userIdx);
@@ -91,8 +92,8 @@ public class FlagDao {
                 userIdx,mountainIdx);
     }
 
-    public GetRankRes getmyRank(int userIdx,int mountainIdx) {
-        return this.jdbcTemplate.queryForObject("select *\n" +
+    public List<GetRankRes> getmyRank(int userIdx,int mountainIdx) {
+        return this.jdbcTemplate.query("select *\n" +
                         "from (select row_number() over (order by COUNT(f.userIdx) desc) as ranking,\n" +
                         "             m.mountainIdx,\n" +
                         "             f.userIdx,\n" +

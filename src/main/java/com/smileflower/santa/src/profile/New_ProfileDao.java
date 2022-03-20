@@ -73,7 +73,7 @@ public class New_ProfileDao {
                 "                                                                                                            when  count(*)>= 6 and  count(*) < 8 then 'Lv.4'" +
                 "                                                                                                               when  count(*) >= 8 and  count(*) < 10 then 'Lv.5'" +
                 "                                                                                                              when  count(*) >= 10 then 'Lv.6' end as level" +
-                "                                                     from picture where  picture.userIdx=user.userIdx and user.status='t')" +
+                "                                                     from flag where  flag.userIdx=user.userIdx and user.status='t')" +
                 "                                     as level,user.name as userName,picture.createdAt," +
                 "                   picture.imgUrl as imgUrl,   case when EXISTS(select picturesaveIdx from picturesave where picturesave.userIdx=? and picturesave.pictureIdx=picture.pictureIdx  and picturesave.status='t') =1 then 'T' else 'F' end as isSaved," +
                 "                                                       (select count(*) from picturerecomment where picturerecomment.picturecommentIdx=picturecomment.picturecommentIdx  ) +(select count(*) from picturecomment where picturecomment.pictureIdx=picture.pictureIdx)  as commentCount" +
