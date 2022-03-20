@@ -18,7 +18,7 @@ import static com.smileflower.santa.config.BaseResponseStatus.*;
 
 
 @Service
-@Transactional
+
 public class CommentService {
     private final CommentProvider commentProvider;
     private final CommentDao commentDao;
