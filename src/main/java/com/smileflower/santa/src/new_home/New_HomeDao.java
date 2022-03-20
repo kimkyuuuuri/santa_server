@@ -48,7 +48,7 @@ public class New_HomeDao {
                         "                     from flag where  flag.userIdx=user.userIdx)\n" +
                         "    as level,user.name as userName," +
                                 "case when EXISTS(select flagsaveIdx from flagsave where flagsave.userIdx=? and flagsave.flagIdx=flag.flagIdx and flagsave.status='t') =1 then 'T' else 'F' end as isSaved," +
-                        "       (select count(*) from flagrecomment where flagrecomment.flagcommentIdx=flagcomment.flagcommentIdx and flagrecomment.status='t' ) +(select count(*) from flagcomment where flagcomment.flagIdx=flag.flagIdx and flagcomment.status='t')  as commentCount\n" +
+                        "       (select count(*) from flagrecomment where flagrecomment.flagcommentIdx=flagcomment.flagcommentIdx ) +(select count(*) from flagcomment where flagcomment.flagIdx=flag.flagIdx )  as commentCount\n" +
                         "     ,count( distinct  flagsave.flagsaveIdx ) as saveCount,flag.flagIdx,flag.pictureUrl as flagImageUrl from flag\n" +
                         "    left join flagsave on flag.flagIdx = flagsave.flagIdx\n" +
                         "    inner join user on flag.userIdx = user.userIdx \n" +
