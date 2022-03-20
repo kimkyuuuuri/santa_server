@@ -18,7 +18,7 @@ import java.util.List;
 
 import static com.smileflower.santa.config.BaseResponseStatus.*;
 
-
+@Transactional
 @Service
 public class PictureService{
     private final PictureProvider pictureProvider;

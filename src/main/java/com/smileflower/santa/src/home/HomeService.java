@@ -14,13 +14,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import com.fasterxml.jackson.databind.ser.Serializers;
 import org.springframework.stereotype.Service;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.transaction.annotation.Transactional;
 
 
 import javax.sql.DataSource;
+import javax.transaction.Transactional;
 
 import static com.smileflower.santa.config.BaseResponseStatus.*;
-
+@Transactional
 // Service Create, Update, Delete 의 로직 처리
 @Service
 public class HomeService {

@@ -18,12 +18,13 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import com.smileflower.santa.utils.S3Service;
 import javax.sql.DataSource;
+import javax.transaction.Transactional;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.UUID;
 
 import static com.smileflower.santa.config.BaseResponseStatus.FILE_ERROR;
-
+@Transactional
 // Service Create, Update, Delete 의 로직 처리
 @Service
 public class New_ProfileService {

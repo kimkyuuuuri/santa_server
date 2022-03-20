@@ -20,6 +20,7 @@ import javax.transaction.Transactional;
 import static com.smileflower.santa.utils.Email.*;
 
 @RequiredArgsConstructor
+@Transactional
 @Service
 public class EmailService {
 

@@ -21,19 +21,19 @@ import com.fasterxml.jackson.databind.ser.Serializers;
 import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Service;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.commons.CommonsMultipartFile;
 
 
 import javax.sql.DataSource;
+import javax.transaction.Transactional;
 
 import java.io.*;
 import java.nio.file.Files;
 import java.util.UUID;
 
 import static com.smileflower.santa.config.BaseResponseStatus.*;
-
+@Transactional
 // Service Create, Update, Delete 의 로직 처리
 @Service
 public class MountainService {

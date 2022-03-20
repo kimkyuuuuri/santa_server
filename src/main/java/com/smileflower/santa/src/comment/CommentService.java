@@ -1,8 +1,6 @@
 package com.smileflower.santa.src.comment;
 
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.google.api.services.storage.Storage;
 import com.smileflower.santa.config.BaseException;
 import com.smileflower.santa.src.comment.model.*;
 import com.smileflower.santa.utils.FcmPush;
@@ -13,12 +11,14 @@ import org.slf4j.LoggerFactory;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.io.IOException;
 
 import static com.smileflower.santa.config.BaseResponseStatus.*;
 
 
 @Service
+@Transactional
 public class CommentService {
     private final CommentProvider commentProvider;
     private final CommentDao commentDao;

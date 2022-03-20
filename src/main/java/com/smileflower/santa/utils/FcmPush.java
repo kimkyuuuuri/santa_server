@@ -30,9 +30,10 @@ import java.util.List;
 public class FcmPush {
 
 private ObjectMapper objectMapper=new ObjectMapper();
-    private static final String apiKey="AAAA2LFAFIk:APA91bHDz5DZ9_iqCYfA5Iom-QXPb9mJuBdlP_2EMzwaSNf-Vg2qCg30bvXieipFyFXMh-mq9u6o758TfaFgTo9o9YMQUds5PT_WSEbyOjp-YyN-fOa6XtXChIl86zNH5LbwuMPvm1LJ";
-    private static final String senderId="930686702729";
-
+    //private static final String apiKey="AAAA2LFAFIk:APA91bHDz5DZ9_iqCYfA5Iom-QXPb9mJuBdlP_2EMzwaSNf-Vg2qCg30bvXieipFyFXMh-mq9u6o758TfaFgTo9o9YMQUds5PT_WSEbyOjp-YyN-fOa6XtXChIl86zNH5LbwuMPvm1LJ";
+    private static final String apiKey= "AAAA4jK2Pnc:APA91bHRzhTX9Xpr_MsQAFtnVOhvEtEqGNMKMBnfQ0YY2wLA_DKUUaBCOrlCT0NcAjKB1VQooQscL0Q9fBgKZbmab60BnmfnbAoFu96ZIszVhrc4hmCkYPKZIw9albwZqzelficaRajG";
+   // private static final String senderId="930686702729";
+    private static final String senderId="971513413239";
     public void iosPush(String  token,String title,String data) throws IOException {
 
         if (token != null) {

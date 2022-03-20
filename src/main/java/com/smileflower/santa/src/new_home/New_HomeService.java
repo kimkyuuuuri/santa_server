@@ -9,7 +9,9 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 
 import javax.sql.DataSource;
+import javax.transaction.Transactional;
 
+@Transactional
 // Service Create, Update, Delete 의 로직 처리
 @Service
 public class New_HomeService {
