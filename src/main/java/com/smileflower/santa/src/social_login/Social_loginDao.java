@@ -67,14 +67,20 @@ public class Social_loginDao {
                 email);
 
     }
+    public int checkKakaoExist(String id){
+        return this.jdbcTemplate.queryForObject("select exists(select userIdx from user where kakao = ? and status='t') ",
+                int.class,
+                id);
+
+    }
     public int checkKakaoAccount(String id){
-        return this.jdbcTemplate.queryForObject("select  userIdx from user where kakao=? and status='t'",
+        return this.jdbcTemplate.queryForObject("select  userIdx from user where kakao=? ",
                 (rs, rowNum) -> rs.getInt("userIdx"),
                 id);
     }
 
     public int checkAppleAccount(String id){
-        return this.jdbcTemplate.queryForObject("select  userIdx from user where apple=? and status='t'",
+        return this.jdbcTemplate.queryForObject("select  userIdx from user where apple=? ",
                 (rs, rowNum) -> rs.getInt("userIdx"),
                 id);
     }
@@ -112,13 +118,13 @@ public class Social_loginDao {
                 name);
     }
     public int checkKakaoId(String id){
-        return this.jdbcTemplate.queryForObject("select exists(select name from user where  kakao=?)",
+        return this.jdbcTemplate.queryForObject("select exists(select name from user where  kakao=? and status='t')",
                 int.class,
                 id);
     }
 
     public int checkAppleId(String id){
-        return this.jdbcTemplate.queryForObject("select exists(select name from user where  apple=?)",
+        return this.jdbcTemplate.queryForObject("select exists(select name from user where  apple=? and status='t')",
                 int.class,
                 id);
     }
