@@ -68,13 +68,13 @@ public class Social_loginDao {
 
     }
     public int checkKakaoAccount(String id){
-        return this.jdbcTemplate.queryForObject("select  userIdx from user where kakao=?",
+        return this.jdbcTemplate.queryForObject("select  userIdx from user where kakao=? and status='t'",
                 (rs, rowNum) -> rs.getInt("userIdx"),
                 id);
     }
 
     public int checkAppleAccount(String id){
-        return this.jdbcTemplate.queryForObject("select  userIdx from user where apple=?",
+        return this.jdbcTemplate.queryForObject("select  userIdx from user where apple=? and status='t'",
                 (rs, rowNum) -> rs.getInt("userIdx"),
                 id);
     }
