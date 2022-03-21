@@ -152,7 +152,7 @@ public class Social_loginDao {
                 token,tokenType,userIdx);
     }
     public int patchUserIsFirst(int userIdx ){
-        String query = "update user set status= 'T' where userIdx = ? ";
+        String query = "update user set isFirst= 'N' where userIdx = ? ";
         Object[] params = new Object[]{userIdx};
         return this.jdbcTemplate.update(query,params);
     }
