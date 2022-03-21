@@ -40,8 +40,8 @@ public class Social_loginController {
     private final Social_loginService socialloginService;
     @Autowired
     private final Social_loginProvider socialloginProvider;
-    private int kakaoId=0;
-    private int appleId=0;
+    private static int kakaoId=1;
+    private static int appleId=1;
     final Logger logger = LoggerFactory.getLogger(this.getClass());
 
 
