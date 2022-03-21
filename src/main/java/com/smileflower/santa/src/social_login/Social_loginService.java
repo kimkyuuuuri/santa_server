@@ -88,9 +88,16 @@ public class Social_loginService {
     public AppleLoginRes loginUser(ApplePostUserReq applePostUserReq) throws BaseException {
 
 
-
+        String name2;
 
             int userIdx = social_loginProvider.checkAppleAccount(applePostUserReq.getUserIdentifier());
+        if (social_loginProvider.checkLogExist(userIdx) != 1) {  // 신규로 처음 로그인하는 사람을 위한
+            name2 = social_loginDao.recordLog(userIdx, "I");
+
+        } else {
+            name2 = social_loginDao.recordLog(userIdx, "I");
+
+        }
        patchUserPushToken(userIdx,applePostUserReq.getPushToken(),applePostUserReq.getTokenType());
         String jwt = jwtService.createJwt(userIdx);
       patchUserStatus(userIdx);

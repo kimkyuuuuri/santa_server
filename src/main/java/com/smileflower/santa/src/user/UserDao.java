@@ -70,6 +70,7 @@ public class UserDao {
         return this.jdbcTemplate.queryForObject("select status from loghistory where userIdx=? ORDER BY createdAt DESC LIMIT 1",char.class,
                 userIdx);
     }
+
     public String getEmailId(int userIdx){
         return this.jdbcTemplate.queryForObject("select emailId from user where userIdx=?",String.class,
                 userIdx);
