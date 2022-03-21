@@ -89,13 +89,13 @@ public class Social_loginController {
 
 
         try{
-            if(socialloginProvider.checkKakaoId(Integer.toString(kakaoProfile.getId())) == 0) {
-                PostUserRes postUserRes = socialloginService.createKakaoUser( "kakao"+kakaoProfile.getProperties().getNickname()+kakaoId,"",Integer.toString(kakaoProfile.getId()));
+            if(socialloginProvider.checkKakaoId(kakaoProfile.getId()) == 0) {
+                PostUserRes postUserRes = socialloginService.createKakaoUser( "kakao"+kakaoProfile.getProperties().getNickname()+kakaoId,"",kakaoProfile.getId());
                 kakaoId+=1;
 
             }
 
-                PostUserLoginRes postUserLoginRes = socialloginService.kakaoLogin(Integer.toString(kakaoProfile.getId()),postUserReq.getPushToken(), postUserReq.getTokenType());
+                PostUserLoginRes postUserLoginRes = socialloginService.kakaoLogin(kakaoProfile.getId(),postUserReq.getPushToken(), postUserReq.getTokenType());
 
             return new BaseResponse<>(postUserLoginRes);
         } catch(BaseException exception){
