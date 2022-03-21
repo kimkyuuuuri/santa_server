@@ -332,4 +332,12 @@ public class New_HomeDao {
                 ),userIdx);
 
     }
+    public int checkUserIdx(int userIdx){
+        String checkUserQuery = "select exists(select userIdx from user where userIdx = ?)";
+        int checkUserParams = userIdx;
+        return this.jdbcTemplate.queryForObject(checkUserQuery,
+                int.class,
+                checkUserParams);
+    }
+
 }

@@ -14,6 +14,6 @@ public class ApplePostUserReq {
     private String userIdentifier;
     private String authorizationCode;
     private String identifyToken;
-    private String pushToken;
-    private String tokenType;
+    private String pushToken="N";
+    private String tokenType="N";
 }

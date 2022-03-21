@@ -14,6 +14,9 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+import static com.smileflower.santa.config.BaseResponseStatus.DATABASE_ERROR;
+import static com.smileflower.santa.config.BaseResponseStatus.INVALID_USER;
+
 
 //Provider : Read의 비즈니스 로직 처리
 @Service
@@ -36,7 +39,9 @@ public class New_HomeProvider {
 
     public GetHomeRes getHome(int userIdx) throws BaseException {
 
-
+        if (newHomeDao.checkUserIdx(userIdx)!=1) {
+            throw new BaseException(INVALID_USER);
+        }
         GetHomeRes getHomeRes = newHomeDao.getHomeRes(userIdx);
 
 
@@ -146,4 +151,12 @@ public class New_HomeProvider {
         return getNotificationRes;
 
     }
+    public int checkUserIdx(int userIdx) throws BaseException{
+        try{
+            return newHomeDao.checkUserIdx(userIdx);
+        } catch (Exception exception){
+            throw new BaseException(DATABASE_ERROR);
+        }
+    }
+
 }
