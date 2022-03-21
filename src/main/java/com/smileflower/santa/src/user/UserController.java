@@ -233,7 +233,8 @@ public class UserController {
                 return new BaseResponse<>(INVALID_USER_JWT);
             }
 
-             userService.patchUserStatus(userIdx);
+           //  userService.patchUserStatus(userIdx);
+            DeleteUserRes deleteUserRes = userService.deleteUser(userIdx);
             return new BaseResponse<>("삭제에 성공했습니다.");
 
         } catch (BaseException exception) {
