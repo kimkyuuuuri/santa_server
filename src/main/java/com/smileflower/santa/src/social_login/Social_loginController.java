@@ -128,7 +128,7 @@ public class Social_loginController {
     public BaseResponse<AppleLoginRes> appleLogin(@RequestBody ApplePostUserReq applePostUserReq) {
         System.out.println(applePostUserReq.getUserIdentifier());
         System.out.println(applePostUserReq.getAuthorizationCode());
-        System.out.println("testing");
+        System.out.println("testinㅏg");
 
         try{
            //if(socialloginProvider.checkAppleId(applePostUserReq.getUserIdentifier()) != 1) {
