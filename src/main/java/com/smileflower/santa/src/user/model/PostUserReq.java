@@ -13,5 +13,5 @@ public class PostUserReq {
     private String password;
     private String passwordCheck;
     private String pushToken="I";
-    private String tokenType="N";
+    private String tokenType="I";
 }
