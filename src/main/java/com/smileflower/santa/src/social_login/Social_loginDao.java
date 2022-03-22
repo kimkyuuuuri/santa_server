@@ -21,9 +21,9 @@ public class Social_loginDao {
         this.jdbcTemplate = new JdbcTemplate(dataSource);
     }
 
-    public int insertUser(String identifier,String name) {
-        String query = "insert into user (emailId,  kakao, apple,  name,pw) VALUES (?,?,?,?,?)";
-        Object[] params = new Object[]{null,null,identifier,name,"apple"};
+    public int insertUser(String identifier,String name,String code) {
+        String query = "insert into user (emailId,  kakao, apple,  name,pw,appleCode) VALUES (?,?,?,?,?,?)";
+        Object[] params = new Object[]{null,null,identifier,name,"apple",code};
 
         this.jdbcTemplate.update(query, params);
 
@@ -83,6 +83,12 @@ public class Social_loginDao {
         return this.jdbcTemplate.queryForObject("select  userIdx from user where apple=? and status='t'",
                 (rs, rowNum) -> rs.getInt("userIdx"),
                 id);
+    }
+
+    public int checkAppleAccountByCode(String code){
+        return this.jdbcTemplate.queryForObject("select  userIdx from user where appleCode=? and status='t'",
+                (rs, rowNum) -> rs.getInt("userIdx"),
+                code);
     }
 
 

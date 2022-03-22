@@ -89,10 +89,14 @@ public class Social_loginService {
             System.out.println(applePostUserReq.getUserIdentifier());
             System.out.println(applePostUserReq.getAuthorizationCode());
             System.out.println(applePostUserReq.getIdentifyToken());
-
+    int userIdx=0;
         String name2;
-
-        int userIdx = social_loginProvider.checkAppleAccount(applePostUserReq.getUserIdentifier());
+    if(applePostUserReq.getUserIdentifier()!=null) {
+         userIdx = social_loginProvider.checkAppleAccount(applePostUserReq.getUserIdentifier());
+    }
+    else{
+        userIdx = social_loginProvider.checkAppleAccountByCode(applePostUserReq.getAuthorizationCode());
+    }
         if (social_loginProvider.checkLogExist(userIdx) != 1) {  // 신규로 처음 로그인하는 사람을 위한
             name2 = social_loginDao.recordLog(userIdx, "I");
 
@@ -147,7 +151,7 @@ public class Social_loginService {
     }
     public ApplePostUserRes createUser(ApplePostUserReq applePostUserReq) throws BaseException {
         int userNumber=social_loginDao.getAppleUserNumber();
-        social_loginDao.insertUser( applePostUserReq.getUserIdentifier(),"apple"+applePostUserReq.getName()+userNumber);
+        social_loginDao.insertUser( applePostUserReq.getUserIdentifier(),"apple"+applePostUserReq.getName()+userNumber,applePostUserReq.getAuthorizationCode());
 
         AppleToken.Response appleLoginRes = new AppleToken.Response();
 

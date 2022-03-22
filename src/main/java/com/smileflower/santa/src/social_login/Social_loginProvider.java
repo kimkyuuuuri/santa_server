@@ -42,6 +42,15 @@ public class Social_loginProvider {
 
     }
 
+    public int checkAppleAccountByCode(String code) throws BaseException {
+
+
+        int userIdx = socialloginDao.checkAppleAccountByCode(code); // 여기서 잘 못받아오면 에러나옴 그러므로 미리 위에서 체크하는 것임
+
+        return userIdx;
+
+
+    }
 
     public String checkLog(int userIdx){
         String logStatus = socialloginDao.checkLog(userIdx);
