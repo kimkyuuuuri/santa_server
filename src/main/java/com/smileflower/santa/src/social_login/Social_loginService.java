@@ -109,8 +109,8 @@ public class Social_loginService {
         //중복
 
 
-
-            int userIdx = social_loginDao.createKakaoUser(name,Email,id);
+            int userNumber=social_loginDao.getKakaoUserNumber();
+            int userIdx = social_loginDao.createKakaoUser(name+userNumber,Email,id);
 
             //jwt발급
             String jwt = jwtService.createJwt(userIdx);
@@ -143,9 +143,9 @@ public class Social_loginService {
         social_loginDao.patchUserIsFirst(userIdx);
 
     }
-    public ApplePostUserRes createUser(ApplePostUserReq applePostUserReq,int appleId) throws BaseException {
-
-        social_loginDao.insertUser( applePostUserReq.getUserIdentifier(),"apple"+applePostUserReq.getName()+appleId);
+    public ApplePostUserRes createUser(ApplePostUserReq applePostUserReq) throws BaseException {
+        int userNumber=social_loginDao.getAppleUserNumber();
+        social_loginDao.insertUser( applePostUserReq.getUserIdentifier(),"apple"+applePostUserReq.getName()+userNumber);
 
         AppleToken.Response appleLoginRes = new AppleToken.Response();
 

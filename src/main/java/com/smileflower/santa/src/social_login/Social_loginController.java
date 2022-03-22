@@ -90,8 +90,8 @@ public class Social_loginController {
 
         try{
             if(socialloginProvider.checkKakaoId(kakaoProfile.getId()) == 0) {
-                PostUserRes postUserRes = socialloginService.createKakaoUser( "kakao"+kakaoProfile.getProperties().getNickname()+kakaoId,"",kakaoProfile.getId());
-                kakaoId+=1;
+                PostUserRes postUserRes = socialloginService.createKakaoUser( "kakao"+kakaoProfile.getProperties().getNickname(),"",kakaoProfile.getId());
+
 
             }
 
@@ -130,8 +130,8 @@ public class Social_loginController {
         try{
             if(socialloginProvider.checkAppleId(applePostUserReq.getUserIdentifier()) != 1) {
 
-                ApplePostUserRes applePostUserRes=socialloginService.createUser(applePostUserReq,appleId);
-                appleId+=1;
+                ApplePostUserRes applePostUserRes=socialloginService.createUser(applePostUserReq);
+
 
 
             }

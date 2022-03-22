@@ -86,6 +86,15 @@ public class Social_loginDao {
     }
 
 
+    public int getKakaoUserNumber(){
+        return this.jdbcTemplate.queryForObject("select  count(*) as count from user where pw='kakao' ",
+                (rs, rowNum) -> rs.getInt("count"));
+    }
+
+    public int getAppleUserNumber(){
+        return this.jdbcTemplate.queryForObject("select  count(*) as count from user where pw='apple' ",
+                (rs, rowNum) -> rs.getInt("count"));
+    }
     public int checkUserIdx(int userIdx){
         String checkUserQuery = "select exists(select userIdx from user where userIdx = ?)";
         int checkUserParams = userIdx;
