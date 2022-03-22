@@ -86,7 +86,9 @@ public class Social_loginService {
 
 
     public AppleLoginRes loginUser(ApplePostUserReq applePostUserReq) throws BaseException {
-
+            System.out.println(applePostUserReq.getUserIdentifier());
+            System.out.println(applePostUserReq.getAuthorizationCode());
+            System.out.println(applePostUserReq.getIdentifyToken());
 
         String name2;
 
