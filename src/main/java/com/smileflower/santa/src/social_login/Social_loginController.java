@@ -126,6 +126,8 @@ public class Social_loginController {
     @PostMapping(value = "/new-apple/login")
     @ResponseBody
     public BaseResponse<AppleLoginRes> appleLogin(@RequestBody ApplePostUserReq applePostUserReq) {
+        System.out.println(applePostUserReq.getUserIdentifier());
+        System.out.println(applePostUserReq.getAuthorizationCode());
 
         try{
            //if(socialloginProvider.checkAppleId(applePostUserReq.getUserIdentifier()) != 1) {
