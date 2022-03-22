@@ -124,7 +124,7 @@ private ObjectMapper objectMapper=new ObjectMapper();
 
                         // System.out.println(response.code() + "\n" + response.body().string() + "\n SUCCESS");
                     } else {
-                        System.out.println(response.body());
+                       // System.out.println(response.body());
                     }
                 }
             });
@@ -164,6 +164,7 @@ private ObjectMapper objectMapper=new ObjectMapper();
                 .build();
 
         Response response = client.newCall(request).execute();
+        response.close();
 
 
     }
@@ -182,8 +183,8 @@ private ObjectMapper objectMapper=new ObjectMapper();
                 .build();
 
         Response response = client.newCall(request).execute();
-        System.out.println(response.code());
-
+        //System.out.println(response.code());
+        response.close();
 
     }
 
