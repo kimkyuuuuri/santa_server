@@ -128,11 +128,9 @@ public class Social_loginController {
     public BaseResponse<AppleLoginRes> appleLogin(@RequestBody ApplePostUserReq applePostUserReq) {
 
         try{
-            if(socialloginProvider.checkAppleId(applePostUserReq.getUserIdentifier()) != 1) {
-
+           //if(socialloginProvider.checkAppleId(applePostUserReq.getUserIdentifier()) != 1) {
+            if(socialloginProvider.checkAppleIdByCode(applePostUserReq.getAuthorizationCode()) != 1) {
                 ApplePostUserRes applePostUserRes=socialloginService.createUser(applePostUserReq);
-
-
 
             }
             AppleLoginRes appleLoginRes=socialloginService.loginUser(applePostUserReq);

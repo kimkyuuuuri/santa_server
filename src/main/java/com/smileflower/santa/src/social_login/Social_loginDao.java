@@ -143,6 +143,11 @@ public class Social_loginDao {
                 int.class,
                 id);
     }
+    public int checkAppleIdByCode(String code){
+        return this.jdbcTemplate.queryForObject("select exists(select name from user where  appleCode=? and status='t')",
+                int.class,
+                code);
+    }
 
     public String checkLog(int userIdx){
         return this.jdbcTemplate.queryForObject("select status from loghistory\n" +

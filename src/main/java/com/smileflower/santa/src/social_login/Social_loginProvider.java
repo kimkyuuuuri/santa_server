@@ -75,6 +75,10 @@ public class Social_loginProvider {
     }
 
 
+    public int checkAppleIdByCode(String id){
+        return socialloginDao.checkAppleIdByCode(id);
+    }
+
 
 
     public int checkEmailId(String email){
