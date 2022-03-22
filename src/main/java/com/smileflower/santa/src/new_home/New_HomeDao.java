@@ -318,7 +318,7 @@ public class New_HomeDao {
                         "\n" +
                         "    ELSE\n" +
                         "    concat(timestampdiff(week, createdAt, current_timestamp()), '주 전') end  as  createdAt from notification\n" +
-                        " where userIdx=? order by createdAt desc;",
+                        " where userIdx=? order by createdAt;",
                 (rk,rownum) -> new GetNotificationRes(
                 rk.getInt("notificationIdx"),
                  rk.getInt("flagIdx"),
