@@ -96,7 +96,9 @@ public class UserService {
         //jwt발급
         String jwt = jwtService.createJwt(userIdx);
         int jwtIdx = userDao.postJwt(jwt);
-        userDao.updateUserToken(userIdx,postUserLoginReq.getPushToken(),postUserLoginReq.getTokenType());
+        //userDao.updateUserToken(userIdx,postUserLoginReq.getPushToken(),postUserLoginReq.getTokenType());
+        userDao.updateUserToken(userIdx,postUserLoginReq.getPushToken(),"I");
+
         userDao.patchUserIsFirst(userIdx);
         return new PostUserLoginRes(jwt, userIdx, name);
     }
