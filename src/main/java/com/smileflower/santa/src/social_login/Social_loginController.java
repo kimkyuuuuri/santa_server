@@ -126,13 +126,11 @@ public class Social_loginController {
     @PostMapping(value = "/new-apple/login")
     @ResponseBody
     public BaseResponse<AppleLoginRes> appleLogin(@RequestBody ApplePostUserReq applePostUserReq) {
-        System.out.println(applePostUserReq.getUserIdentifier());
-        System.out.println(applePostUserReq.getAuthorizationCode());
-        System.out.println("testiㅇnㅏg");
+
 
         try{
-           //if(socialloginProvider.checkAppleId(applePostUserReq.getUserIdentifier()) != 1) {
-            if(socialloginProvider.checkAppleIdByCode(applePostUserReq.getAuthorizationCode()) != 1) {
+           if(socialloginProvider.checkAppleId(applePostUserReq.getUserIdentifier()) != 1) {
+           // if(socialloginProvider.checkAppleIdByCode(applePostUserReq.getAuthorizationCode()) != 1) {
                 ApplePostUserRes applePostUserRes=socialloginService.createUser(applePostUserReq);
 
             }
