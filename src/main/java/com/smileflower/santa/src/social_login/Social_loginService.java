@@ -155,6 +155,6 @@ public class Social_loginService {
 
         AppleToken.Response appleLoginRes = new AppleToken.Response();
 
-        return new ApplePostUserRes(appleLoginRes.getRefresh_token(),applePostUserReq.getUserEmail().getEmail(),applePostUserReq.getName());
+        return new ApplePostUserRes(appleLoginRes.getRefresh_token(),applePostUserReq.getUserEmail(),applePostUserReq.getName());
     }
 }

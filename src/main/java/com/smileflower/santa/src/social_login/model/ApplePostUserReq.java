@@ -10,7 +10,7 @@ import lombok.Setter;
 
 public class ApplePostUserReq {
     private String name;
-
+    private String userEmail="N";
     private String userIdentifier;
     private String authorizationCode;
     private String identifyToken;
