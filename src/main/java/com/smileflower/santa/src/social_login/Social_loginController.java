@@ -2,8 +2,6 @@ package com.smileflower.santa.src.social_login;
 
 
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.smileflower.santa.config.BaseException;
 import com.smileflower.santa.config.BaseResponse;
@@ -147,7 +145,7 @@ public class Social_loginController {
     @ResponseBody
     public BaseResponse<AppleToken> androidAppleLogin(@RequestBody ServicesResponse serviceResponse) throws BaseException {
 
-    System.out.println(serviceResponse);
+    //System.out.println(serviceResponse);
             if (serviceResponse == null) {
                 return null;
             }
