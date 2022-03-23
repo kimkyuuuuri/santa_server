@@ -202,7 +202,7 @@ public class UserService {
 
     }
     public void agree(int userIdx,PostUserAgreeRes postUserAgreeRes){
-
+        userDao.patchUserIsFirst(userIdx);
         if(postUserAgreeRes.getIsAgree().equals("N")) {
             userDao.patchUserTokenType(userIdx);
         }
