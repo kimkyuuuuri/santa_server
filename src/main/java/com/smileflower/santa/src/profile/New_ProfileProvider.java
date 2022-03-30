@@ -42,7 +42,7 @@ public class New_ProfileProvider {
     public GetProfileRes getProfileRes(int userIdx) throws BaseException {
         List<GetPostForProfileRes> getPostsRes = new ArrayList<>();
         List<GetFlagResForProfile> getFlagRes = newProfileDao.getFlagResForProfile(userIdx);
-        List<GetPicturesRes> getPicturesRes = newProfileDao.getPicturesRes(userIdx);
+        List<GetPicturesRes> getPicturesRes = newProfileDao.getPicturesRes(userIdx,userIdx);
         GetUserRes getUserRes= newProfileDao.getUserRes(userIdx);
         int flagsResponseCnt = getFlagRes.size();
         int level = 0;
@@ -105,8 +105,8 @@ public class New_ProfileProvider {
         }
 
         List<GetPostsRes> getPostsRes = new ArrayList<>();
-        List<GetFlagRes> getFlagRes = newProfileDao.getFlagRes(userIdx);
-        List<GetPicturesRes> getPicturesRes =newProfileDao.getPicturesRes(userIdx);
+        List<GetFlagRes> getFlagRes = newProfileDao.getFlagRes(userIdx,userIdxByJwt);
+        List<GetPicturesRes> getPicturesRes =newProfileDao.getPicturesRes(userIdx,userIdxByJwt);
         GetUserRes getUserRes= newProfileDao.getUserRes(userIdx);
         for(int i=0;i<getPicturesRes.size();i++){
             if (getPicturesRes.get(i).getUserImageUrl() != null)

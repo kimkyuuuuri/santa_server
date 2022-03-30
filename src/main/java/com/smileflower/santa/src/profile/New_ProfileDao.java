@@ -64,7 +64,7 @@ public class New_ProfileDao {
         ));
         return getFlagRes;
     }
-    public List<GetPicturesRes> getPicturesRes(int userIdx) {
+    public List<GetPicturesRes> getPicturesRes(int userIdx, int userIdxByJwt) {
         String query = "select picture.pictureIdx ,user.userImageUrl,user.userIdx, (select" +
                 "                                                                                                 case" +
                 "                                                                                               when  count(*) > 0 and  count(*) < 2 then 'Lv.1'" +
@@ -75,7 +75,7 @@ public class New_ProfileDao {
                 "                                                                                                              when  count(*) >= 10 then 'Lv.6' end as level" +
                 "                                                     from flag where  flag.userIdx=user.userIdx and user.status='t')" +
                 "                                     as level,user.name as userName,picture.createdAt," +
-                "                   picture.imgUrl as imgUrl,   case when EXISTS(select picturesaveIdx from picturesave where picturesave.userIdx=? and picturesave.pictureIdx=picture.pictureIdx  and picturesave.status='t') =1 then 'T' else 'F' end as isSaved," +
+                "                   picture.imgUrl as imgUrl,   case when EXISTS(select picturesaveIdx from picturesave where picturesave.userIdx=? and picturesave.pictureIdx=picture.pictureIdx  and picturesave.status='T') =1 then 'T' else 'F' end as isSaved," +
                 "                                                       (select count(*) from picturerecomment where picturerecomment.picturecommentIdx=picturecomment.picturecommentIdx  ) +(select count(*) from picturecomment where picturecomment.pictureIdx=picture.pictureIdx)  as commentCount" +
                 "                                                      ,(select count(*) from picturesave where picturesave.pictureIdx=picture.pictureIdx and picturesave.status='t') as saveCount" +
                 "                                      from picture" +
@@ -85,7 +85,7 @@ public class New_ProfileDao {
                 " left join picturecomment on picture.pictureIdx = picturecomment.pictureIdx" +
                 "                                       where user.status='t' and picture.userIdx=? and picture.status='t' group by picture.pictureIdx order by picture.createdAt " ;
 
-        Object[] param = new Object[]{userIdx,userIdx};
+        Object[] param = new Object[]{userIdxByJwt,userIdx};
         List<GetPicturesRes> getPicturesRes = this.jdbcTemplate.query(query,param,(rs,rowNum) -> new GetPicturesRes(
                 rs.getLong("pictureIdx"),
                 rs.getString("userImageUrl"),
@@ -102,7 +102,7 @@ public class New_ProfileDao {
         return getPicturesRes;
     }
 
-    public List<GetFlagRes> getFlagRes(int userIdx) {
+    public List<GetFlagRes> getFlagRes(int userIdx,int userIdxByJwt) {
         String query = "select flag.flagIdx ,user.userImageUrl as userImgUrl,user.userIdx, (select" +
                 "                                                                                                 case" +
                 "                                                                                               when  count(*) > 0 and  count(*) < 2 then 'Lv.1'" +
@@ -113,7 +113,7 @@ public class New_ProfileDao {
                 "                                                                                                              when  count(*) >= 10 then 'Lv.6' end as level" +
                 "                                                     from flag where  flag.userIdx=user.userIdx and user.status='t')" +
                 "                                     as level,user.name as userName,flag.createdAt," +
-                "                   flag.pictureUrl as pictureUrl,   case when EXISTS(select flagsaveIdx from flagsave where flagsave.userIdx=? and flagsave.flagIdx=flag.flagIdx  and flagsave.status='t') =1 then 'T' else 'F' end as isSaved," +
+                "                   flag.pictureUrl as pictureUrl, case when EXISTS(select flagsaveIdx from flagsave where flagsave.userIdx=? and flagsave.flagIdx=flag.flagIdx and flagsave.status='t') =1 then 'T' else 'F' end as isSaved," +
                 "                                                       (select count(*) from flagrecomment where flagrecomment.flagcommentIdx=flagcomment.flagcommentIdx  ) +(select count(*) from flagcomment where flagcomment.flagIdx=flag.flagIdx)  as commentCount" +
                 "                                                       ,(select count(*) from flagsave where flagsave.flagIdx=flag.flagIdx and flagsave.status='t') as saveCount" +
                 "                                      from flag" +
@@ -122,7 +122,7 @@ public class New_ProfileDao {
                 "                                        left join flagcomment on flag.flagIdx = flagcomment.flagIdx" +
                 "                                       where  user.status='t' and flag.userIdx=? and flag.status='t' group by flag.flagIdx order by flag.createdAt " ;
 
-        Object[] param = new Object[]{userIdx,userIdx};
+        Object[] param = new Object[]{userIdxByJwt,userIdx};
         List<GetFlagRes> getFlagRes = this.jdbcTemplate.query(query,param,(rs,rowNum) -> new GetFlagRes(
                 rs.getLong("flagIdx"),
                 rs.getString("userImgUrl"),
