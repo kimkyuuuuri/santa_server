@@ -139,14 +139,14 @@ public class FlagProvider {
     }
 
     public GetCheckDoubleVisitedRes checkDoubleVisited(int mountainIdx, int userIdx) throws BaseException {
+        boolean isDoubleVisited = flagDao.findTodayFlagByIdx(userIdx)!=0;
+        if (isDoubleVisited == true)
+        throw new BaseException(POST_FLAGS_EXISTS_FLAG);
         if (flagDao.checkMountainExist(mountainIdx)==0) {
             throw new BaseException(POST_FLAGS_INVALID_MOUNTAIN);
 
         }
-        if (flagDao.checkDoubleVisited(mountainIdx,userIdx)==1) {
-            throw new BaseException(POST_FLAGS_EXISTS_FLAG);
 
-        }
         else {
 
             return  new GetCheckDoubleVisitedRes(true);
