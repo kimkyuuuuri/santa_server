@@ -169,24 +169,6 @@ private ObjectMapper objectMapper=new ObjectMapper();
 
     }
 
-    public void androidSendMessageTo(String targetToken, String title, String body) throws IOException {
-        String message = iosMakeMessage(targetToken, title, body);
-
-        OkHttpClient client = new OkHttpClient();
-        RequestBody requestBody = RequestBody.create(MediaType.get("application/json; charset=utf-8"),
-                message);
-        Request request = new Request.Builder()
-                .url("https://fcm.googleapis.com/v1/projects/santa-dev-7262a/messages:send")
-                .post(requestBody)
-                .addHeader(HttpHeaders.AUTHORIZATION, "Bearer " + getAccessToken())
-                .addHeader(HttpHeaders.CONTENT_TYPE, "application/json; UTF-8")
-                .build();
-
-        Response response = client.newCall(request).execute();
-        //System.out.println(response.code());
-        response.close();
-
-    }
 
     private String getAccessToken() throws IOException {
 

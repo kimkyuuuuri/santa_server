@@ -366,7 +366,7 @@ public class FlagDao {
     }
 
     public int checkDoubleVisited(int mountainIdx,int userIdx){
-        return this.jdbcTemplate.queryForObject("select EXISTS(select flagIdx from flag where  mountainIdx=? and userIdx=?) as exist",
+        return this.jdbcTemplate.queryForObject("select EXISTS(select flagIdx from flag where  mountainIdx=? and userIdx=? ) as exist",
                 int.class,
                 mountainIdx,userIdx);
     }
