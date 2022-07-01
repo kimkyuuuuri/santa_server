@@ -63,4 +63,16 @@ public class EmailDao {
                 int.class,
                 checkEmailParams);
     }
+
+    public void updatePw(int userIdx,String pw){
+        this.jdbcTemplate.update("UPDATE user SET pw = ? WHERE userIdx = ?",
+                pw,userIdx);
+    }
+
+    public int  getUserIdxByEmail(String emailId){
+        return this.jdbcTemplate.queryForObject("select userIdx from User\n" +
+                        "where emailId=?",
+                Integer.class,
+                emailId);
+    }
 }

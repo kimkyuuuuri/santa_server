@@ -11,6 +11,8 @@ import com.smileflower.santa.config.BaseResponseStatus;
 import com.smileflower.santa.src.email.model.PostAuthReq;
 import com.smileflower.santa.src.user.UserDao;
 
+import static com.smileflower.santa.config.BaseResponseStatus.DATABASE_ERROR;
+
 @RequiredArgsConstructor
 @Service
 public class EmailProvider {
@@ -46,11 +48,11 @@ public class EmailProvider {
     }
 
     public int checkDeletedUser(String email) throws BaseException{
-       // try{
+        try{
             return emailDao.checkDeletedUserExist(email);
-       // } catch (Exception exception){
-         //   throw new BaseException(BaseResponseStatus.DATABASE_ERROR);
-        //}
+        } catch (Exception exception){
+            throw new BaseException(BaseResponseStatus.DATABASE_ERROR);
+        }
     }
 
     public String checkpw(String email) throws BaseException{
@@ -58,6 +60,19 @@ public class EmailProvider {
             return emailDao.checkpw(email);
         } catch (Exception exception){
             throw new BaseException(BaseResponseStatus.DATABASE_ERROR);
+        }
+    }
+
+    public void modifyPw(int userIdx,String pw) throws BaseException{
+
+        emailDao.updatePw(userIdx,pw);
+    }
+
+    public int getUserIdx(String emailId) throws BaseException{
+        try{
+            return emailDao.getUserIdxByEmail(emailId);
+        } catch (Exception exception){
+            throw new BaseException(DATABASE_ERROR);
         }
     }
 }
