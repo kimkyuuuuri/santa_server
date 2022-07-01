@@ -62,6 +62,8 @@ public class EmailService {
             throw new BaseException(BaseResponseStatus.SEND_MAIL_ERROR);
         }
         catch (Exception exception){
+            //System.out.println(exception);
+            //이메일 인증 시 오류
             throw new BaseException(BaseResponseStatus.DATABASE_ERROR);
         }
     }
@@ -78,17 +80,21 @@ public class EmailService {
         String realpw;
         String nonreal;
         nonreal = emailProvider.checkpw(email);
-        System.out.print(nonreal);
-        try {
+        String pw = "";
+        for (int i = 0; i < 12; i++) {
+            pw += (char) ((Math.random() * 26) + 97);
+        }
 
-            realpw = new AES128(Secret.USER_INFO_PASSWORD_KEY).decrypt(emailProvider.checkpw(email));
+        try {
+           int userIdx= emailDao.getUserIdxByEmail(email);
+             emailDao.updatePw(userIdx,pw);
         }catch (Exception ignored) {
-            throw new BaseException(BaseResponseStatus.PASSWORD_ENCRYPTION_ERROR);
+            throw new BaseException(BaseResponseStatus.DATABASE_ERROR);
         }
         try{
             message.addRecipients(MimeMessage.RecipientType.TO, email);
-            message.setSubject("[산타] " + "비밀번호를 안내해드립니다."); // 이메일 제목
-            message.setText(findPassword(realpw, templateEngine), "utf-8", "html");
+            message.setSubject("[산타] " + "임시 비밀번호를 발급드립니다."); // 이메일 제목
+            message.setText(findPassword(pw, templateEngine), "utf-8", "html");
 
             emailSender.send(message); // 이메일 전송
 
