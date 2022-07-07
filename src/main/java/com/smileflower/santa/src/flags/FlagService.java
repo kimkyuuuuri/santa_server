@@ -213,7 +213,7 @@ public class FlagService {
 
                 flagDao.createFlagSaveNotification(userIdxbyFlagIdx,flagIdx,getUserInfoRes.getName() + "님이 회원님의 게시물에 좋아요를 눌렀어요!💚");
 
-                if (getUserInfoResForPush2.getTokenType().equals("I")) {
+                if (getUserInfoResForPush2.getTokenType().equalsIgnoreCase("I")) {
                     fcmPush.iosPush(pushToken, "SANTA", getUserInfoRes.getName() + "님이 회원님의 게시물에 좋아요를 눌렀어요!💚");
 
                 }

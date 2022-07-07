@@ -52,7 +52,7 @@ public class CommentService {
             if(userIdxbyFlagIdx!=userIdx){
                 GetUserInfoRes getUserInfoResForPush=commentProvider.getUserName(userIdx);
                 commentDao.createFlagCommentNotification(userIdxbyFlagIdx,idx,getUserInfoRes.getName()+"님이 회원님의 게시물에 댓글을 남겼어요! 지금 확인해보세요👀");
-                if(getUserInfoResForPush.getTokenType().equals("I"))
+                if(getUserInfoResForPush.getTokenType().equalsIgnoreCase("I"))
                 fcmPush.iosPush(pushToken,"SANTA",getUserInfoRes.getName()+"님이 회원님의 게시물에 댓글을 남겼어요! 지금 확인해보세요👀");
                 else if(getUserInfoResForPush.getTokenType().equals("A"))
                     fcmPush.androidPush(pushToken,"SANTA",getUserInfoRes.getName()+"님이 회원님의 게시물에 댓글을 남겼어요! 지금 확인해보세요👀");
@@ -72,7 +72,7 @@ public class CommentService {
                 commentDao.createPictureCommentNotification(userIdxbyPictureIdx,idx,getUserInfoRes.getName() + "님이 회원님의 게시물에 댓글을 남겼어요! 지금 확인해보세요👀");
 
 
-                if(getUserInfoResForPush.getTokenType().equals("I")) {
+                if(getUserInfoResForPush.getTokenType().equalsIgnoreCase("I")) {
 
                     fcmPush.iosPush(pushToken, "SANTA", getUserInfoRes.getName() + "님이 회원님의 게시물에 댓글을 남겼어요! 지금 확인해보세요👀");
                 }
@@ -108,7 +108,7 @@ public class CommentService {
                  GetUserInfoRes getUserInfoRes=commentProvider.getUserName(userIdx);
                  Long flagIdx=commentDao.getFlagIdx(commentIdx);
                 commentDao.createFlagRecommentNotification(userIdxbyFlagCommentIdx,flagIdx,getUserInfoRes.getName() + "님이 회원님의 댓글에 답글을 남겼어요! 지금 확인해보세요👀");
-                if(getUserInfoResForPush.getTokenType().equals("I")) {
+                if(getUserInfoResForPush.getTokenType().equalsIgnoreCase("I")) {
                     fcmPush.iosPush(flagCommentPushToken, "SANTA", getUserInfoRes.getName() + "님이 회원님의 댓글에 답글을 남겼어요! 지금 확인해보세요👀");
                 }
                 else if(getUserInfoResForPush.getTokenType().equals("A")) {
@@ -123,7 +123,7 @@ public class CommentService {
                  Long flagIdx=commentDao.getFlagIdx(commentIdx);
 
                     commentDao.createFlagCommentNotification(userIdxbyFlagIdx,flagIdx,getUserInfoRes.getName() + "님이 회원님의 게시물에 댓글을 남겼어요! 지금 확인해보세요👀");
-                if(getUserInfoResForPush.getTokenType().equals("I")) {
+                if(getUserInfoResForPush.getTokenType().equalsIgnoreCase("I")) {
                     fcmPush.iosPush(flagPushToken, "SANTA", getUserInfoRes.getName() + "님이 회원님의 게시물에 댓글을 남겼어요! 지금 확인해보세요👀");
                 }else if(getUserInfoResForPush.getTokenType().equals("A")) {
                     fcmPush.androidPush(flagCommentPushToken, "SANTA", getUserInfoRes.getName() + "님이 회원님의 게시물에 댓글을 남겼어요! 지금 확인해보세요👀");
@@ -151,7 +151,7 @@ public class CommentService {
 
                 Long pictureIdx=commentDao.getPictureIdx(commentIdx);
                 commentDao.createPictureRecommentNotification(userIdxbyPictureCommentIdx,pictureIdx,getUserInfoRes.getName() + "님이 회원님의 댓글에 답글을 남겼어요! 지금 확인해보세요👀");
-                if(getUserInfoResForPush.getTokenType().equals("I")) {
+                if(getUserInfoResForPush.getTokenType().equalsIgnoreCase("I")) {
 
                     fcmPush.iosPush(pictureCommentPushToken, "SANTA", getUserInfoRes.getName() + "님이 회원님의 댓글에 답글을 남겼어요! 지금 확인해보세요👀");
                 }
@@ -168,7 +168,7 @@ public class CommentService {
 
                 Long pictureIdx=commentDao.getPictureIdx(commentIdx);
                 commentDao.createPictureCommentNotification(userIdxbyPictureIdx,pictureIdx,getUserInfoRes.getName() + "님이 회원님의 게시물에 댓글을 남겼어요! 지금 확인해보세요👀");
-                if(getUserInfoResForPush.getTokenType().equals("I")) {
+                if(getUserInfoResForPush.getTokenType().equalsIgnoreCase("I")) {
                     fcmPush.iosPush(picturePushToken, "SANTA", getUserInfoRes.getName() + "님이 회원님의 게시물에 댓글을 남겼어요! 지금 확인해보세요👀");
                 }
                 else if(getUserInfoResForPush.getTokenType().equals("A")) {

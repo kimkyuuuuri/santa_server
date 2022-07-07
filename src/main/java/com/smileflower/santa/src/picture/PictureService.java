@@ -57,7 +57,7 @@ public class PictureService{
    // System.out.println(getUserInfoResForPush2.getTokenType())
               //  System.out.println(pushToken);
 
-                if (getUserInfoResForPush2.getTokenType().equals("I")) {
+                if (getUserInfoResForPush2.getTokenType().equalsIgnoreCase("I")) {
 
                     fcmPush.iosPush(pushToken, "SANTA", getUserInfoRes.getName() + "님이 회원님의 게시물에 좋아요를 눌렀어요!💚");
 
