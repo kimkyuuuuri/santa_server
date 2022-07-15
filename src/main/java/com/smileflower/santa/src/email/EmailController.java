@@ -26,7 +26,7 @@ public class EmailController {
     final Logger logger = LoggerFactory.getLogger(this.getClass());
 
     @PostMapping("/password")
-    public BaseResponse<String> emailpassword(@RequestBody PostEmailReq postEmailReq) {
+    public BaseResponse<String> emailPassword(@RequestBody PostEmailReq postEmailReq) {
         if(postEmailReq.getEmail() == null){
             return new BaseResponse<>(POST_USERS_EMPTY_EMAIL);
         }

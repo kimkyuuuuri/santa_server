@@ -116,7 +116,7 @@ public class New_HomeController {
 
     @ResponseBody
     @GetMapping("/notification")
-    public BaseResponse<List<GetNotificationRes>> getNotification() throws BaseException {
+    public BaseResponse<List<GetNotificationRes>> getNotifications() throws BaseException {
 
         try{
             if(jwtService.getJwt()==null){
@@ -127,8 +127,8 @@ public class New_HomeController {
 
                 int userIdx=jwtService.getUserIdx();
 
-                List<GetNotificationRes> getNotificationRes= newHomeProvider.getNotification(userIdx);
-                return new BaseResponse<>(getNotificationRes);
+                List<GetNotificationRes> getNotificationsRes= newHomeProvider.getNotification(userIdx);
+                return new BaseResponse<>(getNotificationsRes);
             }
 
         }catch(BaseException exception){

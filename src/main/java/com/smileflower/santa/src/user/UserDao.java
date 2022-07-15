@@ -139,7 +139,7 @@ public class UserDao {
                 emailId);
     }
 
-    public List<GetFlagRes> getFlagRes(int userIdx){
+    public List<GetFlagRes> getFlagsRes(int userIdx){
         return this.jdbcTemplate.query("select pictureUrl as pictureImgUrl from flag where userIdx=?",
                 (rs, rowNum) -> new GetFlagRes(
                         rs.getString("pictureImgUrl")),
@@ -147,7 +147,7 @@ public class UserDao {
                 userIdx);
     }
 
-    public List<GetPictureRes> getPictueRes(int userIdx){
+    public List<GetPictureRes> getPicturesRes(int userIdx){
         return this.jdbcTemplate.query("select imgUrl as pictureImgUrl from picture where userIdx=?",
                 (rs, rowNum) -> new GetPictureRes(
                         rs.getString("pictureImgUrl")),
@@ -217,7 +217,7 @@ public class UserDao {
 
     }
 
-    public List<GetUserIdxRes> getSixMonthAgoDeletedUser(){
+    public List<GetUserIdxRes> getSixMonthAgoDeletedUsers(){
         return this.jdbcTemplate.query("select userIdx from user where status='F' and  timestampdiff(day,updatedAt,NOW())=180",
                 (rs, rowNum) -> new GetUserIdxRes(
 

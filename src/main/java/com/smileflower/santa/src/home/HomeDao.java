@@ -20,7 +20,7 @@ public class HomeDao {
         this.jdbcTemplate = new JdbcTemplate(dataSource);
     }
 
-    public List<GetHomeMountainRes> getHomeMountain(int userIdx,int mountainIdx) {
+    public List<GetHomeMountainRes> getHomeMountains(int userIdx,int mountainIdx) {
         return this.jdbcTemplate.query("select m.mountainIdx,\n" +
                         "                                m.name as mountainName,\n" +
                         "                                       m.imageUrl       as mountainImage,\n" +

@@ -55,7 +55,7 @@ public class HomeProvider {
                 homeStatus= "추천 산";
                 getHomeRes.setHomeStatus(homeStatus);
                 int mountainIdx = i;
-                List<GetHomeMountainRes> getHomeMountainRes = homeDao.getHomeMountain(userIdx, mountainIdx);
+                List<GetHomeMountainRes> getHomeMountainRes = homeDao.getHomeMountains(userIdx, mountainIdx);
                 getmyflagMountainRes.getMountain().add(getHomeMountainRes.get(0));
             }
         }

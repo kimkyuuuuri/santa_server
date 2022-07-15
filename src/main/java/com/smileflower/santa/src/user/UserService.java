@@ -135,8 +135,8 @@ public class UserService {
             throw new BaseException(INVALID_USER);
         }
         GetUserRes getUserRes=userDao.getUserRes(userIdx);
-        List<GetFlagRes> getFlagRes=userDao.getFlagRes(userIdx);
-        List<GetPictureRes> getPictureRes=userDao.getPictueRes(userIdx);
+        List<GetFlagRes> getFlagRes=userDao.getFlagsRes(userIdx);
+        List<GetPictureRes> getPictureRes=userDao.getPicturesRes(userIdx);
         for(int i=0;i<getFlagRes.size();i++){
             s3Service.deleteFile(getFlagRes.get(i).getPictureImgUrl());
         }
@@ -195,7 +195,7 @@ public class UserService {
 
     @Scheduled(cron = "0 0 0 * * *")	// 6개월 후 삭제하기
     public void deleteUserIdx() throws Exception {
-        List<GetUserIdxRes> getUserIdxRes=userDao.getSixMonthAgoDeletedUser();
+        List<GetUserIdxRes> getUserIdxRes=userDao.getSixMonthAgoDeletedUsers();
         for (int i=0;i<getUserIdxRes.size();i++){
             userDao.deleteUser(getUserIdxRes.get(i).getUserIdx());
         }

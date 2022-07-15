@@ -35,10 +35,7 @@ public class FlagProvider {
         this.jwtService = jwtService;
         this.s3Service = s3Service;
     }
-    public int checkMountain(String mountain){
-        int exist = flagDao.checkMountain(mountain);
-        return exist;
-    }
+
 
     @Transactional
     public GetFlagRes getFlag(int userIdx, String mountain) throws BaseException {
@@ -94,7 +91,7 @@ public class FlagProvider {
         return getAltitudeRes;
     }
 
-    public List<GetPickRes> getPick(int userIdx) throws BaseException {
+    public List<GetPickRes> getPicks(int userIdx) throws BaseException {
         List<GetPickRes> getPickRes= flagDao.getPick(userIdx);
         for(int i=0;i<getPickRes.size();i++){
             if(getPickRes.get(i).getMountainImg()!=null){

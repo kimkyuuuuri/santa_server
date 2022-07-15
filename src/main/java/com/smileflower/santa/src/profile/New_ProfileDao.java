@@ -35,7 +35,7 @@ public class New_ProfileDao {
                 int.class,
                 userIdx);
     }
-    public List<GetFlagResForProfile> getFlagResForProfile(int userIdx) {
+    public List<GetFlagResForProfile> getFlagResForProfiles(int userIdx) {
         String query = "SELECT a.flagIdx, (select userImageUrl as userImgUrl from user where userIdx=?) as userImgUrl,a.userIdx,(select case" +
                 "                                                                                                                                   when  count(*) > 0 and  count(*) < 2 then 'Lv.1'" +
                 "                                                                                                                                                      when count(*)>= 2 and  count(*) < 4 then 'Lv.2'" +
@@ -101,7 +101,7 @@ public class New_ProfileDao {
         return getPicturesRes;
     }
 
-    public List<GetFlagRes> getFlagRes(int userIdx,int userIdxByJwt) {
+    public List<GetFlagRes> getFlagsRes(int userIdx,int userIdxByJwt) {
         String query = "select flag.flagIdx ,user.userImageUrl as userImgUrl,user.userIdx, (select" +
                 "                                                                                                 case" +
                 "                                                                                               when  count(*) > 0 and  count(*) < 2 then 'Lv.1'" +
@@ -180,7 +180,7 @@ public class New_ProfileDao {
         ));
 
     }
-    public List<GetMapRes> getMapRes(int userIdx) {
+    public List<GetMapRes> getMapsRes(int userIdx) {
         String query = "Select ANY_VALUE(f.userIdx) as userIdx, ANY_VALUE(f.mountainIdx) as mountainIdx, COUNT(f.mountainIdx) as cnt, m.name, m.imageUrl, m.latitude, m.longitude, m.address from flag f LEFT JOIN mountain m ON f.mountainIdx = m.mountainIdx where f.useridx = ? group by f.mountainIdx";
         Object[] param = new Object[]{userIdx};
         List<GetMapRes> getMapsRes = this.jdbcTemplate.query(query,param,(rs,rowNum) -> new GetMapRes(
@@ -373,7 +373,7 @@ public class New_ProfileDao {
     public int getHighSum(int userIdx) {
         return this.jdbcTemplate.queryForObject("SELECT COALESCE(SUM(height),0) as sum FROM flag WHERE userIdx = ?",new Object[]{userIdx}, Integer.class);
     }
-    public List<GetCommentRes> getPictureCommentRes(long pictureIdx){
+    public List<GetCommentRes> getPictureCommentsRes(long pictureIdx){
         return this.jdbcTemplate.query("select user.userIdx, user.userImageUrl,user.name as userName, picturecomment.contents  from picturecomment inner join user on picturecomment.userIdx = user.userIdx\n" +
                 "  where picturecomment.pictureIdx=? and user.status='t' and picturecomment.status='t'  order by picturecomment.createdAt limit 1",(rs,rownum2)  -> new GetCommentRes(
                 rs.getInt("userIdx"),
@@ -385,7 +385,7 @@ public class New_ProfileDao {
 
                 ),pictureIdx);
     }
-    public List<GetCommentRes> getFlagCommentRes(long flagIdx){
+    public List<GetCommentRes> getFlagCommentsRes(long flagIdx){
         return this.jdbcTemplate.query("select user.userIdx, user.userImageUrl,user.name as userName, flagcomment.contents  from flagcomment inner join user on flagcomment.userIdx = user.userIdx" +
                 "               where flagcomment.flagIdx=? and user.status='t' and flagcomment.status='t' order by flagcomment.createdAt limit 1",(rs,rownum2)  -> new GetCommentRes(
                 rs.getInt("userIdx"),

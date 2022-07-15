@@ -44,7 +44,7 @@ public class CommentDao {
                 "                where status='T' and pictureIdx=? and userIdx=?) as FlagExist", int.class,pictureIdx,userIdx);
     }
 
-    public List<GetCommentRes> getFlagComment(Long flagIdx) {
+    public List<GetCommentRes> getFlagComments(Long flagIdx) {
         String getFlagCommentQuery = "select u.userIdx, u.userImageUrl, u.name as userName, flagcommentIdx as commentIdx, contents," +
                 "  flagcomment.status as status,\n" +
                 "       case\n" +
@@ -95,7 +95,7 @@ public class CommentDao {
 
     }
 
-    public List<GetCommentRes> getPictureComment(Long pictureIdx) {
+    public List<GetCommentRes> getPictureComments(Long pictureIdx) {
         String getPictureCommentQuery = "select u.userIdx, u.userImageUrl, u.name as userName, picturecommentIdx as commentIdx, contents," +
                 "  picturecomment.status as status,\n" +
                 "       case\n" +
@@ -172,7 +172,7 @@ public class CommentDao {
         return this.jdbcTemplate.queryForObject("select userIdx from picture" +
                 "                where  pictureIdx=? ", Integer.class,pictureIdx);
     }
-    //
+
     public int createPictureComment(PostCommentReq postCommentReq, Long pictureIdx, int userIdx){
         Object[] createPictureCommentParams = new Object[]{userIdx, pictureIdx, postCommentReq.getContents()};
 

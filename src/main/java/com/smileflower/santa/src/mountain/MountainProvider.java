@@ -34,7 +34,7 @@ public class MountainProvider {
         this.s3Service = s3Service;
     }
 
-    public List<GetMountainRes> getMountain(int userIdx) throws BaseException {
+    public List<GetMountainRes> getMountains(int userIdx) throws BaseException {
         List<GetMountainRes> getMountainRes = mountainDao.getMountain(userIdx);
         for(int i=0;i<getMountainRes.size();i++){
             if(getMountainRes.get(i).getMountainImg()!=null)
@@ -43,7 +43,7 @@ public class MountainProvider {
         return getMountainRes;
     }
 
-    public List<GetMountainRes> getMountainPaging(int userIdx,int index) throws BaseException {
+    public List<GetMountainRes> getMountainsPaging(int userIdx,int index) throws BaseException {
         List<GetMountainRes> getMountainRes = mountainDao.getMountainPaging(userIdx,index);
         for(int i=0;i<getMountainRes.size();i++){
             if(getMountainRes.get(i).getMountainImg()!=null)

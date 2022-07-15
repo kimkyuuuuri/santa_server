@@ -136,7 +136,7 @@ public class New_HomeDao {
     }
 
 //no use
-    public List<GetFlagRes> getFlagRes() {
+    public List<GetFlagRes> getFlagsRes() {
         return this.jdbcTemplate.query("select user.userIdx,user.userImageUrl, (select\n" +
                 "                                                                          case\n" +
                         "                                                                              when  count(*) > 0 and  count(*) < 2 then 'Lv.1'\n" +

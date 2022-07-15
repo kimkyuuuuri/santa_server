@@ -58,7 +58,7 @@ public class New_ProfileController {
 
     @ResponseBody
     @GetMapping("/map")
-    public BaseResponse<List<GetMapRes>> getMapRes() throws BaseException {
+    public BaseResponse<List<GetMapRes>> getMapsRes() throws BaseException {
 
         try{
             if(jwtService.getJwt()==null){
@@ -67,7 +67,7 @@ public class New_ProfileController {
 
             else{
                 int userIdx=jwtService.getUserIdx();
-                List<GetMapRes> getMapRes= newProfileProvider.getMapRes(userIdx);
+                List<GetMapRes> getMapRes= newProfileProvider.getMapsRes(userIdx);
                 return new BaseResponse<>(getMapRes);
             }
 

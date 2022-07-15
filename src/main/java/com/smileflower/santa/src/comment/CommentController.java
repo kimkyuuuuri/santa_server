@@ -39,7 +39,7 @@ public class    CommentController {
 
     @ResponseBody
     @GetMapping("/{idx}")
-    public BaseResponse<List<GetCommentRes>> getComment(@PathVariable("idx") Long Idx, @RequestParam("type") String type) throws BaseException {
+    public BaseResponse<List<GetCommentRes>> getComments(@PathVariable("idx") Long Idx, @RequestParam("type") String type) throws BaseException {
         try {
             if (jwtService.getJwt() == null) {
                 return new BaseResponse<>(EMPTY_JWT);

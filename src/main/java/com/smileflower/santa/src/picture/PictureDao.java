@@ -39,7 +39,7 @@ public class PictureDao {
         return changedCnt==1 ? true : false;
     }
 
-    public List<GetPictureCommentIdxRes> getPictureCommentIdxRes(Long pictureIdx) {
+    public List<GetPictureCommentIdxRes> getPictureCommentIdxsRes(Long pictureIdx) {
         String query = "select picturecommentIdx from picturecomment where pictureIdx =?";
         Object[] param = new Object[]{pictureIdx};
         return this.jdbcTemplate.query(query,param,(rs, rowNum) -> new GetPictureCommentIdxRes(

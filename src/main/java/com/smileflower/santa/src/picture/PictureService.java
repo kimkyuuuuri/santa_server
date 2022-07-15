@@ -81,7 +81,7 @@ public class PictureService{
             throw new BaseException(INVALID_POST);
         else if (pictureProvider.checkPictureWhereUserExist(pictureIdx,userIdx) == 0)
             throw new BaseException(INVALID_POST_USER);
-        List<GetPictureCommentIdxRes> getPictureCommentIdxRes=pictureDao.getPictureCommentIdxRes(pictureIdx);
+        List<GetPictureCommentIdxRes> getPictureCommentIdxRes=pictureDao.getPictureCommentIdxsRes(pictureIdx);
         for(int i=0;i<getPictureCommentIdxRes.size();i++){
             pictureDao.deletePictureRecomment(getPictureCommentIdxRes.get(i).getPicturecommentIdx());
         }

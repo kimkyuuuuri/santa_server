@@ -41,7 +41,7 @@ public class New_ProfileProvider {
 
     public GetProfileRes getProfileRes(int userIdx) throws BaseException {
         List<GetPostForProfileRes> getPostsRes = new ArrayList<>();
-        List<GetFlagResForProfile> getFlagRes = newProfileDao.getFlagResForProfile(userIdx);
+        List<GetFlagResForProfile> getFlagRes = newProfileDao.getFlagResForProfiles(userIdx);
         List<GetPictureRes> getPicturesRes = newProfileDao.getPicturesRes(userIdx,userIdx);
         GetUserRes getUserRes= newProfileDao.getUserRes(userIdx);
         int flagsResponseCnt = getFlagRes.size();
@@ -105,14 +105,14 @@ public class New_ProfileProvider {
         }
 
         List<GetPostRes> getPostsRes = new ArrayList<>();
-        List<GetFlagRes> getFlagRes = newProfileDao.getFlagRes(userIdx,userIdxByJwt);
+        List<GetFlagRes> getFlagRes = newProfileDao.getFlagsRes(userIdx,userIdxByJwt);
         List<GetPictureRes> getPicturesRes =newProfileDao.getPicturesRes(userIdx,userIdxByJwt);
         GetUserRes getUserRes= newProfileDao.getUserRes(userIdx);
         for(int i=0;i<getPicturesRes.size();i++){
             if (getPicturesRes.get(i).getUserImageUrl() != null)
                 getPicturesRes.get(i).setUserImageUrl(s3Service.getFileUrl(getPicturesRes.get(i).getUserImageUrl()));
 
-            List<GetCommentRes> getCommentRes=newProfileDao.getPictureCommentRes(getPicturesRes.get(i).getPictureIdx());
+            List<GetCommentRes> getCommentRes=newProfileDao.getPictureCommentsRes(getPicturesRes.get(i).getPictureIdx());
            for(int j=0;j<getCommentRes.size();j++){
 
                    if (getCommentRes.get(j).getUserImageUrl() != null)
@@ -126,7 +126,7 @@ public class New_ProfileProvider {
             if (getFlagRes.get(i).getUserImageUrl() != null)
                 getFlagRes.get(i).setUserImageUrl(s3Service.getFileUrl(getFlagRes.get(i).getUserImageUrl()));
 
-            List<GetCommentRes> getCommentRes=newProfileDao.getFlagCommentRes(getFlagRes.get(i).getFlagIdx());
+            List<GetCommentRes> getCommentRes=newProfileDao.getFlagCommentsRes(getFlagRes.get(i).getFlagIdx());
             for(int j=0;j<getCommentRes.size();j++) {
                 if (getCommentRes.get(j).getUserImageUrl() != null)
                     getCommentRes.get(j).setUserImageUrl(s3Service.getFileUrl(getCommentRes.get(j).getUserImageUrl()));
@@ -140,8 +140,8 @@ public class New_ProfileProvider {
 
     }
 
-    public List<GetMapRes> getMapRes(int userIdx) {
-        List<GetMapRes> getMapRes = newProfileDao.getMapRes(userIdx);
+    public List<GetMapRes> getMapsRes(int userIdx) {
+        List<GetMapRes> getMapRes = newProfileDao.getMapsRes(userIdx);
         for(int i=0;i<getMapRes.size();i++){
             if(getMapRes.get(i).getImageUrl()!=null)
                 getMapRes.get(i).setImageUrl(s3Service.getFileUrl(getMapRes.get(i).getImageUrl()));

@@ -182,7 +182,7 @@ public class FlagController {
 
     @ResponseBody
     @GetMapping("/picks")
-    public BaseResponse<List<GetPickRes>> getPick() {
+    public BaseResponse<List<GetPickRes>> getPicks() {
         try{
             if(jwtService.getJwt()==null){
                 return new BaseResponse<>(EMPTY_JWT);
@@ -190,7 +190,7 @@ public class FlagController {
 
             else{
                 int userIdx=jwtService.getUserIdx();
-                List<GetPickRes> getPickRes = flagProvider.getPick(userIdx);
+                List<GetPickRes> getPickRes = flagProvider.getPicks(userIdx);
                 return new BaseResponse<>(getPickRes);
             }
         } catch(BaseException exception){

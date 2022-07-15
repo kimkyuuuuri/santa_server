@@ -136,7 +136,7 @@ public class CommentService {
 
 
         else if(type.equals("picture")) {
-            System.out.println("dd");
+
             if (commentProvider.checkPictureCommentExist(commentIdx) == 0)
                 throw new BaseException(INVALID_COMMENT);
             String picturePushToken= commentProvider.getUserPicturePushTokenByRecomment(commentIdx);

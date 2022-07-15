@@ -23,7 +23,7 @@ public class CommentProvider {
     private final S3Service s3Service;
 
     private JdbcTemplate jdbcTemplate;
-    private List<GetCommentRes> getCommentRes;
+    private List<GetCommentRes> getCommentsRes;
     final Logger logger = LoggerFactory.getLogger(this.getClass());
 
     public CommentProvider(CommentDao commentDao, JwtService jwtService, S3Service s3Service) {
@@ -33,10 +33,6 @@ public class CommentProvider {
         this.s3Service = s3Service;
     }
 
-    public int checkSaveExist(int userIdx, int pictureIdx) {
-        int exist = commentDao.checkSaveExist(userIdx, pictureIdx);
-        return exist;
-    }
 
 
     public int checkFlagCommentExist(long flagCommentIdx) {
@@ -86,45 +82,45 @@ public class CommentProvider {
             if (checkFlagExist(idx) == 0)
                 throw new BaseException(INVALID_POST);
 
-            getCommentRes = commentDao.getFlagComment(idx);
+            getCommentsRes = commentDao.getFlagComments(idx);
 
         }
         else if (type.equals("picture"))
         {
             if (checkPictureExist(idx) == 0)
                 throw new BaseException(INVALID_POST);
-            getCommentRes=commentDao.getPictureComment(idx);
+            getCommentsRes=commentDao.getPictureComments(idx);
 
         }
-        if ( getCommentRes==null)
+        if ( getCommentsRes==null)
             throw new BaseException(EMPTY_COMMENT);
 
-        for (int i = 0; i < getCommentRes.size(); i++) {
-            if (getCommentRes.get(i).getUserIdx()==userIdx)
-            {getCommentRes.get(i).setIsUsersComment("t");}
+        for (int i = 0; i < getCommentsRes.size(); i++) {
+            if (getCommentsRes.get(i).getUserIdx()==userIdx)
+            {getCommentsRes.get(i).setIsUsersComment("t");}
             else if (type.equals("flag") && getFlagUserIdx(idx)==userIdx)
-            {getCommentRes.get(i).setIsUsersComment("t");}
+            {getCommentsRes.get(i).setIsUsersComment("t");}
             else if (type.equals("picture") && getPictureUserIdx(idx)==userIdx)
-            {getCommentRes.get(i).setIsUsersComment("t");}
+            {getCommentsRes.get(i).setIsUsersComment("t");}
 
-            if (getCommentRes.get(i).getUserImageUrl() != null)
-                getCommentRes.get(i).setUserImageUrl(s3Service.getFileUrl(getCommentRes.get(i).getUserImageUrl()));
-            for (int j = 0; j < getCommentRes.get(i).getGetRecommentRes().size(); j++) {
-                if(getCommentRes.get(i).getGetRecommentRes().get(j).getUserIdx()==userIdx)
-                { getCommentRes.get(i).getGetRecommentRes().get(j).setIsUsersComment("t");}
+            if (getCommentsRes.get(i).getUserImageUrl() != null)
+                getCommentsRes.get(i).setUserImageUrl(s3Service.getFileUrl(getCommentsRes.get(i).getUserImageUrl()));
+            for (int j = 0; j < getCommentsRes.get(i).getGetRecommentRes().size(); j++) {
+                if(getCommentsRes.get(i).getGetRecommentRes().get(j).getUserIdx()==userIdx)
+                { getCommentsRes.get(i).getGetRecommentRes().get(j).setIsUsersComment("t");}
 
                 if(type.equals("flag") && getFlagUserIdx(idx)==userIdx)
-                { getCommentRes.get(i).getGetRecommentRes().get(j).setIsUsersComment("t");}
+                { getCommentsRes.get(i).getGetRecommentRes().get(j).setIsUsersComment("t");}
 
                 if(type.equals("picture") && getPictureUserIdx(idx)==userIdx)
-                { getCommentRes.get(i).getGetRecommentRes().get(j).setIsUsersComment("t");}
+                { getCommentsRes.get(i).getGetRecommentRes().get(j).setIsUsersComment("t");}
 
-                if (getCommentRes.get(i).getGetRecommentRes().get(j).getUserImageUrl() != null)
-                    getCommentRes.get(i).getGetRecommentRes().get(j).setUserImageUrl(s3Service.getFileUrl(getCommentRes.get(i).getGetRecommentRes().get(j).getUserImageUrl()));
+                if (getCommentsRes.get(i).getGetRecommentRes().get(j).getUserImageUrl() != null)
+                    getCommentsRes.get(i).getGetRecommentRes().get(j).setUserImageUrl(s3Service.getFileUrl(getCommentsRes.get(i).getGetRecommentRes().get(j).getUserImageUrl()));
 
             }
         }
-        return getCommentRes;
+        return getCommentsRes;
 
     }
 
