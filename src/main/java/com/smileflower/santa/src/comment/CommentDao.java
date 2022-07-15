@@ -1,7 +1,6 @@
 package com.smileflower.santa.src.comment;
 
 import com.smileflower.santa.src.comment.model.*;
-import com.smileflower.santa.src.flags.model.GetPickRes;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
@@ -14,7 +13,7 @@ import java.util.List;
 public class CommentDao {
 
     private JdbcTemplate jdbcTemplate;
-    private List<GetRecommentRes> getRecommentRes;
+    private List<GetRecommentRes> getRecommentsRes;
 
     @Autowired
     public void setDataSource(DataSource dataSource) {
@@ -69,7 +68,7 @@ public class CommentDao {
                         rs.getString("contents"),
                         rs.getString("status"),
                         rs.getString("createdAt"),
-                        getRecommentRes =this.jdbcTemplate.query(" select u.userIdx, u.userImageUrl, u.name as userName, flagrecommentIdx as recommentIdx, contents," +
+                        getRecommentsRes =this.jdbcTemplate.query(" select u.userIdx, u.userImageUrl, u.name as userName, flagrecommentIdx as recommentIdx, contents," +
                                         " flagrecomment.status as status,\n" +
                                         "       case\n" +
                                         "           when timestampdiff(minute , flagrecomment.createdAt, current_timestamp()) < 60\n" +
@@ -120,7 +119,7 @@ public class CommentDao {
                         rs.getString("contents"),
                         rs.getString("status"),
                         rs.getString("createdAt"),
-                        getRecommentRes =this.jdbcTemplate.query(" select u.userIdx, u.userImageUrl, u.name as userName, picturerecommentIdx as recommentIdx, contents," +
+                        getRecommentsRes =this.jdbcTemplate.query(" select u.userIdx, u.userImageUrl, u.name as userName, picturerecommentIdx as recommentIdx, contents," +
                                         " picturerecomment.status as status,\n" +
                                         "       case\n" +
                                         "           when timestampdiff(minute , picturerecomment.createdAt, current_timestamp()) < 60\n" +
@@ -162,7 +161,7 @@ public class CommentDao {
                 "                where status='T' and userIdx=? ", String.class,userIdx);
     }
 
-    // 그 게시글의 작성자가 누구인지 출력해야함.
+
 
     public int selectFlagUserIdx(Long flagIdx){
         return this.jdbcTemplate.queryForObject("select userIdx from flag" +

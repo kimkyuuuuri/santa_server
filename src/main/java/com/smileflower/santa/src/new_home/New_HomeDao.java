@@ -10,20 +10,18 @@ import org.springframework.stereotype.Repository;
 import javax.sql.DataSource;
 import java.util.List;
 
-import static org.thymeleaf.util.StringUtils.concat;
-
 @Repository
 public class New_HomeDao {
 
     private JdbcTemplate jdbcTemplate;
     private GetHomeRes getHomeRes;
-    private List<GetFlagsRes> getFlagsResList;
-    private List<GetUsersRes> getUsersResList;
-    private List<GetMountainsRes> getMountainsResList;
-    private List<GetCommentRes >getCommentRes;
+    private List<GetFlagRes> getFlagsRes;
+    private List<GetUserRes> getUsersRes;
+    private List<GetMountainRes> getMountainsRes;
+    private List<GetCommentRes >getCommentsRes;
     private int count=0;
 
-    private List<GetMountainsIdxRes> getMountainsIdxResList;
+    private List<GetMountainIdxRes> getMountainsIdxResList;
     @Autowired
     public void setDataSource(DataSource dataSource) {
 
@@ -37,7 +35,7 @@ public class New_HomeDao {
                 (rs, rowNum) -> new GetHomeRes(
                 rs.getString("notice"),
                 rs.getString("isFirst"),
-                getFlagsResList=this.jdbcTemplate.query("select user.userIdx, userImageUrl, (select\n" +
+                getFlagsRes=this.jdbcTemplate.query("select user.userIdx, userImageUrl, (select\n" +
                         "                                                                          case\n" +
                         "                                                                              when  count(*) > 0 and  count(*) < 2 then 'Lv.1'\n" +
                         "                                                                              when count(*)>= 2 and  count(*) < 4 then 'Lv.2'\n" +
@@ -55,7 +53,7 @@ public class New_HomeDao {
                         "    left join flagcomment on flag.flagIdx = flagcomment.flagIdx\n" +
                         "\n" +
                         "where flagsave.status='T' and user.status='T' and flag.status='T' group by flagsave.flagIdx order by  saveCount desc,commentCount desc limit 6",
-                        (rk,rownum) -> new GetFlagsRes(
+                        (rk,rownum) -> new GetFlagRes(
                                 rk.getInt("userIdx"),
                                 rk.getString("userImageUrl"),
                                 rk.getString("level"),
@@ -68,7 +66,7 @@ public class New_HomeDao {
 
 
                         ),userIdx),
-                getUsersResList=this.jdbcTemplate.query("select user.userIdx, userImageUrl ,\n" +
+                getUsersRes=this.jdbcTemplate.query("select user.userIdx, userImageUrl ,\n" +
                                 "        case\n" +
                                 "\n" +
                                 "                     when  f.flagCount> 0 and  f.flagCount < 2 then 'Lv.1'\n" +
@@ -96,7 +94,7 @@ public class New_HomeDao {
                                 "                   on f.userIdx = user.userIdx\n" +
                                 "where user.status='t'" +
                                 "order by user.height desc limit 10;",
-                        (rk,rownum) -> new GetUsersRes(
+                        (rk,rownum) -> new GetUserRes(
                                 rk.getInt("userIdx"),
                                 rk.getString("userImageUrl"),
                                 rk.getString("level"),
@@ -105,7 +103,7 @@ public class New_HomeDao {
                                 rk.getString("height")
 
                         )),
-                getMountainsResList=this.jdbcTemplate.query("select mountain.mountainIdx as mountainIdx,mountain.imageUrl as mountainImageUrl, case when p.hot > 10 then 't' else 'f' end as isHot,\n" +
+                getMountainsRes=this.jdbcTemplate.query("select mountain.mountainIdx as mountainIdx,mountain.imageUrl as mountainImageUrl, case when p.hot > 10 then 't' else 'f' end as isHot,\n" +
                                 "       case when mountain.high<500 then 1\n" +
                                 "                                   when mountain.high<800  then 2\n" +
                                 "                                   when mountain.high<1000 then 3\n" +
@@ -123,7 +121,7 @@ public class New_HomeDao {
                                 "                                  left join (select userIdx,userImageUrl from user  where status='t'\n" +
                                 "                         ) u on f2.userIdx=u.userIdx\n" +
                                 "    order by flagCount desc limit 3;\n",
-                        (rk,rownum) -> new GetMountainsRes(
+                        (rk,rownum) -> new GetMountainRes(
                                 rk.getInt("mountainIdx"),
                                 rk.getString("mountainImageUrl"),
                                 rk.getString("isHot"),
@@ -136,8 +134,9 @@ public class New_HomeDao {
                         ))),userIdx,userIdx);
 
     }
+
 //no use
-    public List<GetFlagsRes> getFlagRes() {
+    public List<GetFlagRes> getFlagRes() {
         return this.jdbcTemplate.query("select user.userIdx,user.userImageUrl, (select\n" +
                 "                                                                          case\n" +
                         "                                                                              when  count(*) > 0 and  count(*) < 2 then 'Lv.1'\n" +
@@ -155,7 +154,7 @@ public class New_HomeDao {
                         "    left join comment on picture.pictureIdx = comment.pictureIdx\n" +
                         "\n" +
                         "where picturesave.status='t' and user.status='t'  group by picturesave.pictureIdx order by  saveCount desc,commentCount desc limit 10",
-                (rk,rownum) -> new GetFlagsRes(
+                (rk,rownum) -> new GetFlagRes(
                         rk.getInt("userIdx"),
                         rk.getString("userImageUrl"),
                         rk.getString("level"),
@@ -166,11 +165,10 @@ public class New_HomeDao {
                         rk.getInt("pictureIdx"),
                         rk.getString("pictureImageUrl")
 
-
                 ));
 
 }
-    public List<GetUsersRes> getUsersRes() {
+    public List<GetUserRes> getUsersRes() {
         return this.jdbcTemplate.query("select user.userIdx, userImageUrl ,\n" +
                 "        case\n" +
                         "\n" +
@@ -198,7 +196,7 @@ public class New_HomeDao {
                         "         left join (select userIdx,count(flagIdx) as flagCount,createdAt from flag group by userIdx) f\n" +
                         "                   on f.userIdx = user.userIdx where user.status='t' " +
                         "order by user.height desc limit 10;",
-                (rk,rownum) -> new GetUsersRes(
+                (rk,rownum) -> new GetUserRes(
                         rk.getInt("userIdx"),
                         rk.getString("userImageUrl"),
                         rk.getString("level"),
@@ -210,7 +208,7 @@ public class New_HomeDao {
 
     }
 
-    public List<GetFlagsMoreRes> getFlagsMoreRes(int userIdx) {
+    public List<GetFlagMoreRes> getFlagsMoreRes(int userIdx) {
 
         return this.jdbcTemplate.query("select user.userIdx,user.userImageUrl, (select\n" +
                         "                                                                                          case\n" +
@@ -230,7 +228,7 @@ public class New_HomeDao {
                         "                            inner join user on flag.userIdx = user.userIdx\n" +
                         "                            left join flagcomment on flag.flagIdx = flagcomment.flagIdx\n" +
                         "                        where flagsave.status='t' and user.status='t' and flag.status='t' group by flagsave.flagIdx order by  saveCount desc,commentCount desc limit 10\n",
-                (rk,rownum) -> new GetFlagsMoreRes(
+                (rk,rownum) -> new GetFlagMoreRes(
                         rk.getInt("userIdx"),
                         rk.getString("userImageUrl"),
                         rk.getString("level"),
@@ -240,7 +238,7 @@ public class New_HomeDao {
                         rk.getInt("saveCount"),
                         rk.getInt("flagIdx"),
                         rk.getString("flagImageUrl"),
-                        getCommentRes=this.jdbcTemplate.query("select user.userIdx, user.userImageUrl,user.name as userName, flagcomment.contents  from flagcomment inner join user on flagcomment.userIdx = user.userIdx\n" +
+                        getCommentsRes=this.jdbcTemplate.query("select user.userIdx, user.userImageUrl,user.name as userName, flagcomment.contents  from flagcomment inner join user on flagcomment.userIdx = user.userIdx\n" +
                                 "  where flagcomment.flagIdx=? and user.status='t' and flagcomment.status='t' order by flagcomment.createdAt limit 1",(rs,rownum2) -> new GetCommentRes(
                         rs.getInt("userIdx"),
                         rs.getString("userImageUrl"),
@@ -258,7 +256,7 @@ public class New_HomeDao {
 
 
 
-    public List<GetMountainsRes> getMountainsRes(int order) {
+    public List<GetMountainRes> getMountainsRes(int order) {
         return this.jdbcTemplate.query("select mountain.mountainIdx as mountainIdx,mountain.imageUrl as mountainImageUrl, case when p.hot > 10 then 't' else 'f' end as isHot,\n" +
                         "       case when mountain.high<500 then 1\n" +
                         "                                   when mountain.high<800  then 2\n" +
@@ -277,7 +275,7 @@ public class New_HomeDao {
                         "                                  left join (select userIdx,userImageUrl from user  where status='t'\n" +
                         "                         ) u on f2.userIdx=u.userIdx\n" +
                         "    order by flagCount desc limit 10;",
-                (rk,rownum) -> new GetMountainsRes(
+                (rk,rownum) -> new GetMountainRes(
                         rk.getInt("mountainIdx"),
                         rk.getString("mountainImageUrl"),
                         rk.getString("isHot"),

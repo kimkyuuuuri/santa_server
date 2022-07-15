@@ -42,7 +42,7 @@ public class New_ProfileProvider {
     public GetProfileRes getProfileRes(int userIdx) throws BaseException {
         List<GetPostForProfileRes> getPostsRes = new ArrayList<>();
         List<GetFlagResForProfile> getFlagRes = newProfileDao.getFlagResForProfile(userIdx);
-        List<GetPicturesRes> getPicturesRes = newProfileDao.getPicturesRes(userIdx,userIdx);
+        List<GetPictureRes> getPicturesRes = newProfileDao.getPicturesRes(userIdx,userIdx);
         GetUserRes getUserRes= newProfileDao.getUserRes(userIdx);
         int flagsResponseCnt = getFlagRes.size();
         int level = 0;
@@ -90,7 +90,7 @@ public class New_ProfileProvider {
     }
 
 
-    public GetMyPostsRes getMyPostsRes(int userIdx,int userIdxByJwt)  throws BaseException{
+    public GetMyPostRes getMyPostsRes(int userIdx, int userIdxByJwt)  throws BaseException{
         String isMyPost="T";
 
         if(userExist(userIdx)==0) {
@@ -104,9 +104,9 @@ public class New_ProfileProvider {
             isMyPost="F";
         }
 
-        List<GetPostsRes> getPostsRes = new ArrayList<>();
+        List<GetPostRes> getPostsRes = new ArrayList<>();
         List<GetFlagRes> getFlagRes = newProfileDao.getFlagRes(userIdx,userIdxByJwt);
-        List<GetPicturesRes> getPicturesRes =newProfileDao.getPicturesRes(userIdx,userIdxByJwt);
+        List<GetPictureRes> getPicturesRes =newProfileDao.getPicturesRes(userIdx,userIdxByJwt);
         GetUserRes getUserRes= newProfileDao.getUserRes(userIdx);
         for(int i=0;i<getPicturesRes.size();i++){
             if (getPicturesRes.get(i).getUserImageUrl() != null)
@@ -119,7 +119,7 @@ public class New_ProfileProvider {
                        getCommentRes.get(j).setUserImageUrl(s3Service.getFileUrl(getCommentRes.get(j).getUserImageUrl()));
 
                }
-            getPostsRes.add(new GetPostsRes(false,null,getPicturesRes.get(i).getPictureIdx(),getPicturesRes.get(i).getUserImageUrl(),getPicturesRes.get(i).getUserIdx(),getPicturesRes.get(i).getLevel(),getPicturesRes.get(i).getUserName(),getPicturesRes.get(i).getCreatedAt().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")),s3Service.getFileUrl(getPicturesRes.get(i).getImageUrl()),getPicturesRes.get(i).getIsSaved(),getPicturesRes.get(i).getCommentCount(),getPicturesRes.get(i).getSaveCount(),getCommentRes));
+            getPostsRes.add(new GetPostRes(false,null,getPicturesRes.get(i).getPictureIdx(),getPicturesRes.get(i).getUserImageUrl(),getPicturesRes.get(i).getUserIdx(),getPicturesRes.get(i).getLevel(),getPicturesRes.get(i).getUserName(),getPicturesRes.get(i).getCreatedAt().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")),s3Service.getFileUrl(getPicturesRes.get(i).getImageUrl()),getPicturesRes.get(i).getIsSaved(),getPicturesRes.get(i).getCommentCount(),getPicturesRes.get(i).getSaveCount(),getCommentRes));
         }
 
         for(int i=0;i<getFlagRes.size();i++){
@@ -131,12 +131,12 @@ public class New_ProfileProvider {
                 if (getCommentRes.get(j).getUserImageUrl() != null)
                     getCommentRes.get(j).setUserImageUrl(s3Service.getFileUrl(getCommentRes.get(j).getUserImageUrl()));
             }
-            getPostsRes.add(new GetPostsRes(true,getFlagRes.get(i).getFlagIdx(),null,getFlagRes.get(i).getUserImageUrl(),getFlagRes.get(i).getUserIdx(),getFlagRes.get(i).getLevel(),getFlagRes.get(i).getUserName(),getFlagRes.get(i).getCreatedAt(),s3Service.getFileUrl(getFlagRes.get(i).getPictureUrl()),getFlagRes.get(i).getIsSaved(),getFlagRes.get(i).getCommentCount(),getFlagRes.get(i).getSaveCount(),getCommentRes));
+            getPostsRes.add(new GetPostRes(true,getFlagRes.get(i).getFlagIdx(),null,getFlagRes.get(i).getUserImageUrl(),getFlagRes.get(i).getUserIdx(),getFlagRes.get(i).getLevel(),getFlagRes.get(i).getUserName(),getFlagRes.get(i).getCreatedAt(),s3Service.getFileUrl(getFlagRes.get(i).getPictureUrl()),getFlagRes.get(i).getIsSaved(),getFlagRes.get(i).getCommentCount(),getFlagRes.get(i).getSaveCount(),getCommentRes));
 
         }
         Collections.sort(getPostsRes);
 
-        return new GetMyPostsRes(isMyPost,userIdx,getUserRes.getUserName(),getPostsRes);
+        return new GetMyPostRes(isMyPost,userIdx,getUserRes.getUserName(),getPostsRes);
 
     }
 
@@ -153,7 +153,7 @@ public class New_ProfileProvider {
     public GetListRes getListRes(int userIdx, int order) {
 
         GetFlagCountRes getFlagCountRes =newProfileDao.getFlagCounts(userIdx);
-        List<GetMountainsRes> getMountainsRes=newProfileDao.getMountainsForListRes(userIdx,order);
+        List<GetMountainRes> getMountainsRes=newProfileDao.getMountainsForListRes(userIdx,order);
 
 
        for(int i=0;i<getMountainsRes.size();i++){

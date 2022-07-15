@@ -56,7 +56,7 @@ public class New_HomeController {
 
     @ResponseBody
     @GetMapping("/flags")
-    public BaseResponse <List<GetFlagsMoreRes>> getFlagsRes() throws BaseException {
+    public BaseResponse <List<GetFlagMoreRes>> getFlagsRes() throws BaseException {
 
         try{
             if(jwtService.getJwt()==null){
@@ -65,7 +65,7 @@ public class New_HomeController {
 
             else{
                 int userIdx=jwtService.getUserIdx();
-                List<GetFlagsMoreRes> getFlagsMoreRes = newHomeProvider.getFlagsMoreRes(userIdx);
+                List<GetFlagMoreRes> getFlagsMoreRes = newHomeProvider.getFlagsMoreRes(userIdx);
                 return new BaseResponse<>(getFlagsMoreRes);
             }
 
@@ -76,7 +76,7 @@ public class New_HomeController {
 
     @ResponseBody
     @GetMapping("/users")
-    public BaseResponse <List<GetUsersRes>> getUsersRes() throws BaseException {
+    public BaseResponse <List<GetUserRes>> getUsersRes() throws BaseException {
 
         try{
             if(jwtService.getJwt()==null){
@@ -85,7 +85,7 @@ public class New_HomeController {
 
             else{
                 int userIdx=jwtService.getUserIdx();
-                List<GetUsersRes> getUsersRes= newHomeProvider.getUsersRes();
+                List<GetUserRes> getUsersRes= newHomeProvider.getUsersRes();
                 return new BaseResponse<>(getUsersRes);
             }
 
@@ -96,7 +96,7 @@ public class New_HomeController {
 
     @ResponseBody
     @GetMapping("/mountains")
-    public BaseResponse <List<GetMountainsRes>> getMountainsRes(@RequestParam int order) throws BaseException {
+    public BaseResponse <List<GetMountainRes>> getMountainsRes(@RequestParam int order) throws BaseException {
 
         try{
             if(jwtService.getJwt()==null){
@@ -105,7 +105,7 @@ public class New_HomeController {
 
             else{
                 int userIdx=jwtService.getUserIdx();
-                List<GetMountainsRes> getMountainsRes= newHomeProvider.getMountainsRes(order);
+                List<GetMountainRes> getMountainsRes= newHomeProvider.getMountainsRes(order);
                 return new BaseResponse<>(getMountainsRes);
             }
 

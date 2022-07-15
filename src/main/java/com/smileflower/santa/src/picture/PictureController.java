@@ -1,10 +1,7 @@
 package com.smileflower.santa.src.picture;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.smileflower.santa.config.BaseException;
 import com.smileflower.santa.config.BaseResponse;
-import com.smileflower.santa.src.flags.model.DeleteFlagRes;
-import com.smileflower.santa.src.flags.model.PostFlagReportRes;
 import com.smileflower.santa.src.picture.model.*;
 
 import org.slf4j.Logger;

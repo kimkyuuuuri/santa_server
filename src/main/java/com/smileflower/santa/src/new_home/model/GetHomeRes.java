@@ -11,11 +11,11 @@ import java.util.List;
 public class GetHomeRes {
     private String notice;
     private String isFirst;
-    private List<GetFlagsRes> getFlagResList;
-    private List<GetUsersRes> getUsersResList;
-    private List<GetMountainsRes> getMountainsResList;
+    private List<GetFlagRes> getFlagResList;
+    private List<GetUserRes> getUsersResList;
+    private List<GetMountainRes> getMountainsResList;
 
-    public GetHomeRes(String notice, String isFirst, List<GetFlagsRes> getFlagResList, List<GetUsersRes> getUsersResList, List<GetMountainsRes> getMountainsResList) {
+    public GetHomeRes(String notice, String isFirst, List<GetFlagRes> getFlagResList, List<GetUserRes> getUsersResList, List<GetMountainRes> getMountainsResList) {
         this.notice=notice;
         this.isFirst=isFirst;
         this.getFlagResList=getFlagResList;

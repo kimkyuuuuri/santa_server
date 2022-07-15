@@ -3,8 +3,6 @@ package com.smileflower.santa.src.profile;
 import com.smileflower.santa.config.BaseException;
 import com.smileflower.santa.config.BaseResponse;
 
-import com.smileflower.santa.src.comment.model.PatchRecommentStatusRes;
-import com.smileflower.santa.src.mountain.model.GetMountainRes;
 import com.smileflower.santa.src.profile.model.*;
 import com.smileflower.santa.utils.JwtService;
 import org.slf4j.Logger;
@@ -100,7 +98,7 @@ public class New_ProfileController {
 
     @ResponseBody
     @GetMapping("/{userIdx}/posts")
-    public BaseResponse<GetMyPostsRes> getMyPostsRes(@PathVariable("userIdx")int userIdx) throws BaseException {
+    public BaseResponse<GetMyPostRes> getMyPostsRes(@PathVariable("userIdx")int userIdx) throws BaseException {
 
         try{
             if(jwtService.getJwt()==null){
@@ -110,7 +108,7 @@ public class New_ProfileController {
             else{
                 int userIdxByJwt=jwtService.getUserIdx();
 
-                GetMyPostsRes getMyPostsRes= newProfileProvider.getMyPostsRes(userIdx,userIdxByJwt);
+                GetMyPostRes getMyPostsRes= newProfileProvider.getMyPostsRes(userIdx,userIdxByJwt);
                 return new BaseResponse<>(getMyPostsRes);
             }
 

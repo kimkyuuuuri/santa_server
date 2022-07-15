@@ -12,6 +12,6 @@ import java.util.List;
 @AllArgsConstructor
 public class GetListRes {
     private GetFlagCountRes getFlagCountRes;
-    private List<GetMountainsRes> getMountainsRes;
+    private List<GetMountainRes> getMountainsRes;
 
 }

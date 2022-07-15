@@ -2,7 +2,6 @@ package com.smileflower.santa.src.profile;
 
 
 
-import com.smileflower.santa.src.flags.model.GetFlagCommentIdxRes;
 import com.smileflower.santa.src.profile.model.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -17,11 +16,11 @@ public class New_ProfileDao {
 
     private JdbcTemplate jdbcTemplate;
     private GetProfileRes getProfileRes;
-    private List<GetPostsRes> getPostsResList;
+    private List<GetPostRes> getPostsRes;
 
 
 
-    private List<GetFlagRes> getFlagResList;
+    private List<GetFlagRes> getFlagsRes;
     @Autowired
     public void setDataSource(DataSource dataSource) {
 
@@ -50,7 +49,7 @@ public class New_ProfileDao {
                 "from flag f LEFT JOIN mountain m ON f.mountainIdx = m.mountainIdx group by f.mountainIdx) b on a.mountainIdx = b.mountainIdx where a.userIdx = ?  ";
 
         Object[] param = new Object[]{userIdx,userIdx,userIdx};
-        List<GetFlagResForProfile> getFlagRes = this.jdbcTemplate.query(query,param,(rs,rowNum) -> new GetFlagResForProfile(
+        List<GetFlagResForProfile> getFlagsRes = this.jdbcTemplate.query(query,param,(rs,rowNum) -> new GetFlagResForProfile(
                 rs.getLong("flagIdx"),
                 rs.getString("userImgUrl"),
                 rs.getInt("userIdx"),
@@ -62,9 +61,9 @@ public class New_ProfileDao {
                 rs.getInt("cnt"),
                 rs.getString("name")
         ));
-        return getFlagRes;
+        return getFlagsRes;
     }
-    public List<GetPicturesRes> getPicturesRes(int userIdx, int userIdxByJwt) {
+    public List<GetPictureRes> getPicturesRes(int userIdx, int userIdxByJwt) {
         String query = "select picture.pictureIdx ,user.userImageUrl,user.userIdx, (select" +
                 "                                                                                                 case" +
                 "                                                                                               when  count(*) > 0 and  count(*) < 2 then 'Lv.1'" +
@@ -86,7 +85,7 @@ public class New_ProfileDao {
                 "                                       where user.status='t' and picture.userIdx=? and picture.status='t' group by picture.pictureIdx order by picture.createdAt " ;
 
         Object[] param = new Object[]{userIdxByJwt,userIdx};
-        List<GetPicturesRes> getPicturesRes = this.jdbcTemplate.query(query,param,(rs,rowNum) -> new GetPicturesRes(
+        List<GetPictureRes> getPicturesRes = this.jdbcTemplate.query(query,param,(rs, rowNum) -> new GetPictureRes(
                 rs.getLong("pictureIdx"),
                 rs.getString("userImageUrl"),
                 rs.getInt("userIdx"),
@@ -123,7 +122,7 @@ public class New_ProfileDao {
                 "                                       where  user.status='t' and flag.userIdx=? and flag.status='t' group by flag.flagIdx order by flag.createdAt " ;
 
         Object[] param = new Object[]{userIdxByJwt,userIdx};
-        List<GetFlagRes> getFlagRes = this.jdbcTemplate.query(query,param,(rs,rowNum) -> new GetFlagRes(
+        List<GetFlagRes> getFlagsRes = this.jdbcTemplate.query(query,param,(rs,rowNum) -> new GetFlagRes(
                 rs.getLong("flagIdx"),
                 rs.getString("userImgUrl"),
                 rs.getInt("userIdx"),
@@ -138,7 +137,7 @@ public class New_ProfileDao {
 
 
         ));
-        return getFlagRes;
+        return getFlagsRes;
     }
 
     public GetUserRes getUserRes(int userIdx) {
@@ -184,7 +183,7 @@ public class New_ProfileDao {
     public List<GetMapRes> getMapRes(int userIdx) {
         String query = "Select ANY_VALUE(f.userIdx) as userIdx, ANY_VALUE(f.mountainIdx) as mountainIdx, COUNT(f.mountainIdx) as cnt, m.name, m.imageUrl, m.latitude, m.longitude, m.address from flag f LEFT JOIN mountain m ON f.mountainIdx = m.mountainIdx where f.useridx = ? group by f.mountainIdx";
         Object[] param = new Object[]{userIdx};
-        List<GetMapRes> getMapRes = this.jdbcTemplate.query(query,param,(rs,rowNum) -> new GetMapRes(
+        List<GetMapRes> getMapsRes = this.jdbcTemplate.query(query,param,(rs,rowNum) -> new GetMapRes(
                 rs.getInt("userIdx"),
                 rs.getLong("mountainIdx"),
                 rs.getString("name"),
@@ -194,10 +193,10 @@ public class New_ProfileDao {
                 rs.getInt("cnt"),
                 rs.getString("address")
         ));
-        return getMapRes;
+        return getMapsRes;
     }
 
-    public List<GetMountainsRes> getMountainsRes(int userIdx) {
+    public List<GetMountainRes> getMountainsRes(int userIdx) {
         String getMountainQuery = "select mountain.mountainIdx as mountainIdx,mountain.imageUrl as mountainImageUrl,\n" +
                 "       case when   (select count(picklistIdx) as hot from picklist  where status='t' and picklist.mountainIdx=mountain.mountainIdx) > 10 then 't' else 'f'\n" +
                 "end as isHot ,\n" +
@@ -215,7 +214,7 @@ public class New_ProfileDao {
                 "\n" +
                 "                                                                  where f.userIdx=? and f.status='t' group by f.mountainIdx;\n";
         Object[] param = new Object[]{userIdx};
-        List<GetMountainsRes> getMountainsRes = this.jdbcTemplate.query(getMountainQuery,param,(rs,rowNum) -> new GetMountainsRes(
+        List<GetMountainRes> getMountainsRes = this.jdbcTemplate.query(getMountainQuery,param,(rs, rowNum) -> new GetMountainRes(
                 rs.getInt("mountainIdx"),
                 rs.getString("mountainImageUrl"),
                 rs.getString("isHot"),
@@ -228,7 +227,7 @@ public class New_ProfileDao {
     }
 
 
-    public List<GetMountainsRes> getMountainsForListRes(int userIdx,int order) {
+    public List<GetMountainRes> getMountainsForListRes(int userIdx, int order) {
         String getMountainQuery="";
        if(order==1) {
            getMountainQuery = "select mountain.mountainIdx as mountainIdx,mountain.imageUrl as mountainImageUrl,\n" +
@@ -327,7 +326,7 @@ public class New_ProfileDao {
                    "order by orderColumn ;";
        }
         Object[] param = new Object[]{userIdx,userIdx};
-        List<GetMountainsRes> getMountainsRes = this.jdbcTemplate.query(getMountainQuery,param,(rs,rowNum) -> new GetMountainsRes(
+        List<GetMountainRes> getMountainsRes = this.jdbcTemplate.query(getMountainQuery,param,(rs, rowNum) -> new GetMountainRes(
                 rs.getInt("mountainIdx"),
                 rs.getString("mountainImageUrl"),
                 rs.getString("isHot"),

@@ -71,31 +71,31 @@ public class New_HomeProvider {
 
     }
 
-    public List<GetFlagsMoreRes> getFlagsMoreRes(int userIdx) throws BaseException {
-        List<GetFlagsMoreRes> getFlagsMoreRes = newHomeDao.getFlagsMoreRes(userIdx);
+    public List<GetFlagMoreRes> getFlagsMoreRes(int userIdx) throws BaseException {
+        List<GetFlagMoreRes> getFlagMoreRes = newHomeDao.getFlagsMoreRes(userIdx);
 
 
-            if(getFlagsMoreRes.size()==0)
+            if(getFlagMoreRes.size()==0)
                 throw new BaseException(BaseResponseStatus.EMPTY_PICTURE);
 
-            for (int i = 0; i < getFlagsMoreRes.size(); i++) {
-                if (getFlagsMoreRes.get(i).getFlagImageUrl() != null)
-                    getFlagsMoreRes.get(i).setFlagImageUrl(s3Service.getFileUrl(getFlagsMoreRes.get(i).getFlagImageUrl()));
-                if (getFlagsMoreRes.get(i).getUserImageUrl() != null)
+            for (int i = 0; i < getFlagMoreRes.size(); i++) {
+                if (getFlagMoreRes.get(i).getFlagImageUrl() != null)
+                    getFlagMoreRes.get(i).setFlagImageUrl(s3Service.getFileUrl(getFlagMoreRes.get(i).getFlagImageUrl()));
+                if (getFlagMoreRes.get(i).getUserImageUrl() != null)
 
-                    getFlagsMoreRes.get(i).setUserImageUrl(s3Service.getFileUrl(getFlagsMoreRes.get(i).getUserImageUrl()));
-                if (getFlagsMoreRes.get(i).getGetCommentRes().size() != 0) {
-                    if (getFlagsMoreRes.get(i).getGetCommentRes().get(0).getUserImageUrl() != null)
-                        getFlagsMoreRes.get(i).getGetCommentRes().get(0).setUserImageUrl(s3Service.getFileUrl(getFlagsMoreRes.get(i).getGetCommentRes().get(0).getUserImageUrl()));
+                    getFlagMoreRes.get(i).setUserImageUrl(s3Service.getFileUrl(getFlagMoreRes.get(i).getUserImageUrl()));
+                if (getFlagMoreRes.get(i).getGetCommentRes().size() != 0) {
+                    if (getFlagMoreRes.get(i).getGetCommentRes().get(0).getUserImageUrl() != null)
+                        getFlagMoreRes.get(i).getGetCommentRes().get(0).setUserImageUrl(s3Service.getFileUrl(getFlagMoreRes.get(i).getGetCommentRes().get(0).getUserImageUrl()));
                 }
 
             }
-            return getFlagsMoreRes;
+            return getFlagMoreRes;
 
     }
 
-    public List<GetUsersRes> getUsersRes() throws BaseException {
-        List<GetUsersRes> getUsersRes = newHomeDao.getUsersRes();
+    public List<GetUserRes> getUsersRes() throws BaseException {
+        List<GetUserRes> getUsersRes = newHomeDao.getUsersRes();
 
 
         if(getUsersRes.size()==0)
@@ -110,8 +110,8 @@ public class New_HomeProvider {
 
     }
 
-    public List<GetMountainsRes> getMountainsRes(int order) throws BaseException {
-        List<GetMountainsRes> getMountainsRes = newHomeDao.getMountainsRes(order);
+    public List<GetMountainRes> getMountainsRes(int order) throws BaseException {
+        List<GetMountainRes> getMountainsRes = newHomeDao.getMountainsRes(order);
 
 
         if(getMountainsRes.size()==0)
