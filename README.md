@@ -28,8 +28,7 @@
 
 > 3. 산별, 코스별 난이도 파악하기
 
-![산1등먹기](https://user-images.githubusercontent.com/81170119/221339778-5ce380ab-793b-4f5e-b6a9-eb480e8fd1e9.png)
-![산 난이도 파악](https://user-images.githubusercontent.com/81170119/221339779
+<img src="https://user-images.githubusercontent.com/81170119/221339979-2ade752e-f5df-4122-9bb7-86cc033ef074.png" width="200" height="400"/>
 
 
 > 4. 지도에서 깃발 수 늘리기
