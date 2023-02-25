@@ -42,6 +42,7 @@
 
 ## 다운로드 링크
 > ios : https://apps.apple.com/kr/app/%EC%82%B0%ED%83%80-santa/id1575356767
+
 > andriod: https://play.google.com/store/apps/details?id=com.smileflower.santa
 
 ## 그 외 기능
