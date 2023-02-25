@@ -67,3 +67,10 @@
     .gitignore
 
 ## api 명세서
+
+<img width="842" alt="무제" src="https://user-images.githubusercontent.com/81170119/221339588-6c2274d4-0983-44a9-be24-a5dda551787b.png">
+<img width="768" alt="무제 2" src="https://user-images.githubusercontent.com/81170119/221339592-8b70fe9d-a524-44ac-bccc-b44a628b3baa.png">
+<img width="788" alt="무제 3" src="https://user-images.githubusercontent.com/81170119/221339594-486ce1fc-9387-4bd3-a6b7-1d2fb1385815.png">
+<img width="776" alt="무제 4" src="https://user-images.githubusercontent.com/81170119/221339595-e0715cc4-91e4-4cdd-b04f-5674b17baef5.png">
+<img width="776" alt="무제 5" src="https://user-images.githubusercontent.com/81170119/221339600-5639ccae-01e4-4501-b56c-aa5c46b6f5d0.png">
+
