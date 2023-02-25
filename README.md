@@ -18,14 +18,12 @@
 : 정복할 산 검색 → 출발 버튼과 함께 등산 시작 → 정상 도착 → 사진 인증 → 깃발 획득 → 정복!!
 
 <img src="https://user-images.githubusercontent.com/81170119/221339773-852c9938-efa7-4fc0-b05c-330fca16f1c9.png" width="200" height="400"/>
-
-![정복1](https://user-images.githubusercontent.com/81170119/221339773-852c9938-efa7-4fc0-b05c-330fca16f1c9.png)
-![정복2](https://user-images.githubusercontent.com/81170119/221339774-c51d775e-04f5-41f3-8c3d-77b5a38d5010.png)
+<img src="https://user-images.githubusercontent.com/81170119/221339774-c51d775e-04f5-41f3-8c3d-77b5a38d5010.png" width="200" height="400"/>
 
 
 > 2. 해당 산 일등먹기
 
-![산1등먹기](https://user-images.githubusercontent.com/81170119/221339778-5ce380ab-793b-4f5e-b6a9-eb480e8fd1e9.png)
+<img src="https://user-images.githubusercontent.com/81170119/221339778-5ce380ab-793b-4f5e-b6a9-eb480e8fd1e9.png" width="200" height="400"/>
 
 
 > 3. 산별, 코스별 난이도 파악하기
@@ -36,13 +34,12 @@
 
 > 4. 지도에서 깃발 수 늘리기
 
-![지도에서 깃발](https://user-images.githubusercontent.com/81170119/221339776-52ba1c27-812d-4895-8478-eddc3f2c5896.png)
+<img src="https://user-images.githubusercontent.com/81170119/221339776-52ba1c27-812d-4895-8478-eddc3f2c5896.png" width="200" height="400"/>
 
 
 > 5. 배지 모으기
 
-![배지모으기](https://user-images.githubusercontent.com/81170119/221339780-edd9cdb5-80cf-4f4f-928c-86f04ddbc112.png)
--10b8048e-0ce3-4274-be14-d2a5bb13b9fe.png)
+<img src="https://user-images.githubusercontent.com/81170119/221339780-edd9cdb5-80cf-4f4f-928c-86f04ddbc112.png" width="200" height="400"/>
 
 
 ## 그 외 기능
