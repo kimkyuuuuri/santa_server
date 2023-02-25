@@ -41,8 +41,8 @@
 <img src="https://user-images.githubusercontent.com/81170119/221339780-edd9cdb5-80cf-4f4f-928c-86f04ddbc112.png" width="200" height="400"/>
 
 ## 다운로드 링크
-https://apps.apple.com/kr/app/%EC%82%B0%ED%83%80-santa/id1575356767
-https://play.google.com/store/apps/details?id=com.smileflower.santa
+> ios : https://apps.apple.com/kr/app/%EC%82%B0%ED%83%80-santa/id1575356767
+> andriod: https://play.google.com/store/apps/details?id=com.smileflower.santa
 
 ## 그 외 기능
 - 소셜 로그인: 카카오 로그인, 애플 로그인
