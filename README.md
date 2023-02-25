@@ -17,6 +17,8 @@
 > 1. 산 정복하기
 : 정복할 산 검색 → 출발 버튼과 함께 등산 시작 → 정상 도착 → 사진 인증 → 깃발 획득 → 정복!!
 
+<img src="https://user-images.githubusercontent.com/81170119/221339773-852c9938-efa7-4fc0-b05c-330fca16f1c9.png" width="200" height="400"/>
+
 ![정복1](https://user-images.githubusercontent.com/81170119/221339773-852c9938-efa7-4fc0-b05c-330fca16f1c9.png)
 ![정복2](https://user-images.githubusercontent.com/81170119/221339774-c51d775e-04f5-41f3-8c3d-77b5a38d5010.png)
 
